@@ -1,0 +1,8 @@
+{
+  "id": 7,
+  "station_name": "Sample Radio Station 7",
+  "genre": "Talk",
+  "location": "Kumasi, Ghana",
+  "stream_url": "https://stream.zeno.fm/station_7",
+  "status": "published"
+}
