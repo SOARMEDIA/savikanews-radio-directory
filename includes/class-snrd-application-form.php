@@ -158,34 +158,50 @@ class SNRD_Application_Form {
     }
 
     /**
-     * Send email notification to site admin
+     * Send email notification to site admin(s) - Supports two approval email addresses
      */
     private static function send_admin_notification( $post_id, $station_name, $location, $stream_url, $contact_email ) {
-        $to = get_option( 'snrd_admin_notify_email', get_option( 'admin_email' ) );
-        if ( ! is_email( $to ) ) {
-            $to = get_option( 'admin_email' );
+        // Collect both notification emails
+        $recipients = array();
+
+        $email_1 = get_option( 'snrd_admin_notify_email_1', get_option( 'snrd_admin_notify_email', get_option( 'admin_email' ) ) );
+        if ( ! empty( $email_1 ) && is_email( $email_1 ) ) {
+            $recipients[] = $email_1;
         }
+
+        $email_2 = get_option( 'snrd_admin_notify_email_2', '' );
+        if ( ! empty( $email_2 ) && is_email( $email_2 ) ) {
+            $recipients[] = $email_2;
+        }
+
+        // Fallback to site admin email if none configured
+        if ( empty( $recipients ) ) {
+            $recipients[] = get_option( 'admin_email' );
+        }
+
+        // Remove any duplicates
+        $recipients = array_unique( $recipients );
 
         $subject = sprintf( __( '[Savika News Radio] New Station Application: %s', 'savika-news-radio' ), $station_name );
         $edit_url = admin_url( 'post.php?post=' . $post_id . '&action=edit' );
 
         $body  = "Hello Administrator,\r\n\r\n";
-        $body .= "A new radio station application has been submitted to Savika News Radio and is awaiting your review.\r\n\r\n";
-        $body .= "Station Details:\r\n";
+        $body .= "A new radio station application has been submitted to Savika News Radio Directory and is awaiting your review.\r\n\r\n";
+        $body .= "Station Application Details:\r\n";
         $body .= "--------------------------------------\r\n";
         $body .= "Station Name:  " . $station_name . "\r\n";
         $body .= "Location:      " . $location . "\r\n";
         $body .= "Contact Email: " . $contact_email . "\r\n";
         $body .= "Stream URL:    " . $stream_url . "\r\n\r\n";
         $body .= "Next Step:\r\n";
-        $body .= "Please test the stream and approve or edit the listing in your WordPress admin panel:\r\n";
+        $body .= "Click the direct link below to verify the live stream and approve or publish the station:\r\n";
         $body .= $edit_url . "\r\n\r\n";
         $body .= "Thank you,\r\n";
         $body .= "Savika News Radio Directory System\r\n";
 
         $headers = array( 'Content-Type: text/plain; charset=UTF-8' );
 
-        wp_mail( $to, $subject, $body, $headers );
+        wp_mail( $recipients, $subject, $body, $headers );
     }
 
     /**

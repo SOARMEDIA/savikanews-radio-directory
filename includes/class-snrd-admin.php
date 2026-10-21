@@ -377,9 +377,14 @@ class SNRD_Admin {
      * Register settings fields
      */
     public static function register_settings() {
-        register_setting( 'snrd_settings_group', 'snrd_admin_notify_email', array(
+        register_setting( 'snrd_settings_group', 'snrd_admin_notify_email_1', array(
             'sanitize_callback' => 'sanitize_email',
             'default'           => get_option( 'admin_email' )
+        ) );
+
+        register_setting( 'snrd_settings_group', 'snrd_admin_notify_email_2', array(
+            'sanitize_callback' => 'sanitize_email',
+            'default'           => ''
         ) );
     }
 
@@ -437,23 +442,36 @@ class SNRD_Admin {
             </div>
 
             <form method="post" action="options.php" style="margin-bottom: 30px; max-width: 850px; background: #fff; padding: 20px; border: 1px solid #c3c4c7; border-radius: 6px;">
-                <h2 style="margin-top: 0;"><?php esc_html_e( 'Administrative Email Notification', 'savika-news-radio' ); ?></h2>
+                <h2 style="margin-top: 0;"><?php esc_html_e( 'Administrative Approval Email Notifications', 'savika-news-radio' ); ?></h2>
+                <p style="font-size: 13px; color: #555;">
+                    <?php esc_html_e( 'Enter two administrator / editor email addresses below. Whenever a radio station application is submitted, both addresses will immediately receive the approval notification email with the 1-click review link.', 'savika-news-radio' ); ?>
+                </p>
                 <?php
                 settings_fields( 'snrd_settings_group' );
-                $notify_email = get_option( 'snrd_admin_notify_email', get_option( 'admin_email' ) );
+                $notify_email_1 = get_option( 'snrd_admin_notify_email_1', get_option( 'snrd_admin_notify_email', get_option( 'admin_email' ) ) );
+                $notify_email_2 = get_option( 'snrd_admin_notify_email_2', '' );
                 ?>
                 <table class="form-table">
                     <tr>
                         <th scope="row">
-                            <label for="snrd_admin_notify_email"><?php esc_html_e( 'New Application Alert Email', 'savika-news-radio' ); ?></label>
+                            <label for="snrd_admin_notify_email_1"><?php esc_html_e( 'Primary Approval Email', 'savika-news-radio' ); ?> <span style="color:#c90000;">*</span></label>
                         </th>
                         <td>
-                            <input type="email" name="snrd_admin_notify_email" id="snrd_admin_notify_email" class="regular-text" value="<?php echo esc_attr( $notify_email ); ?>" />
-                            <p class="description"><?php esc_html_e( 'Email address that receives an alert whenever a broadcaster submits an application.', 'savika-news-radio' ); ?></p>
+                            <input type="email" name="snrd_admin_notify_email_1" id="snrd_admin_notify_email_1" class="regular-text" value="<?php echo esc_attr( $notify_email_1 ); ?>" required />
+                            <p class="description"><?php esc_html_e( 'Primary admin email to receive broadcaster submission alerts (e.g. admin@savikanews.com).', 'savika-news-radio' ); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="snrd_admin_notify_email_2"><?php esc_html_e( 'Secondary Approval Email', 'savika-news-radio' ); ?></label>
+                        </th>
+                        <td>
+                            <input type="email" name="snrd_admin_notify_email_2" id="snrd_admin_notify_email_2" class="regular-text" value="<?php echo esc_attr( $notify_email_2 ); ?>" placeholder="e.g. editor@savikanews.com" />
+                            <p class="description"><?php esc_html_e( 'Second administrator or supervisor email address to also receive submission alerts.', 'savika-news-radio' ); ?></p>
                         </td>
                     </tr>
                 </table>
-                <?php submit_button( __( 'Save Notification Settings', 'savika-news-radio' ) ); ?>
+                <?php submit_button( __( 'Save Approval Emails', 'savika-news-radio' ) ); ?>
             </form>
         </div>
         <?php
