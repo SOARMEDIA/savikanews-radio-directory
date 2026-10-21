@@ -32,6 +32,19 @@ class SNRD_Admin {
         // Add settings submenu for notification email & quick instructions
         add_action( 'admin_menu', array( __CLASS__, 'add_settings_page' ) );
         add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
+        add_action( 'admin_init', array( __CLASS__, 'handle_page_generation_action' ) );
+    }
+
+    /**
+     * Handle manual page generation button
+     */
+    public static function handle_page_generation_action() {
+        if ( isset( $_GET['snrd_action'] ) && 'generate_pages' === $_GET['snrd_action'] && current_user_can( 'manage_options' ) ) {
+            check_admin_referer( 'snrd_generate_pages_action' );
+            Savika_News_Radio_Directory::auto_create_radio_pages();
+            wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'pages_created' ), admin_url( 'edit.php' ) ) );
+            exit;
+        }
     }
 
     /**
@@ -303,10 +316,42 @@ class SNRD_Admin {
      * Render Settings and Setup Guide page
      */
     public static function render_settings_page() {
+        $gen_url = wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'generate_pages' ), admin_url( 'edit.php' ) ), 'snrd_generate_pages_action' );
+        $radio_url = home_url( '/radio/' );
+        $apply_url = home_url( '/radio/apply/' );
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Savika News Radio Directory — Configuration & Guide', 'savika-news-radio' ); ?></h1>
             <hr>
+
+            <?php if ( isset( $_GET['snrd_msg'] ) && 'pages_created' === $_GET['snrd_msg'] ) : ?>
+                <div class="notice notice-success is-dismissible" style="padding: 12px;">
+                    <p style="font-size: 15px; margin: 0 0 8px;"><strong>✔ <?php esc_html_e( 'Radio Directory and Application pages were successfully created and verified!', 'savika-news-radio' ); ?></strong></p>
+                    <p style="margin: 0;">
+                        <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank" class="button button-primary">
+                            <?php esc_html_e( 'Open Radio Directory Page ↗', 'savika-news-radio' ); ?>
+                        </a>
+                        <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank" class="button button-secondary" style="margin-left: 8px;">
+                            <?php esc_html_e( 'Open Apply Page ↗', 'savika-news-radio' ); ?>
+                        </a>
+                    </p>
+                </div>
+            <?php endif; ?>
+
+            <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 18px; margin: 20px 0; border-radius: 4px; max-width: 800px;">
+                <h2 style="margin-top: 0;"><?php esc_html_e( '⚡ 1-Click Page Generator & Status', 'savika-news-radio' ); ?></h2>
+                <p><?php esc_html_e( 'Need to verify or auto-generate the public Radio Directory and Application pages? Click the button below to ensure they are created with the proper shortcodes and live sample stations.', 'savika-news-radio' ); ?></p>
+                <p>
+                    <a href="<?php echo esc_url( $gen_url ); ?>" class="button button-primary button-hero">
+                        <?php esc_html_e( '⚡ Generate / Repair Radio Pages Now', 'savika-news-radio' ); ?>
+                    </a>
+                </p>
+                <p style="font-size: 13px; color: #646970; margin-bottom: 0;">
+                    <?php esc_html_e( 'Public Links:', 'savika-news-radio' ); ?> 
+                    <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank"><code><?php echo esc_html( $radio_url ); ?></code></a> | 
+                    <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank"><code><?php echo esc_html( $apply_url ); ?></code></a>
+                </p>
+            </div>
 
             <form method="post" action="options.php" style="margin-bottom: 30px;">
                 <?php
