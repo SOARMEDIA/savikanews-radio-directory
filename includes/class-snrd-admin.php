@@ -56,7 +56,7 @@ class SNRD_Admin {
         // Main Station Broadcast Center
         add_meta_box(
             'snrd_station_details',
-            __( '📻 Radio Station Broadcast & Stream Setup', 'savika-news-radio' ),
+            __( 'Radio Station Broadcast & Stream Setup', 'savika-news-radio' ),
             array( __CLASS__, 'render_station_meta_box' ),
             SNRD_POST_TYPE,
             'normal',
@@ -66,7 +66,7 @@ class SNRD_Admin {
         // Station Logo Quick-Uploader
         add_meta_box(
             'snrd_station_logo_box',
-            __( '🖼️ Station Logo / Artwork', 'savika-news-radio' ),
+            __( 'Station Logo', 'savika-news-radio' ),
             array( __CLASS__, 'render_logo_meta_box' ),
             SNRD_POST_TYPE,
             'side',
@@ -76,7 +76,7 @@ class SNRD_Admin {
         // Applicant Contact Info
         add_meta_box(
             'snrd_station_applicant',
-            __( '🔒 Broadcaster Contact (Private)', 'savika-news-radio' ),
+            __( 'Broadcaster Contact Information (Private)', 'savika-news-radio' ),
             array( __CLASS__, 'render_applicant_meta_box' ),
             SNRD_POST_TYPE,
             'side',
@@ -230,7 +230,7 @@ class SNRD_Admin {
 
             <p style="font-size: 12px;">
                 <strong><?php esc_html_e( 'Broadcast Consent:', 'savika-news-radio' ); ?></strong><br>
-                <?php echo ( '1' === $authorized ) ? '<span style="color: #008a20; font-weight: bold;">✔ ' . esc_html__( 'Confirmed by submitter', 'savika-news-radio' ) . '</span>' : esc_html__( 'Admin created listing', 'savika-news-radio' ); ?>
+                <?php echo ( '1' === $authorized ) ? '<span style="color: #008a20; font-weight: bold;">[Confirmed] ' . esc_html__( 'Authorized by submitter', 'savika-news-radio' ) . '</span>' : esc_html__( 'Admin created listing', 'savika-news-radio' ); ?>
             </p>
 
             <?php if ( $applied_date ) : ?>
@@ -409,30 +409,30 @@ class SNRD_Admin {
 
             <?php if ( isset( $_GET['snrd_msg'] ) && 'pages_created' === $_GET['snrd_msg'] ) : ?>
                 <div class="notice notice-success is-dismissible" style="padding: 12px;">
-                    <p style="font-size: 15px; margin: 0 0 8px;"><strong>✔ <?php esc_html_e( 'Radio Directory and Application pages were successfully created and verified!', 'savika-news-radio' ); ?></strong></p>
+                    <p style="font-size: 15px; margin: 0 0 8px;"><strong><?php esc_html_e( 'Radio Directory and Application pages were successfully created and verified.', 'savika-news-radio' ); ?></strong></p>
                     <p style="margin: 0;">
                         <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank" class="button button-primary">
-                            <?php esc_html_e( 'Open Radio Directory Page ↗', 'savika-news-radio' ); ?>
+                            <?php esc_html_e( 'Open Radio Directory Page', 'savika-news-radio' ); ?> &rarr;
                         </a>
                         <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank" class="button button-secondary" style="margin-left: 8px;">
-                            <?php esc_html_e( 'Open Apply Page ↗', 'savika-news-radio' ); ?>
+                            <?php esc_html_e( 'Open Apply Page', 'savika-news-radio' ); ?> &rarr;
                         </a>
                     </p>
                 </div>
             <?php endif; ?>
 
             <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #c90000; padding: 20px; margin: 20px 0; border-radius: 6px; max-width: 850px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <h2 style="margin-top: 0; color: #1a202c;"><?php esc_html_e( '⚡ 1-Click Page Generator & Status', 'savika-news-radio' ); ?></h2>
+                <h2 style="margin-top: 0; color: #1a202c;"><?php esc_html_e( 'Page Verification & Generator', 'savika-news-radio' ); ?></h2>
                 <p style="font-size: 14px;"><?php esc_html_e( 'Click the button below anytime to verify or auto-generate the public Radio Directory and Application pages with the proper shortcodes and live sample stations.', 'savika-news-radio' ); ?></p>
                 <p>
                     <a href="<?php echo esc_url( $gen_url ); ?>" class="button button-primary button-hero" style="background: #c90000; border-color: #a00000; box-shadow: none;">
-                        <?php esc_html_e( '⚡ Generate / Repair Radio Pages Now', 'savika-news-radio' ); ?>
+                        <?php esc_html_e( 'Generate / Repair Radio Pages', 'savika-news-radio' ); ?>
                     </a>
                 </p>
                 <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #edf2f7; font-size: 13px; color: #646970;">
                     <strong><?php esc_html_e( 'Direct Public Links:', 'savika-news-radio' ); ?></strong><br>
-                    📻 Main Directory: <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank"><code><?php echo esc_html( $radio_url ); ?></code></a><br>
-                    📝 Application Form: <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank"><code><?php echo esc_html( $apply_url ); ?></code></a>
+                    Main Directory: <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank"><code><?php echo esc_html( $radio_url ); ?></code></a><br>
+                    Application Form: <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank"><code><?php echo esc_html( $apply_url ); ?></code></a>
                 </div>
             </div>
 
