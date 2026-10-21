@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Meta Boxes, Columns, and Stream Testing Interface
+ * Admin Meta Boxes, Easy Station Manager, and Stream Testing Interface
  *
  * @package Savika_News_Radio_Directory
  */
@@ -19,6 +19,7 @@ class SNRD_Admin {
             return;
         }
 
+        // Meta boxes
         add_action( 'add_meta_boxes', array( __CLASS__, 'add_meta_boxes' ) );
         add_action( 'save_post_' . SNRD_POST_TYPE, array( __CLASS__, 'save_meta_box_data' ) );
         
@@ -33,36 +34,49 @@ class SNRD_Admin {
         add_action( 'admin_menu', array( __CLASS__, 'add_settings_page' ) );
         add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
         add_action( 'admin_init', array( __CLASS__, 'handle_page_generation_action' ) );
+
+        // Remove unnecessary standard meta boxes on radio stations for a clean, non-distracting UI
+        add_action( 'admin_menu', array( __CLASS__, 'remove_unwanted_meta_boxes' ) );
     }
 
     /**
-     * Handle manual page generation button
+     * Remove clutter from the station editor
      */
-    public static function handle_page_generation_action() {
-        if ( isset( $_GET['snrd_action'] ) && 'generate_pages' === $_GET['snrd_action'] && current_user_can( 'manage_options' ) ) {
-            check_admin_referer( 'snrd_generate_pages_action' );
-            Savika_News_Radio_Directory::auto_create_radio_pages();
-            wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'pages_created' ), admin_url( 'edit.php' ) ) );
-            exit;
-        }
+    public static function remove_unwanted_meta_boxes() {
+        remove_meta_box( 'postcustom', SNRD_POST_TYPE, 'normal' );
+        remove_meta_box( 'commentstatusdiv', SNRD_POST_TYPE, 'normal' );
+        remove_meta_box( 'commentsdiv', SNRD_POST_TYPE, 'normal' );
+        remove_meta_box( 'slugdiv', SNRD_POST_TYPE, 'normal' );
     }
 
     /**
      * Register meta boxes
      */
     public static function add_meta_boxes() {
+        // Main Station Broadcast Center
         add_meta_box(
             'snrd_station_details',
-            __( 'Radio Station Stream & Broadcast Details', 'savika-news-radio' ),
+            __( '📻 Radio Station Broadcast & Stream Setup', 'savika-news-radio' ),
             array( __CLASS__, 'render_station_meta_box' ),
             SNRD_POST_TYPE,
             'normal',
             'high'
         );
 
+        // Station Logo Quick-Uploader
+        add_meta_box(
+            'snrd_station_logo_box',
+            __( '🖼️ Station Logo / Artwork', 'savika-news-radio' ),
+            array( __CLASS__, 'render_logo_meta_box' ),
+            SNRD_POST_TYPE,
+            'side',
+            'high'
+        );
+
+        // Applicant Contact Info
         add_meta_box(
             'snrd_station_applicant',
-            __( 'Broadcaster Application & Contact Info (Private)', 'savika-news-radio' ),
+            __( '🔒 Broadcaster Contact (Private)', 'savika-news-radio' ),
             array( __CLASS__, 'render_applicant_meta_box' ),
             SNRD_POST_TYPE,
             'side',
@@ -78,69 +92,124 @@ class SNRD_Admin {
 
         $stream_url   = get_post_meta( $post->ID, 'snrd_stream_url', true );
         $location     = get_post_meta( $post->ID, 'snrd_location', true );
+        $frequency    = get_post_meta( $post->ID, 'snrd_frequency', true );
         $zeno_url     = get_post_meta( $post->ID, 'snrd_zeno_url', true );
         $website_url  = get_post_meta( $post->ID, 'snrd_website_url', true );
         ?>
-        <table class="form-table snrd-admin-table">
-            <tbody>
-                <tr>
-                    <th scope="row">
-                        <label for="snrd_stream_url"><strong><?php esc_html_e( 'Public Audio Stream URL', 'savika-news-radio' ); ?></strong></label>
-                    </th>
-                    <td>
-                        <input type="url" name="snrd_stream_url" id="snrd_stream_url" class="large-text" value="<?php echo esc_url( $stream_url ); ?>" placeholder="https://stream.zeno.fm/..." />
-                        <p class="description">
-                            <?php esc_html_e( 'Direct live audio stream endpoint (MP3/AAC Icecast/Shoutcast/Zeno.fm stream). Must start with http:// or https:// (HTTPS strongly recommended).', 'savika-news-radio' ); ?>
-                        </p>
-                        
-                        <!-- Admin Stream Quick-Test Player -->
-                        <div class="snrd-admin-test-player" style="margin-top: 10px; padding: 12px; background: #f0f6fc; border-left: 4px solid #0073aa; border-radius: 4px;">
-                            <strong><?php esc_html_e( 'Admin Stream Test:', 'savika-news-radio' ); ?></strong>
-                            <p style="margin: 5px 0; font-size: 13px; color: #555;">
-                                <?php esc_html_e( 'Always test stream playback before approving and publishing.', 'savika-news-radio' ); ?>
-                            </p>
-                            <audio id="snrd-admin-audio-preview" controls preload="none" style="width: 100%; max-width: 450px; margin-top: 6px; display: block;">
+        <div class="snrd-admin-card-wrap">
+
+            <!-- Stream URL & Live Test -->
+            <div class="snrd-admin-field-row highlight-box">
+                <div class="snrd-admin-field-col full-width">
+                    <label for="snrd_stream_url" class="snrd-admin-label">
+                        <span class="dashicons dashicons-format-audio" style="color: #c90000; font-size: 20px;"></span>
+                        <strong><?php esc_html_e( 'Public Audio Stream URL (Zeno.fm / Icecast / Shoutcast)', 'savika-news-radio' ); ?></strong>
+                        <span class="required">*</span>
+                    </label>
+                    <input type="url" name="snrd_stream_url" id="snrd_stream_url" class="snrd-admin-input large" value="<?php echo esc_url( $stream_url ); ?>" placeholder="https://stream.zeno.fm/xxxxxxxxxx or https://...:8000/stream" />
+                    <p class="description">
+                        <?php esc_html_e( 'The direct listener link. Must start with http:// or https:// (HTTPS is recommended for web compatibility).', 'savika-news-radio' ); ?>
+                    </p>
+
+                    <!-- Built-in Instant Audio Test Player -->
+                    <div class="snrd-admin-player-dock">
+                        <div class="snrd-admin-player-header">
+                            <span class="dashicons dashicons-controls-volumeon"></span>
+                            <strong><?php esc_html_e( 'Instant Stream Verification Player', 'savika-news-radio' ); ?></strong>
+                        </div>
+                        <div class="snrd-admin-player-controls">
+                            <audio id="snrd-admin-audio-preview" controls preload="none">
                                 <source src="<?php echo esc_url( $stream_url ); ?>" id="snrd-admin-audio-source" />
                                 <?php esc_html_e( 'Your browser does not support HTML5 audio.', 'savika-news-radio' ); ?>
                             </audio>
-                            <button type="button" class="button button-secondary" id="snrd-reload-stream-btn" style="margin-top: 8px;">
-                                <span class="dashicons dashicons-controls-play" style="vertical-align: middle;"></span> <?php esc_html_e( 'Load & Test Stream URL', 'savika-news-radio' ); ?>
+                            <button type="button" class="button button-primary" id="snrd-reload-stream-btn">
+                                <span class="dashicons dashicons-controls-play" style="margin-top: 3px;"></span>
+                                <?php esc_html_e( 'Test Stream Now', 'savika-news-radio' ); ?>
                             </button>
-                            <span id="snrd-stream-test-status" style="margin-left: 10px; font-weight: 500;"></span>
+                            <span id="snrd-stream-test-status" class="snrd-test-badge"></span>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
+            </div>
 
-                <tr>
-                    <th scope="row">
-                        <label for="snrd_location"><strong><?php esc_html_e( 'Station Location / Region', 'savika-news-radio' ); ?></strong></label>
-                    </th>
-                    <td>
-                        <input type="text" name="snrd_location" id="snrd_location" class="regular-text" value="<?php echo esc_attr( $location ); ?>" placeholder="<?php esc_attr_e( 'e.g. Accra, Ghana or Mankessim, Ghana', 'savika-news-radio' ); ?>" />
-                        <p class="description"><?php esc_html_e( 'City, region, or country where the station broadcasts from.', 'savika-news-radio' ); ?></p>
-                    </td>
-                </tr>
+            <!-- Frequency & Location Row -->
+            <div class="snrd-admin-field-row two-cols">
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_frequency" class="snrd-admin-label">
+                        <span class="dashicons dashicons-dashboard"></span>
+                        <strong><?php esc_html_e( 'Dial / Frequency / Slogan', 'savika-news-radio' ); ?></strong>
+                    </label>
+                    <input type="text" name="snrd_frequency" id="snrd_frequency" class="snrd-admin-input" value="<?php echo esc_attr( $frequency ); ?>" placeholder="e.g. 106.1 FM or Online 24/7" />
+                    <p class="description"><?php esc_html_e( 'Shown prominently on cards and the station hero.', 'savika-news-radio' ); ?></p>
+                </div>
 
-                <tr>
-                    <th scope="row">
-                        <label for="snrd_zeno_url"><?php esc_html_e( 'Zeno.fm Listening Page (Optional)', 'savika-news-radio' ); ?></label>
-                    </th>
-                    <td>
-                        <input type="url" name="snrd_zeno_url" id="snrd_zeno_url" class="large-text" value="<?php echo esc_url( $zeno_url ); ?>" placeholder="https://zeno.fm/radio/station-slug/" />
-                        <p class="description"><?php esc_html_e( 'Official Zeno.fm station profile page used as a fallback link for listeners.', 'savika-news-radio' ); ?></p>
-                    </td>
-                </tr>
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_location" class="snrd-admin-label">
+                        <span class="dashicons dashicons-location"></span>
+                        <strong><?php esc_html_e( 'Location / Region', 'savika-news-radio' ); ?></strong>
+                        <span class="required">*</span>
+                    </label>
+                    <input type="text" name="snrd_location" id="snrd_location" class="snrd-admin-input" value="<?php echo esc_attr( $location ); ?>" placeholder="e.g. Mankessim, Central Region, Ghana" />
+                    <p class="description"><?php esc_html_e( 'City, region or broadcast territory.', 'savika-news-radio' ); ?></p>
+                </div>
+            </div>
 
-                <tr>
-                    <th scope="row">
-                        <label for="snrd_website_url"><?php esc_html_e( 'Official Website (Optional)', 'savika-news-radio' ); ?></label>
-                    </th>
-                    <td>
-                        <input type="url" name="snrd_website_url" id="snrd_website_url" class="large-text" value="<?php echo esc_url( $website_url ); ?>" placeholder="https://example.com" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <!-- Links Row -->
+            <div class="snrd-admin-field-row two-cols">
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_zeno_url" class="snrd-admin-label">
+                        <span class="dashicons dashicons-external"></span>
+                        <strong><?php esc_html_e( 'Zeno.fm Profile Link (Optional)', 'savika-news-radio' ); ?></strong>
+                    </label>
+                    <input type="url" name="snrd_zeno_url" id="snrd_zeno_url" class="snrd-admin-input" value="<?php echo esc_url( $zeno_url ); ?>" placeholder="https://zeno.fm/radio/station-slug/" />
+                    <p class="description"><?php esc_html_e( 'Used as a reliable fallback link for listeners.', 'savika-news-radio' ); ?></p>
+                </div>
+
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_website_url" class="snrd-admin-label">
+                        <span class="dashicons dashicons-admin-site"></span>
+                        <strong><?php esc_html_e( 'Official Website (Optional)', 'savika-news-radio' ); ?></strong>
+                    </label>
+                    <input type="url" name="snrd_website_url" id="snrd_website_url" class="snrd-admin-input" value="<?php echo esc_url( $website_url ); ?>" placeholder="https://stationwebsite.com" />
+                </div>
+            </div>
+
+        </div>
+        <?php
+    }
+
+    /**
+     * Dedicated Station Logo Meta Box with 1-Click Media Selector
+     */
+    public static function render_logo_meta_box( $post ) {
+        $thumbnail_id = get_post_thumbnail_id( $post->ID );
+        $image_url    = $thumbnail_id ? wp_get_attachment_image_url( $thumbnail_id, 'medium' ) : '';
+        ?>
+        <div class="snrd-logo-uploader-widget" id="snrd-logo-uploader-widget">
+            <input type="hidden" name="_thumbnail_id" id="_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ? $thumbnail_id : '-1' ); ?>" />
+
+            <div class="snrd-logo-preview-box" id="snrd-logo-preview" style="<?php echo $image_url ? 'display:block;' : 'display:none;'; ?>">
+                <img src="<?php echo esc_url( $image_url ); ?>" id="snrd-logo-img" alt="Logo preview" style="max-width: 100%; border-radius: 8px; border: 1px solid #dcdcde; display: block; margin: 0 auto 10px;" />
+            </div>
+
+            <div class="snrd-logo-empty-box" id="snrd-logo-empty" style="<?php echo $image_url ? 'display:none;' : 'display:block;'; ?> text-align: center; padding: 25px 10px; background: #f0f0f1; border: 2px dashed #c3c4c7; border-radius: 6px; margin-bottom: 10px;">
+                <span class="dashicons dashicons-format-image" style="font-size: 40px; width: 40px; height: 40px; color: #8c8f94;"></span>
+                <p style="margin: 8px 0 0; font-size: 13px; color: #646970;"><?php esc_html_e( 'No logo selected', 'savika-news-radio' ); ?></p>
+            </div>
+
+            <div class="snrd-logo-buttons" style="display: flex; gap: 8px;">
+                <button type="button" class="button button-primary" id="snrd-select-logo-btn" style="flex: 1;">
+                    <span class="dashicons dashicons-upload" style="margin-top: 3px;"></span>
+                    <?php esc_html_e( 'Upload / Select Logo', 'savika-news-radio' ); ?>
+                </button>
+                <button type="button" class="button button-link-delete" id="snrd-remove-logo-btn" style="<?php echo $image_url ? 'display:inline-block;' : 'display:none;'; ?>">
+                    <?php esc_html_e( 'Remove', 'savika-news-radio' ); ?>
+                </button>
+            </div>
+            <p class="description" style="margin-top: 8px; font-size: 12px;">
+                <?php esc_html_e( 'Square artwork (e.g. 500x500 PNG or JPG) displays best on cards and player screens.', 'savika-news-radio' ); ?>
+            </p>
+        </div>
         <?php
     }
 
@@ -156,27 +225,20 @@ class SNRD_Admin {
             <p>
                 <label for="snrd_contact_email"><strong><?php esc_html_e( 'Applicant Email:', 'savika-news-radio' ); ?></strong></label><br>
                 <input type="email" name="snrd_contact_email" id="snrd_contact_email" class="widefat" value="<?php echo esc_attr( $contact_email ); ?>" />
-                <span class="description"><?php esc_html_e( 'Private: never shown publicly to visitors.', 'savika-news-radio' ); ?></span>
+                <span class="description" style="font-size: 11px;"><?php esc_html_e( 'Confidential. Never shown on the public directory.', 'savika-news-radio' ); ?></span>
             </p>
 
-            <p>
-                <strong><?php esc_html_e( 'Authorized Submitter:', 'savika-news-radio' ); ?></strong><br>
-                <?php echo ( '1' === $authorized ) ? '<span style="color: green; font-weight: bold;">✔ ' . esc_html__( 'Confirmed Yes', 'savika-news-radio' ) . '</span>' : esc_html__( 'Manual / Admin entry', 'savika-news-radio' ); ?>
+            <p style="font-size: 12px;">
+                <strong><?php esc_html_e( 'Broadcast Consent:', 'savika-news-radio' ); ?></strong><br>
+                <?php echo ( '1' === $authorized ) ? '<span style="color: #008a20; font-weight: bold;">✔ ' . esc_html__( 'Confirmed by submitter', 'savika-news-radio' ) . '</span>' : esc_html__( 'Admin created listing', 'savika-news-radio' ); ?>
             </p>
 
             <?php if ( $applied_date ) : ?>
-                <p>
+                <p style="font-size: 12px;">
                     <strong><?php esc_html_e( 'Submitted On:', 'savika-news-radio' ); ?></strong><br>
                     <code><?php echo esc_html( date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $applied_date ) ) ); ?></code>
                 </p>
             <?php endif; ?>
-
-            <div style="background: #fff8e5; border-left: 4px solid #ffb900; padding: 8px; margin-top: 10px; font-size: 12px;">
-                <strong><?php esc_html_e( 'Review Policy:', 'savika-news-radio' ); ?></strong>
-                <p style="margin: 4px 0 0;">
-                    <?php esc_html_e( 'Stations remain in "Pending Review" until you verify the stream and click "Publish".', 'savika-news-radio' ); ?>
-                </p>
-            </div>
         </div>
         <?php
     }
@@ -185,24 +247,24 @@ class SNRD_Admin {
      * Save meta box data
      */
     public static function save_meta_box_data( $post_id ) {
-        // Verify nonce
         if ( ! isset( $_POST['snrd_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['snrd_meta_box_nonce'], 'snrd_save_station_details' ) ) {
             return;
         }
 
-        // Avoid autosave
         if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
             return;
         }
 
-        // Check user capabilities
         if ( ! current_user_can( 'edit_post', $post_id ) ) {
             return;
         }
 
-        // Sanitize and save fields
         if ( isset( $_POST['snrd_stream_url'] ) ) {
             update_post_meta( $post_id, 'snrd_stream_url', esc_url_raw( trim( $_POST['snrd_stream_url'] ) ) );
+        }
+
+        if ( isset( $_POST['snrd_frequency'] ) ) {
+            update_post_meta( $post_id, 'snrd_frequency', sanitize_text_field( trim( $_POST['snrd_frequency'] ) ) );
         }
 
         if ( isset( $_POST['snrd_location'] ) ) {
@@ -233,9 +295,10 @@ class SNRD_Admin {
             }
             $new_columns[ $key ] = $title;
             if ( 'title' === $key ) {
-                $new_columns['snrd_location_col'] = __( 'Location', 'savika-news-radio' );
-                $new_columns['snrd_stream_col']   = __( 'Live Stream URL', 'savika-news-radio' );
-                $new_columns['snrd_email_col']    = __( 'Contact Email', 'savika-news-radio' );
+                $new_columns['snrd_frequency_col'] = __( 'Dial / Frequency', 'savika-news-radio' );
+                $new_columns['snrd_location_col']  = __( 'Location', 'savika-news-radio' );
+                $new_columns['snrd_stream_col']    = __( 'Live Stream URL', 'savika-news-radio' );
+                $new_columns['snrd_email_col']     = __( 'Contact Email', 'savika-news-radio' );
             }
         }
         return $new_columns;
@@ -248,10 +311,15 @@ class SNRD_Admin {
         switch ( $column ) {
             case 'snrd_logo':
                 if ( has_post_thumbnail( $post_id ) ) {
-                    echo get_the_post_thumbnail( $post_id, array( 50, 50 ), array( 'style' => 'border-radius: 4px; object-fit: cover;' ) );
+                    echo get_the_post_thumbnail( $post_id, array( 48, 48 ), array( 'style' => 'border-radius: 6px; object-fit: cover;' ) );
                 } else {
-                    echo '<span style="display:inline-block;width:40px;height:40px;background:#e2e8f0;border-radius:4px;text-align:center;line-height:40px;color:#718096;"><span class="dashicons dashicons-format-audio" style="line-height:40px;"></span></span>';
+                    echo '<span style="display:inline-block;width:40px;height:40px;background:#e2e8f0;border-radius:6px;text-align:center;line-height:40px;color:#718096;"><span class="dashicons dashicons-format-audio" style="line-height:40px;"></span></span>';
                 }
+                break;
+
+            case 'snrd_frequency_col':
+                $freq = get_post_meta( $post_id, 'snrd_frequency', true );
+                echo $freq ? '<strong>' . esc_html( $freq ) . '</strong>' : '<span style="color:#a0aec0;">—</span>';
                 break;
 
             case 'snrd_location_col':
@@ -262,7 +330,7 @@ class SNRD_Admin {
             case 'snrd_stream_col':
                 $url = get_post_meta( $post_id, 'snrd_stream_url', true );
                 if ( $url ) {
-                    echo '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" style="font-size:12px;word-break:break-all;">' . esc_html( wp_trim_words( $url, 5, '...' ) ) . '</a>';
+                    echo '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-family:monospace;word-break:break-all;">' . esc_html( wp_trim_words( $url, 4, '...' ) ) . '</a>';
                 } else {
                     echo '<span style="color:#e53e3e;font-weight:600;">' . esc_html__( 'No Stream URL', 'savika-news-radio' ) . '</span>';
                 }
@@ -283,6 +351,9 @@ class SNRD_Admin {
         if ( SNRD_POST_TYPE !== $post_type ) {
             return;
         }
+
+        // WordPress Media Uploader scripts for 1-click logo selection
+        wp_enqueue_media();
 
         wp_enqueue_style( 'snrd-admin-css', SNRD_PLUGIN_URL . 'assets/css/snrd-admin.css', array(), SNRD_VERSION );
         wp_enqueue_script( 'snrd-admin-js', SNRD_PLUGIN_URL . 'assets/js/snrd-admin.js', array( 'jquery' ), SNRD_VERSION, true );
@@ -313,6 +384,18 @@ class SNRD_Admin {
     }
 
     /**
+     * Handle manual page generation button
+     */
+    public static function handle_page_generation_action() {
+        if ( isset( $_GET['snrd_action'] ) && 'generate_pages' === $_GET['snrd_action'] && current_user_can( 'manage_options' ) ) {
+            check_admin_referer( 'snrd_generate_pages_action' );
+            Savika_News_Radio_Directory::auto_create_radio_pages();
+            wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'pages_created' ), admin_url( 'edit.php' ) ) );
+            exit;
+        }
+    }
+
+    /**
      * Render Settings and Setup Guide page
      */
     public static function render_settings_page() {
@@ -338,22 +421,23 @@ class SNRD_Admin {
                 </div>
             <?php endif; ?>
 
-            <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; padding: 18px; margin: 20px 0; border-radius: 4px; max-width: 800px;">
-                <h2 style="margin-top: 0;"><?php esc_html_e( '⚡ 1-Click Page Generator & Status', 'savika-news-radio' ); ?></h2>
-                <p><?php esc_html_e( 'Need to verify or auto-generate the public Radio Directory and Application pages? Click the button below to ensure they are created with the proper shortcodes and live sample stations.', 'savika-news-radio' ); ?></p>
+            <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #c90000; padding: 20px; margin: 20px 0; border-radius: 6px; max-width: 850px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h2 style="margin-top: 0; color: #1a202c;"><?php esc_html_e( '⚡ 1-Click Page Generator & Status', 'savika-news-radio' ); ?></h2>
+                <p style="font-size: 14px;"><?php esc_html_e( 'Click the button below anytime to verify or auto-generate the public Radio Directory and Application pages with the proper shortcodes and live sample stations.', 'savika-news-radio' ); ?></p>
                 <p>
-                    <a href="<?php echo esc_url( $gen_url ); ?>" class="button button-primary button-hero">
+                    <a href="<?php echo esc_url( $gen_url ); ?>" class="button button-primary button-hero" style="background: #c90000; border-color: #a00000; box-shadow: none;">
                         <?php esc_html_e( '⚡ Generate / Repair Radio Pages Now', 'savika-news-radio' ); ?>
                     </a>
                 </p>
-                <p style="font-size: 13px; color: #646970; margin-bottom: 0;">
-                    <?php esc_html_e( 'Public Links:', 'savika-news-radio' ); ?> 
-                    <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank"><code><?php echo esc_html( $radio_url ); ?></code></a> | 
-                    <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank"><code><?php echo esc_html( $apply_url ); ?></code></a>
-                </p>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #edf2f7; font-size: 13px; color: #646970;">
+                    <strong><?php esc_html_e( 'Direct Public Links:', 'savika-news-radio' ); ?></strong><br>
+                    📻 Main Directory: <a href="<?php echo esc_url( $radio_url ); ?>" target="_blank"><code><?php echo esc_html( $radio_url ); ?></code></a><br>
+                    📝 Application Form: <a href="<?php echo esc_url( $apply_url ); ?>" target="_blank"><code><?php echo esc_html( $apply_url ); ?></code></a>
+                </div>
             </div>
 
-            <form method="post" action="options.php" style="margin-bottom: 30px;">
+            <form method="post" action="options.php" style="margin-bottom: 30px; max-width: 850px; background: #fff; padding: 20px; border: 1px solid #c3c4c7; border-radius: 6px;">
+                <h2 style="margin-top: 0;"><?php esc_html_e( 'Administrative Email Notification', 'savika-news-radio' ); ?></h2>
                 <?php
                 settings_fields( 'snrd_settings_group' );
                 $notify_email = get_option( 'snrd_admin_notify_email', get_option( 'admin_email' ) );
@@ -361,7 +445,7 @@ class SNRD_Admin {
                 <table class="form-table">
                     <tr>
                         <th scope="row">
-                            <label for="snrd_admin_notify_email"><?php esc_html_e( 'Notification Email for New Applications', 'savika-news-radio' ); ?></label>
+                            <label for="snrd_admin_notify_email"><?php esc_html_e( 'New Application Alert Email', 'savika-news-radio' ); ?></label>
                         </th>
                         <td>
                             <input type="email" name="snrd_admin_notify_email" id="snrd_admin_notify_email" class="regular-text" value="<?php echo esc_attr( $notify_email ); ?>" />
@@ -369,43 +453,8 @@ class SNRD_Admin {
                         </td>
                     </tr>
                 </table>
-                <?php submit_button( __( 'Save Settings', 'savika-news-radio' ) ); ?>
+                <?php submit_button( __( 'Save Notification Settings', 'savika-news-radio' ) ); ?>
             </form>
-
-            <div class="card" style="max-width: 800px; padding: 20px;">
-                <h2><?php esc_html_e( 'Elementor Page Setup & Shortcodes', 'savika-news-radio' ); ?></h2>
-                <p><?php esc_html_e( 'To display the radio directory and application form on your website using Elementor or standard pages, use these shortcodes:', 'savika-news-radio' ); ?></p>
-
-                <table class="widefat striped" style="margin-top: 15px;">
-                    <thead>
-                        <tr>
-                            <th><?php esc_html_e( 'Page', 'savika-news-radio' ); ?></th>
-                            <th><?php esc_html_e( 'Suggested URL', 'savika-news-radio' ); ?></th>
-                            <th><?php esc_html_e( 'Shortcode to insert in Elementor', 'savika-news-radio' ); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong><?php esc_html_e( 'Main Radio Directory', 'savika-news-radio' ); ?></strong></td>
-                            <td><code>/radio/</code></td>
-                            <td><code>[savika_radio_directory]</code></td>
-                        </tr>
-                        <tr>
-                            <td><strong><?php esc_html_e( 'Broadcaster Application Form', 'savika-news-radio' ); ?></strong></td>
-                            <td><code>/radio/apply/</code></td>
-                            <td><code>[savika_radio_apply]</code></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h3 style="margin-top: 25px;"><?php esc_html_e( 'How to test Zeno.fm Streams with BUTT', 'savika-news-radio' ); ?></h3>
-                <ol>
-                    <li><?php esc_html_e( 'Broadcasters configure BUTT using their private Zeno.fm server, port, mountpoint and password.', 'savika-news-radio' ); ?></li>
-                    <li><?php esc_html_e( 'Once broadcasting starts, copy the public listener link from Zeno.fm (e.g. https://stream.zeno.fm/xxxx or Icecast mount URL).', 'savika-news-radio' ); ?></li>
-                    <li><?php esc_html_e( 'Paste it into the application form or station record.', 'savika-news-radio' ); ?></li>
-                    <li><?php esc_html_e( 'Use the "Load & Test Stream URL" button in the station editor to confirm audio plays before clicking Publish.', 'savika-news-radio' ); ?></li>
-                </ol>
-            </div>
         </div>
         <?php
     }

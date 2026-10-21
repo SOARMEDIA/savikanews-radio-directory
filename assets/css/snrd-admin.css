@@ -2,30 +2,103 @@
  * Savika News Radio Directory - Admin Stylesheet
  */
 
-.snrd-admin-table th {
-    width: 220px;
-    font-weight: 600;
+.snrd-admin-card-wrap {
+    padding: 15px 5px;
 }
 
-.snrd-admin-test-player {
+.snrd-admin-field-row {
+    margin-bottom: 22px;
+}
+
+.snrd-admin-field-row.highlight-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #c90000;
+    padding: 18px;
     border-radius: 6px;
-    background: #f0f6fc;
-    border: 1px solid #c8d9ea;
 }
 
-.snrd-admin-test-player audio {
+.snrd-admin-field-row.two-cols {
+    display: flex;
+    gap: 20px;
+}
+
+.snrd-admin-field-col {
+    flex: 1;
+}
+
+.snrd-admin-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #1e293b;
+}
+
+.snrd-admin-label .required {
+    color: #c90000;
+    font-weight: bold;
+}
+
+.snrd-admin-input {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.snrd-admin-input:focus {
+    border-color: #c90000;
+    box-shadow: 0 0 0 2px rgba(201, 0, 0, 0.2);
     outline: none;
 }
 
-.snrd-applicant-info p {
-    margin: 8px 0;
+.snrd-admin-input.large {
+    font-size: 15px;
+    font-family: monospace;
 }
 
-.column-snrd_logo {
-    width: 60px;
-    text-align: center;
+/* Audio Player Dock */
+.snrd-admin-player-dock {
+    margin-top: 15px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 14px;
 }
 
-.column-snrd_stream_col {
-    max-width: 200px;
+.snrd-admin-player-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 10px;
+}
+
+.snrd-admin-player-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.snrd-admin-player-controls audio {
+    flex: 1;
+    min-width: 260px;
+    height: 38px;
+}
+
+.snrd-test-badge {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Logo Uploader Widget */
+.snrd-logo-preview-box img {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
