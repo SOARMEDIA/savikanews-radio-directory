@@ -1,5 +1,6 @@
 /**
- * Modern Ghana Radio Interactive Player & Directory Controller
+ * Modern Ghana Radio Public Script
+ * Interactive Player, Tabs & Real-Time Search Controller
  *
  * @package Savika_News_Radio_Directory
  */
@@ -9,45 +10,49 @@
 
     $(document).ready(function() {
 
-        var audioDOM = document.getElementById('mg-audio-element');
-        var $activeTitle = $('#mg-active-title');
-        var $activeLoc   = $('#mg-active-location');
-        var $activePhone = $('#mg-active-phone');
-        var $activeWeb   = $('#mg-active-website');
-        var $statusText  = $('#mg-deck-status-text');
+        var audioDOM        = document.getElementById('mg-audio-element');
+        var $activeTitle    = $('#mg-active-title');
+        var $activeLoc      = $('#mg-active-location');
+        var $activePhone    = $('#mg-active-phone');
+        var $activeWeb      = $('#mg-active-website');
+        var $statusLabel    = $('#mg-status-label');
+        var $startBtn       = $('#mg-start-btn');
+        var $pauseBtn       = $('#mg-pause-btn');
 
-        // 1. Station Click-To-Play in Master Console
+        /**
+         * 1. Station Selection & Live Audio Stream Trigger
+         */
         $(document).on('click', '.mg-station-trigger', function(e) {
             e.preventDefault();
 
-            var $btn = $(this);
-            var title    = $btn.attr('data-title') || 'Radio Station';
-            var stream   = $btn.attr('data-stream') || '';
-            var location = $btn.attr('data-location') || 'Ghana';
-            var phone    = $btn.attr('data-phone') || '';
-            var website  = $btn.attr('data-website') || '';
-            var id       = $btn.attr('data-id') || '';
+            var $trigger = $(this);
+            var title    = $trigger.attr('data-title') || 'Radio Station';
+            var stream   = $trigger.attr('data-stream') || '';
+            var location = $trigger.attr('data-location') || 'Ghana';
+            var phone    = $trigger.attr('data-phone') || '';
+            var website  = $trigger.attr('data-website') || '';
+            var id       = $trigger.attr('data-id') || '';
 
-            // Update Master Console Display
+            // Update Console Metadata
             $activeTitle.text(title.toUpperCase());
             $activeLoc.text(location);
             $activePhone.text(phone);
             $activeWeb.text(website);
 
-            // Update Highlight in Directory Table
-            $('.mg-directory-row').removeClass('is-playing');
-            $('.mg-sidebar-list li a').removeClass('is-playing');
-            $('.mg-scroll-list li a').removeClass('is-playing');
-            $('.mg-quick-pill').removeClass('is-active');
+            // Update Active Highlight Across All Lists
+            $('.mg-station-row').removeClass('selected is-playing');
+            $('.content-left ul li').removeClass('selected is-playing');
+            $('.mg-featured-scroll-list li').removeClass('selected is-playing');
+            $('.fm-country ul li a, .fm-settings ul li a').removeClass('selected is-playing');
 
             if (id) {
-                $('.mg-directory-row[data-id="' + id + '"]').addClass('is-playing');
-                $('.mg-station-trigger[data-id="' + id + '"]').addClass('is-playing is-active');
+                $('.mg-station-row[data-id="' + id + '"]').addClass('selected is-playing');
+                $('.mg-station-trigger[data-id="' + id + '"]').addClass('selected is-playing');
             }
 
-            // Stream audio
+            // Stream Audio
             if (audioDOM && stream) {
-                $statusText.text('Connecting...');
+                $statusLabel.text('Connecting...');
                 audioDOM.pause();
                 audioDOM.src = stream;
                 audioDOM.load();
@@ -55,73 +60,124 @@
                 var playPromise = audioDOM.play();
                 if (playPromise !== undefined) {
                     playPromise.then(function() {
-                        $statusText.text('Live Broadcast');
+                        $statusLabel.text('Live Broadcast');
+                        $startBtn.hide();
+                        $pauseBtn.show();
                     }).catch(function(err) {
-                        $statusText.text('Buffering or Stream Unavailable');
+                        $statusLabel.text('Live Broadcast (Tap to play)');
+                        $startBtn.show();
+                        $pauseBtn.hide();
                     });
                 }
-            } else if ($statusText.length) {
-                $statusText.text('No live stream available');
+            } else if ($statusLabel.length) {
+                $statusLabel.text('Stream Offline');
+                $startBtn.show();
+                $pauseBtn.hide();
             }
         });
 
+        // Audio element native event listeners
         if (audioDOM) {
             audioDOM.addEventListener('playing', function() {
-                $statusText.text('Live Broadcast');
+                $statusLabel.text('Live Broadcast');
+                $startBtn.hide();
+                $pauseBtn.show();
             });
+
             audioDOM.addEventListener('pause', function() {
-                $statusText.text('Broadcast Paused');
+                $statusLabel.text('Broadcast Paused');
+                $startBtn.show();
+                $pauseBtn.hide();
             });
+
             audioDOM.addEventListener('error', function() {
-                $statusText.text('Stream Connection Error');
+                $statusLabel.text('Stream Connection Error');
+                $startBtn.show();
+                $pauseBtn.hide();
             });
         }
 
-        // 2. Tabs: Stations Inside Ghana vs Outside Ghana
-        $('.mg-tab-btn').on('click', function(e) {
+        // Play / Pause Buttons
+        $startBtn.on('click', function(e) {
             e.preventDefault();
-            $('.mg-tab-btn').removeClass('active');
-            $(this).addClass('active');
-
-            var tab = $(this).attr('data-tab');
-            if ('outside' === tab) {
-                $('#mg-panel-inside').hide();
-                $('#mg-panel-outside').show();
-            } else {
-                $('#mg-panel-outside').hide();
-                $('#mg-panel-inside').show();
+            if (audioDOM && audioDOM.src) {
+                audioDOM.play();
             }
         });
 
-        // 3. Real-Time Directory Search
-        var $searchInput = $('#mg-search-input');
-        var $allRows     = $('.mg-directory-row');
-        var $emptyMsg    = $('#mg-search-empty');
+        $pauseBtn.on('click', function(e) {
+            e.preventDefault();
+            if (audioDOM) {
+                audioDOM.pause();
+            }
+        });
 
-        $searchInput.on('input', function() {
+        /**
+         * 2. Scope Tabs: Stations Inside Ghana vs Outside Ghana
+         */
+        $('.mg-tab-link').on('click', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            var tab = $this.attr('data-tab');
+
+            $('.nav-tabs li').removeClass('active');
+            $('.mg-tab-link').removeClass('active');
+            $this.addClass('active');
+            $this.closest('li').addClass('active');
+
+            if ('outside' === tab) {
+                $('#tab1primary').hide();
+                $('#tab2primary').show();
+            } else {
+                $('#tab2primary').hide();
+                $('#tab1primary').show();
+            }
+        });
+
+        /**
+         * 3. Real-Time Directory Search
+         */
+        var $findInput = $('#findradio');
+        var $stationRows = $('.mg-station-row');
+        var $featuredItems = $('.mg-featured-scroll-list li');
+        var $emptyAlert = $('#mg-search-empty-state');
+
+        $findInput.on('input', function() {
             var q = $.trim($(this).val()).toLowerCase();
-            var matches = 0;
+            var visibleCount = 0;
 
             if (q === '') {
-                $allRows.show();
-                $emptyMsg.hide();
+                $stationRows.show();
+                $featuredItems.show();
+                $emptyAlert.hide();
                 return;
             }
 
-            $allRows.each(function() {
+            // Filter 3-column rows
+            $stationRows.each(function() {
                 var text = $(this).text().toLowerCase();
                 if (text.indexOf(q) !== -1) {
                     $(this).show();
-                    matches++;
+                    visibleCount++;
                 } else {
                     $(this).hide();
                 }
             });
 
-            if (matches === 0) {
-                $emptyMsg.show();
+            // Filter featured scroll lists
+            $featuredItems.each(function() {
+                var text = $(this).text().toLowerCase();
+                if (text.indexOf(q) !== -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            if (visibleCount === 0) {
+                $emptyAlert.show();
             } else {
-                $emptyMsg.hide();
+                $emptyAlert.hide();
             }
         });
 

@@ -22,7 +22,7 @@
                 var url = $.trim($streamInput.val());
 
                 if (!url) {
-                    $statusBadge.css('color', '#c53030').text('⚠ Enter a Stream URL first.');
+                    $statusBadge.css('color', '#c53030').text('Notice: Enter a Stream URL first.');
                     return;
                 }
 
@@ -34,19 +34,19 @@
                 var playPromise = audioDOM.play();
                 if (playPromise !== undefined) {
                     playPromise.then(function() {
-                        $statusBadge.css('color', '#15803d').text('✔ Live Audio Playing!');
+                        $statusBadge.css('color', '#15803d').text('Connected: Live Audio Playing');
                     }).catch(function(error) {
-                        $statusBadge.css('color', '#b91c1c').text('⚠ Playback error. Check URL / format.');
+                        $statusBadge.css('color', '#b91c1c').text('Error: Playback error. Check URL / format.');
                     });
                 }
             });
 
             audioDOM.addEventListener('playing', function() {
-                $statusBadge.css('color', '#15803d').text('✔ Live Audio Playing!');
+                $statusBadge.css('color', '#15803d').text('Connected: Live Audio Playing');
             });
 
             audioDOM.addEventListener('error', function() {
-                $statusBadge.css('color', '#b91c1c').text('⚠ Playback error. Check direct listener URL.');
+                $statusBadge.css('color', '#b91c1c').text('Error: Playback error. Check direct listener URL.');
             });
         }
 

@@ -1,7 +1,7 @@
 <?php
 /**
- * Modern Ghana Radio Style Directory Template
- * Exact layout & features matching radio.modernghana.com
+ * Modern Ghana Radio Directory Layout
+ * Faithful editorial design matching radio.modernghana.com
  *
  * @package Savika_News_Radio_Directory
  */
@@ -16,7 +16,7 @@ $all_stations_query = new WP_Query( array(
     'post_status'    => 'publish',
     'posts_per_page' => -1,
     'orderby'        => 'title',
-    'order'          => 'ASC'
+    'order'          => 'ASC',
 ) );
 
 $stations_data = array();
@@ -80,10 +80,15 @@ if ( null === $first_station && ! empty( $stations_data ) ) {
 $ghana_stations    = array_filter( $stations_data, function( $st ) { return 'diaspora' !== $st['scope']; } );
 $diaspora_stations = array_filter( $stations_data, function( $st ) { return 'diaspora' === $st['scope']; } );
 
-// Quick pick station slugs/names
-$quick_pick_names = array(
-    'PEACE', 'ADOM', 'NHYIRA', 'OKAY', 'OMAN', 'KESSBEN', 'ANGEL', 'HOT', 'FOX', 
-    'OTEC', 'HELLO', 'NEAT', 'CITI', 'JOY', 'KINGDOM', 'FLOODLIGHT', 'AMANSAN', 'RAINBOW'
+// Fallback curated quick-access names for row 1 and row 2
+$quick_pills_row1 = array(
+    'PEACE', 'ADOM', 'NHYIRA', 'OKAY', 'OMAN', 'KESSBEN', 
+    'ANGEL', 'HOT', 'FOX', 'OTEC', 'HELLO', 'NEAT', 'CITI', 'JOY'
+);
+
+$quick_pills_row2 = array(
+    'ASEMPA', 'OYEREPA', 'WONTUMI', 'KASAPA', 'PURE', 'HITZ', 
+    'ASHH', 'STARR', 'SILVER', 'LUV', '3 FM', 'RADIO GOLD', 'FLOODLIGHT'
 );
 ?>
 
@@ -92,16 +97,14 @@ $quick_pick_names = array(
     <div class="mg-layout-row">
 
         <!-- ============================================== -->
-        <!-- LEFT SIDEBAR: FEATURED & TOP STATIONS         -->
+        <!-- LEFT SIDEBAR (.content-left)                   -->
         <!-- ============================================== -->
-        <aside class="mg-left-sidebar">
+        <aside class="content-left-wrapper">
             
             <!-- Featured Stations Box -->
-            <div class="mg-sidebar-box">
-                <div class="mg-sidebar-header">
-                    <h3>FEATURED STATIONS</h3>
-                </div>
-                <ul class="mg-sidebar-list">
+            <div class="content-left">
+                <h3>Featured Stations</h3>
+                <ul>
                     <?php 
                     $featured_count = 0;
                     foreach ( $stations_data as $st ) :
@@ -120,12 +123,17 @@ $quick_pick_names = array(
                 </ul>
             </div>
 
+            <!-- Apply to Broadcast Banner -->
+            <div class="content-left-cta">
+                <a href="<?php echo esc_url( home_url( '/radio/apply/' ) ); ?>" class="mg-apply-sidebar-btn">
+                    + SUBMIT YOUR STATION
+                </a>
+            </div>
+
             <!-- Top Stations Box -->
-            <div class="mg-sidebar-box">
-                <div class="mg-sidebar-header">
-                    <h3>TOP STATIONS</h3>
-                </div>
-                <ul class="mg-sidebar-list">
+            <div class="content-left">
+                <h3>Top Stations</h3>
+                <ul>
                     <?php 
                     $top_count = 0;
                     foreach ( $stations_data as $st ) :
@@ -144,198 +152,312 @@ $quick_pick_names = array(
                 </ul>
             </div>
 
-            <!-- Apply Callout in sidebar -->
-            <div class="mg-sidebar-apply">
-                <a href="<?php echo esc_url( home_url( '/radio/apply/' ) ); ?>" class="mg-apply-btn">
-                    + APPLY TO BROADCAST
-                </a>
-            </div>
-
         </aside>
 
         <!-- ============================================== -->
-        <!-- CENTER MAIN CONSOLE: PLAYER, SEARCH, LISTINGS  -->
+        <!-- CENTER MAIN CONSOLE (.content-middle)          -->
         <!-- ============================================== -->
-        <main class="mg-main-stage">
+        <main class="content-middle">
             
-            <!-- Black Master Radio Player Box -->
-            <section class="mg-master-console" id="mg-master-console">
+            <!-- Master Console Container -->
+            <div class="fm-master-console">
                 
-                <!-- Player Top Bar (Flag + Title + Stars) -->
-                <div class="mg-player-top">
-                    <div class="mg-title-group">
-                        <span class="mg-flag-icon">🇬🇭</span>
-                        <h2 class="mg-active-station-title" id="mg-active-title">
-                            <?php echo $first_station ? esc_html( strtoupper( $first_station['title'] ) ) : 'SAVIKA NEWS RADIO'; ?>
-                        </h2>
+                <!-- FM1 Row: Country Flag + Station Title + 5 Star Rating -->
+                <div class="row fm1">
+                    <div class="col-xs-12 col-sm-8 col-md-8 fm-name">
+                        <span class="mg-flag-badge" title="Ghana">
+                            <svg width="26" height="18" viewBox="0 0 600 400" aria-label="Ghana Flag" style="vertical-align: middle; border: 1px solid #444; border-radius: 2px;">
+                                <rect width="600" height="133.33" fill="#D80027"/>
+                                <rect y="133.33" width="600" height="133.33" fill="#FFDA44"/>
+                                <rect y="266.66" width="600" height="133.33" fill="#496E2D"/>
+                                <polygon points="300,145 311,178 345,178 318,198 328,231 300,211 272,231 282,198 255,178 289,178" fill="#000000"/>
+                            </svg>
+                        </span>
+                        <h1 id="mg-active-title">
+                            <?php echo $first_station ? esc_html( strtoupper( $first_station['title'] ) ) : 'FLOODLIGHT RADIO'; ?>
+                        </h1>
                     </div>
-                    <div class="mg-rating-stars">
-                        ★★★★★
-                    </div>
-                </div>
-
-                <!-- Player Sub-Info Strip (Location, Phone, Website) -->
-                <div class="mg-player-subinfo">
-                    <div class="mg-sub-item mg-sub-location" id="mg-active-location">
-                        <?php echo $first_station ? esc_html( $first_station['location'] ) : 'Ghana'; ?>
-                    </div>
-                    <div class="mg-sub-item mg-sub-phone" id="mg-active-phone">
-                        <?php echo $first_station ? esc_html( $first_station['phone'] ) : '+233 00 000 0000'; ?>
-                    </div>
-                    <div class="mg-sub-item mg-sub-website" id="mg-active-website">
-                        <?php echo $first_station ? esc_html( $first_station['website'] ) : 'savikanews.com'; ?>
-                    </div>
-                </div>
-
-                <!-- HTML5 Audio Streaming Deck -->
-                <div class="mg-audio-deck">
-                    <div class="mg-deck-status">
-                        <span class="mg-pulse-dot"></span>
-                        <span id="mg-deck-status-text">Live Broadcast</span>
-                    </div>
-
-                    <div class="mg-audio-wrap">
-                        <audio id="mg-audio-element" controls preload="none" playsinline style="width: 100%; height: 38px;">
-                            <source src="<?php echo $first_station ? esc_url( $first_station['stream'] ) : ''; ?>" id="mg-audio-source" />
-                            Your browser does not support live HTML5 audio streaming.
-                        </audio>
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- Search Field -->
-            <div class="mg-search-bar">
-                <input 
-                    type="text" 
-                    id="mg-search-input" 
-                    class="mg-search-field" 
-                    placeholder="Search a station from here..." 
-                    autocomplete="off"
-                />
-                <button type="button" class="mg-search-icon-btn" aria-label="Search">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                </button>
-            </div>
-
-            <!-- Quick Station Buttons (Green Pills) -->
-            <div class="mg-quick-stations-bar">
-                <?php foreach ( $stations_data as $st ) : 
-                    $clean_name = strtoupper( trim( preg_replace( '/[0-9\.\s]+FM/i', '', $st['title'] ) ) );
-                    $clean_name = strtok( $clean_name, ' ' );
-                ?>
-                    <button type="button" class="mg-quick-pill mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
-                        <?php echo esc_html( $clean_name ); ?>
-                    </button>
-                <?php endforeach; ?>
-            </div>
-
-            <!-- Two Featured Scrollboxes Side-by-Side -->
-            <div class="mg-featured-scroll-row">
-                
-                <!-- Left Box: Featured Ghana Stations -->
-                <div class="mg-scroll-box-wrap">
-                    <div class="mg-scroll-box-title">
-                        FEATURED: GHANA STATIONS
-                    </div>
-                    <div class="mg-scroll-viewport">
-                        <ul class="mg-scroll-list">
-                            <?php foreach ( $ghana_stations as $st ) : ?>
-                                <li>
-                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
-                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
+                    <div class="col-xs-12 col-sm-4 col-md-4 rates">
+                        <ul class="rating-star-left">
+                            <li class="active"><i class="mg-star">&#9733;</i></li>
+                            <li class="active"><i class="mg-star">&#9733;</i></li>
+                            <li class="active"><i class="mg-star">&#9733;</i></li>
+                            <li class="active"><i class="mg-star">&#9733;</i></li>
+                            <li class="active"><i class="mg-star">&#9733;</i></li>
                         </ul>
                     </div>
                 </div>
 
-                <!-- Right Box: Featured Diaspora Stations -->
-                <div class="mg-scroll-box-wrap">
-                    <div class="mg-scroll-box-title">
-                        FEATURED: DIASPORA STATIONS
+                <!-- FM2 Row: Location, Phone, Website Strip -->
+                <div class="row fm2">
+                    <div class="fm-info clearfix">
+                        <div class="col-xs-12 col-sm-4 col-md-4 location">
+                            <span id="mg-active-location">
+                                <?php echo $first_station ? esc_html( $first_station['location'] ) : 'Kumasi - Ghana'; ?>
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 phone">
+                            <span id="mg-active-phone">
+                                <?php echo $first_station ? esc_html( $first_station['phone'] ) : '0248850040'; ?>
+                            </span>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 col-md-4 website">
+                            <span id="mg-active-website">
+                                <?php echo $first_station ? esc_html( $first_station['website'] ) : 'savikanews.com/radio'; ?>
+                            </span>
+                        </div>
                     </div>
-                    <div class="mg-scroll-viewport">
-                        <ul class="mg-scroll-list">
-                            <?php foreach ( $diaspora_stations as $st ) : ?>
-                                <li>
-                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
-                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
-                                    </a>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                </div>
+
+                <!-- FM2 Row: Live Audio Deck & Playback Controls -->
+                <div class="row fm2">
+                    <div class="fm-play-push clearfix">
+                        <div class="col-xs-12 col-sm-6 col-md-6 text-left fm-controls-side">
+                            <a id="mg-status-indicator" href="javascript:void(0);">
+                                <span class="mg-live-dot"></span>
+                                <span id="mg-status-label">Live Broadcast</span>
+                            </a>
+                            <a id="mg-start-btn" class="mg-ctrl-btn" href="javascript:void(0);">
+                                <span class="mg-icon-symbol">&#9658;</span>
+                                <span>Start Radio</span>
+                            </a>
+                            <a id="mg-pause-btn" class="mg-ctrl-btn" href="javascript:void(0);" style="display:none;">
+                                <span class="mg-icon-symbol">&#10074;&#10074;</span>
+                                <span>Pause</span>
+                            </a>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 text-right fm-audio-side">
+                            <audio id="mg-audio-element" controls preload="none" playsinline style="width: 100%; height: 34px;">
+                                <source src="<?php echo $first_station ? esc_url( $first_station['stream'] ) : ''; ?>" id="mg-audio-source" />
+                                Your browser does not support HTML5 audio streaming.
+                            </audio>
+                        </div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Tabs: Stations Inside Ghana / Outside Ghana -->
-            <div class="mg-scope-tabs">
-                <button type="button" class="mg-tab-btn active" data-tab="inside">
-                    STATIONS INSIDE GHANA
-                </button>
-                <button type="button" class="mg-tab-btn" data-tab="outside">
-                    STATIONS OUTSIDE GHANA
-                </button>
+            <!-- Search Bar (#searchbar / #findradio) -->
+            <div class="search-rating clearfix">
+                <div id="searchbar">
+                    <input 
+                        id="findradio" 
+                        type="search" 
+                        placeholder="Search a station from here..." 
+                        autocomplete="off"
+                    />
+                    <span class="mg-search-icon">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#777" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                </div>
             </div>
 
-            <!-- Tab Content: Inside Ghana 3-Column Directory -->
-            <div class="mg-tab-content-panel active" id="mg-panel-inside">
-                <div class="mg-directory-table">
+            <!-- Quick Station Buttons Row 1 (.fm-country) -->
+            <div id="fm-settings-row1" class="fm-country clearfix">
+                <ul>
                     <?php 
-                    $inside_array = array_values( $ghana_stations );
-                    $total_inside = count( $inside_array );
-                    $cols = 3;
-                    $chunk_size = ceil( max( 1, $total_inside ) / $cols );
-                    $chunks = array_chunk( $inside_array, $chunk_size );
-
-                    for ( $i = 0; $i < $cols; $i++ ) : 
-                        $col_items = isset( $chunks[$i] ) ? $chunks[$i] : array();
+                    $shown_names = array();
+                    foreach ( $quick_pills_row1 as $target_name ) :
+                        $matched_st = null;
+                        foreach ( $stations_data as $s ) {
+                            if ( false !== stripos( $s['title'], $target_name ) ) {
+                                $matched_st = $s;
+                                break;
+                            }
+                        }
+                        if ( ! $matched_st && ! empty( $stations_data ) ) {
+                            // Assign an available station
+                            foreach ( $stations_data as $s ) {
+                                if ( ! in_array( $s['id'], $shown_names, true ) ) {
+                                    $matched_st = $s;
+                                    break;
+                                }
+                            }
+                        }
+                        if ( $matched_st ) :
+                            $shown_names[] = $matched_st['id'];
+                            $pill_display = ucfirst( strtolower( $target_name ) );
                     ?>
-                        <div class="mg-table-col">
-                            <?php foreach ( $col_items as $st ) : 
-                                $is_init_active = ( $first_station && $first_station['id'] === $st['id'] );
+                        <li>
+                            <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $matched_st['id'] ); ?>" data-title="<?php echo esc_attr( $matched_st['title'] ); ?>" data-stream="<?php echo esc_url( $matched_st['stream'] ); ?>" data-location="<?php echo esc_attr( $matched_st['location'] ); ?>" data-phone="<?php echo esc_attr( $matched_st['phone'] ); ?>" data-website="<?php echo esc_attr( $matched_st['website'] ); ?>">
+                                <?php echo esc_html( $pill_display ); ?>
+                            </a>
+                        </li>
+                    <?php 
+                        endif;
+                    endforeach; 
+                    ?>
+                </ul>
+            </div>
+
+            <!-- Quick Station Buttons Row 2 (.fm-settings) -->
+            <div id="fm-settings-row2" class="fm-settings clearfix">
+                <ul>
+                    <?php 
+                    foreach ( $quick_pills_row2 as $target_name ) :
+                        $matched_st = null;
+                        foreach ( $stations_data as $s ) {
+                            if ( false !== stripos( $s['title'], $target_name ) ) {
+                                $matched_st = $s;
+                                break;
+                            }
+                        }
+                        if ( ! $matched_st && ! empty( $stations_data ) ) {
+                            // Fallback to next available
+                            foreach ( $stations_data as $s ) {
+                                if ( ! in_array( $s['id'], $shown_names, true ) ) {
+                                    $matched_st = $s;
+                                    break;
+                                }
+                            }
+                        }
+                        if ( $matched_st ) :
+                            $shown_names[] = $matched_st['id'];
+                            $pill_display = ucfirst( strtolower( $target_name ) );
+                    ?>
+                        <li>
+                            <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $matched_st['id'] ); ?>" data-title="<?php echo esc_attr( $matched_st['title'] ); ?>" data-stream="<?php echo esc_url( $matched_st['stream'] ); ?>" data-location="<?php echo esc_attr( $matched_st['location'] ); ?>" data-phone="<?php echo esc_attr( $matched_st['phone'] ); ?>" data-website="<?php echo esc_attr( $matched_st['website'] ); ?>">
+                                <?php echo esc_html( $pill_display ); ?>
+                            </a>
+                        </li>
+                    <?php 
+                        endif;
+                    endforeach; 
+                    ?>
+                </ul>
+            </div>
+
+            <!-- WhatsApp Channel Banner Strip -->
+            <div class="mg-news-strip">
+                <a class="mg-badge-follow" target="_blank" href="<?php echo esc_url( home_url( '/radio/apply/' ) ); ?>"><b>Submit Station</b></a> Apply now to broadcast your radio station live on Savika News Radio Directory.
+            </div>
+
+            <!-- Dual Featured Scrollboxes Side-by-Side (.radio-feature) -->
+            <div id="search" class="radio-feature clearfix">
+                <div class="row feature-grid-row">
+                    
+                    <!-- Left: Featured Ghana Stations -->
+                    <div class="col-xs-12 col-sm-6 col-md-6 inside-ghana">
+                        <h3>FEATURED: GHANA STATIONS</h3>
+                        <ul id="search1" class="mg-featured-scroll-list">
+                            <?php 
+                            $idx_gh = 0;
+                            foreach ( $ghana_stations as $st ) : 
+                                $row_cls = ( $idx_gh % 2 === 1 ) ? 'bg-dark-gray' : '';
+                                $idx_gh++;
                             ?>
-                                <div class="mg-directory-row <?php echo $is_init_active ? 'is-playing' : ''; ?>" data-id="<?php echo esc_attr( $st['id'] ); ?>">
+                                <li class="<?php echo esc_attr( $row_cls ); ?>">
                                     <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
                                         <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
                                     </a>
-                                </div>
+                                </li>
                             <?php endforeach; ?>
-                        </div>
-                    <?php endfor; ?>
+                        </ul>
+                    </div>
+
+                    <!-- Right: Featured Diaspora Stations -->
+                    <div class="col-xs-12 col-sm-6 col-md-6 outside-ghana">
+                        <h3>FEATURED: DIASPORA STATIONS</h3>
+                        <ul id="search2" class="mg-featured-scroll-list">
+                            <?php 
+                            $idx_di = 0;
+                            foreach ( $diaspora_stations as $st ) : 
+                                $row_cls = ( $idx_di % 2 === 1 ) ? 'bg-dark-gray' : '';
+                                $idx_di++;
+                            ?>
+                                <li class="<?php echo esc_attr( $row_cls ); ?>">
+                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
+                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Tab Content: Outside Ghana 3-Column Directory -->
-            <div class="mg-tab-content-panel" id="mg-panel-outside" style="display:none;">
-                <div class="mg-directory-table">
-                    <?php 
-                    $outside_array = array_values( $diaspora_stations );
-                    $total_outside = count( $outside_array );
-                    $chunks_out = array_chunk( $outside_array, ceil( max( 1, $total_outside ) / 3 ) );
+            <!-- Scope Tabs & 3-Column Directory (.stations-tab) -->
+            <div class="stations-tab clearfix">
+                <div class="panel with-nav-tabs panel-primary">
+                    
+                    <div class="panel-heading">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#tab1primary" class="mg-tab-link active" data-tab="inside">STATIONS INSIDE GHANA</a>
+                            </li>
+                            <li>
+                                <a href="#tab2primary" class="mg-tab-link" data-tab="outside">STATIONS OUTSIDE GHANA</a>
+                            </li>
+                        </ul>
+                    </div>
 
-                    for ( $i = 0; $i < 3; $i++ ) : 
-                        $col_items = isset( $chunks_out[$i] ) ? $chunks_out[$i] : array();
-                    ?>
-                        <div class="mg-table-col">
-                            <?php foreach ( $col_items as $st ) : ?>
-                                <div class="mg-directory-row" data-id="<?php echo esc_attr( $st['id'] ); ?>">
-                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
-                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
+                    <div class="panel-body">
+                        
+                        <!-- Panel: Stations Inside Ghana (3 Columns) -->
+                        <div id="tab1primary" class="mg-tab-panel active">
+                            <div class="row stations-scroll">
+                                <?php 
+                                $inside_items = array_values( $ghana_stations );
+                                $total_in = count( $inside_items );
+                                $chunk_size = ceil( max( 1, $total_in ) / 3 );
+                                $cols_data = array_chunk( $inside_items, $chunk_size );
+
+                                for ( $c = 0; $c < 3; $c++ ) : 
+                                    $col_list = isset( $cols_data[$c] ) ? $cols_data[$c] : array();
+                                ?>
+                                    <div class="col-xs-12 col-sm-4 col-md-4 mg-table-col">
+                                        <ul class="mg-stations-column-list">
+                                            <?php foreach ( $col_list as $st ) : 
+                                                $is_active_init = ( $first_station && $first_station['id'] === $st['id'] );
+                                            ?>
+                                                <li class="mg-station-row <?php echo $is_active_init ? 'selected is-playing' : ''; ?>" data-id="<?php echo esc_attr( $st['id'] ); ?>">
+                                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
+                                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
                         </div>
-                    <?php endfor; ?>
+
+                        <!-- Panel: Stations Outside Ghana (3 Columns) -->
+                        <div id="tab2primary" class="mg-tab-panel" style="display:none;">
+                            <div class="row stations-scroll">
+                                <?php 
+                                $outside_items = array_values( $diaspora_stations );
+                                $total_out = count( $outside_items );
+                                $chunk_size_out = ceil( max( 1, $total_out ) / 3 );
+                                $cols_data_out = array_chunk( $outside_items, max( 1, $chunk_size_out ) );
+
+                                for ( $c = 0; $c < 3; $c++ ) : 
+                                    $col_list = isset( $cols_data_out[$c] ) ? $cols_data_out[$c] : array();
+                                ?>
+                                    <div class="col-xs-12 col-sm-4 col-md-4 mg-table-col">
+                                        <ul class="mg-stations-column-list">
+                                            <?php foreach ( $col_list as $st ) : ?>
+                                                <li class="mg-station-row" data-id="<?php echo esc_attr( $st['id'] ); ?>">
+                                                    <a href="#" class="mg-station-trigger" data-id="<?php echo esc_attr( $st['id'] ); ?>" data-title="<?php echo esc_attr( $st['title'] ); ?>" data-stream="<?php echo esc_url( $st['stream'] ); ?>" data-location="<?php echo esc_attr( $st['location'] ); ?>" data-phone="<?php echo esc_attr( $st['phone'] ); ?>" data-website="<?php echo esc_attr( $st['website'] ); ?>">
+                                                        <?php echo esc_html( strtoupper( $st['title'] ) ); ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
 
             <!-- Empty Search Notice -->
-            <div id="mg-search-empty" class="mg-empty-msg" style="display:none;">
-                No radio station found matching your search.
+            <div id="mg-search-empty-state" class="mg-empty-alert" style="display:none;">
+                No radio stations found matching your search.
             </div>
 
         </main>
