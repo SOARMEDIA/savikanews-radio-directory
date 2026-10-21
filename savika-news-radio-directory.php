@@ -123,12 +123,66 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Automatically ensure /radio/ and /radio/apply/ pages exist
+     * Automatically ensure /radio/ and /radio/apply/ pages exist and Floodlight Radio is seeded
      */
     public function check_and_create_pages() {
+        self::ensure_floodlight_radio_exists();
+
         if ( ! get_option( 'snrd_pages_auto_created' ) ) {
             self::auto_create_radio_pages();
             update_option( 'snrd_pages_auto_created', '1' );
+        }
+    }
+
+    /**
+     * Ensure Floodlight Radio exists with the exact live stream URL from Modern Ghana
+     */
+    public static function ensure_floodlight_radio_exists() {
+        $fl_stream = 'https://stream.zeno.fm/yecemx18mzzuv';
+        $fl_title  = 'Floodlight Radio';
+        
+        $existing = get_posts( array(
+            'post_type'      => SNRD_POST_TYPE,
+            'title'          => $fl_title,
+            'post_status'    => 'any',
+            'posts_per_page' => 1,
+        ) );
+
+        if ( ! empty( $existing ) ) {
+            $post_id = $existing[0]->ID;
+            // Ensure live stream URL matches Modern Ghana
+            update_post_meta( $post_id, 'snrd_stream_url', $fl_stream );
+            update_post_meta( $post_id, 'snrd_location', 'Kumasi - Ghana' );
+            update_post_meta( $post_id, 'snrd_contact_phone', '0248850040' );
+            update_post_meta( $post_id, 'snrd_website_url', 'https://floodlightmediagh.com' );
+            update_post_meta( $post_id, 'snrd_frequency', 'Online HD' );
+            update_post_meta( $post_id, 'snrd_station_scope', 'ghana' );
+            update_post_meta( $post_id, 'snrd_is_featured', '1' );
+            update_post_meta( $post_id, 'snrd_is_top', '1' );
+        } else {
+            $post_id = wp_insert_post( array(
+                'post_title'   => $fl_title,
+                'post_content' => 'Floodlight Radio broadcasts live from Kumasi, delivering insightful talk shows, sports updates, and contemporary Ghanaian music.',
+                'post_status'  => 'publish',
+                'post_type'    => SNRD_POST_TYPE,
+            ) );
+
+            if ( $post_id && ! is_wp_error( $post_id ) ) {
+                update_post_meta( $post_id, 'snrd_stream_url', $fl_stream );
+                update_post_meta( $post_id, 'snrd_location', 'Kumasi - Ghana' );
+                update_post_meta( $post_id, 'snrd_contact_phone', '0248850040' );
+                update_post_meta( $post_id, 'snrd_website_url', 'https://floodlightmediagh.com' );
+                update_post_meta( $post_id, 'snrd_zeno_url', 'https://zeno.fm' );
+                update_post_meta( $post_id, 'snrd_frequency', 'Online HD' );
+                update_post_meta( $post_id, 'snrd_station_scope', 'ghana' );
+                update_post_meta( $post_id, 'snrd_is_featured', '1' );
+                update_post_meta( $post_id, 'snrd_is_top', '1' );
+
+                $term = get_term_by( 'name', 'Talk', SNRD_TAXONOMY_GENRE );
+                if ( $term ) {
+                    wp_set_object_terms( $post_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
+                }
+            }
         }
     }
 
@@ -209,7 +263,7 @@ final class Savika_News_Radio_Directory {
                 'scope'       => 'ghana',
                 'featured'    => '1',
                 'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
+                'stream_url'  => 'https://stream.zeno.fm/yecemx18mzzuv',
                 'zeno_url'    => 'https://zeno.fm',
                 'description' => 'Floodlight Radio broadcasts live from Kumasi, delivering insightful talk shows, sports updates, and contemporary Ghanaian music.',
             ),

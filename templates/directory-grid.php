@@ -78,16 +78,42 @@ if ( $all_stations_query->have_posts() ) {
         );
 
         $stations_data[] = $station_item;
-
-        if ( null === $first_station && ! empty( $stream_url ) ) {
-            $first_station = $station_item;
-        }
     }
     wp_reset_postdata();
 }
 
+// Specifically prioritize Floodlight Radio as the default playing station
+foreach ( $stations_data as $idx => $st ) {
+    if ( false !== stripos( $st['title'], 'Floodlight' ) ) {
+        $first_station = $st;
+        unset( $stations_data[$idx] );
+        array_unshift( $stations_data, $st );
+        break;
+    }
+}
+
 if ( null === $first_station && ! empty( $stations_data ) ) {
     $first_station = $stations_data[0];
+}
+
+// Safe default to Modern Ghana's Floodlight Radio live stream
+if ( null === $first_station ) {
+    $first_station = array(
+        'id'        => 0,
+        'title'     => 'Floodlight Radio',
+        'stream'    => 'https://stream.zeno.fm/yecemx18mzzuv',
+        'location'  => 'Kumasi - Ghana',
+        'frequency' => 'Online HD',
+        'phone'     => '0248850040',
+        'website'   => 'https://floodlightmediagh.com',
+        'scope'     => 'ghana',
+        'desc'      => 'Floodlight Radio broadcasts live from Kumasi, delivering the best in talk shows, sports updates, and contemporary Ghanaian music.',
+        'thumb'     => '',
+        'genre'     => 'Talk',
+        'featured'  => true,
+        'top'       => true,
+        'permalink' => '#',
+    );
 }
 
 // Split stations by scope

@@ -394,6 +394,7 @@ class SNRD_Admin {
     public static function handle_page_generation_action() {
         if ( isset( $_GET['snrd_action'] ) && 'generate_pages' === $_GET['snrd_action'] && current_user_can( 'manage_options' ) ) {
             check_admin_referer( 'snrd_generate_pages_action' );
+            Savika_News_Radio_Directory::ensure_floodlight_radio_exists();
             Savika_News_Radio_Directory::auto_create_radio_pages();
             wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'pages_created' ), admin_url( 'edit.php' ) ) );
             exit;
