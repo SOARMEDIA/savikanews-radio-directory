@@ -1,0 +1,8 @@
+{
+  "id": 20,
+  "station_name": "Sample Radio Station 20",
+  "genre": "News",
+  "location": "Accra, Ghana",
+  "stream_url": "https://stream.zeno.fm/station_20",
+  "status": "published"
+}
