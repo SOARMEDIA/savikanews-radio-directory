@@ -1,0 +1,15 @@
+{
+    "name": "savikanews/radio-directory",
+    "description": "Savika News Radio Directory Plugin",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Savika News",
+            "homepage": "https://savikanews.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    }
+}
