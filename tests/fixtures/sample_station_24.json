@@ -1,0 +1,8 @@
+{
+  "id": 24,
+  "station_name": "Sample Radio Station 24",
+  "genre": "Music",
+  "location": "Takoradi, Ghana",
+  "stream_url": "https://stream.zeno.fm/station_24",
+  "status": "published"
+}
