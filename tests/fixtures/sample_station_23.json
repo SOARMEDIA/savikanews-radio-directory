@@ -1,0 +1,8 @@
+{
+  "id": 23,
+  "station_name": "Sample Radio Station 23",
+  "genre": "Sports",
+  "location": "Cape Coast, Ghana",
+  "stream_url": "https://stream.zeno.fm/station_23",
+  "status": "published"
+}
