@@ -1,0 +1,31 @@
+/**
+ * Savika News Radio Directory - Admin Stylesheet
+ */
+
+.snrd-admin-table th {
+    width: 220px;
+    font-weight: 600;
+}
+
+.snrd-admin-test-player {
+    border-radius: 6px;
+    background: #f0f6fc;
+    border: 1px solid #c8d9ea;
+}
+
+.snrd-admin-test-player audio {
+    outline: none;
+}
+
+.snrd-applicant-info p {
+    margin: 8px 0;
+}
+
+.column-snrd_logo {
+    width: 60px;
+    text-align: center;
+}
+
+.column-snrd_stream_col {
+    max-width: 200px;
+}
