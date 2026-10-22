@@ -323,7 +323,10 @@ final class Savika_News_Radio_Directory {
             return 0;
         }
 
-        $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_50.json';
+        $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_250.json';
+        if ( ! file_exists( $json_file ) ) {
+            $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_50.json';
+        }
         $starter_stations = array();
 
         if ( file_exists( $json_file ) ) {
