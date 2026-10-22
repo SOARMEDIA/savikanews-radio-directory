@@ -60,6 +60,7 @@ final class Savika_News_Radio_Directory {
         require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-application-form.php';
         require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-shortcodes.php';
         require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-templates.php';
+        require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-seo.php';
     }
 
     /**
@@ -89,6 +90,7 @@ final class Savika_News_Radio_Directory {
         SNRD_Application_Form::init();
         SNRD_Shortcodes::init();
         SNRD_Templates::init();
+        SNRD_SEO::init();
     }
 
     /**

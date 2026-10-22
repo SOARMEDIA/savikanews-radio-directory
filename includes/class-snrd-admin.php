@@ -552,6 +552,27 @@ class SNRD_Admin {
                 </div>
             </div>
 
+            <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #1a73e8; padding: 20px; margin: 20px 0; border-radius: 6px; max-width: 850px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <h2 style="margin-top: 0; color: #1a202c;"><?php esc_html_e( 'Google Search & SEO Indexing (1,000+ Stations)', 'savika-news-radio' ); ?></h2>
+                <p style="font-size: 14px; color: #4a5568;">
+                    <?php esc_html_e( 'Your directory automatically generates Google Schema.org structured data (RadioStation & ListenAction) on every single station page so Google can rank your site and display live listen buttons in search results. Submit your dedicated XML Radio Sitemap below directly to Google Search Console to index all 1,000+ stations.', 'savika-news-radio' ); ?>
+                </p>
+                <div style="background: #f8fafc; padding: 12px 16px; border: 1px solid #e2e8f0; border-radius: 4px; margin: 12px 0;">
+                    <strong><?php esc_html_e( 'Your Dedicated Radio XML Sitemap:', 'savika-news-radio' ); ?></strong><br>
+                    <a href="<?php echo esc_url( home_url( '/radio-sitemap.xml' ) ); ?>" target="_blank" style="font-size: 14px; font-weight: 700; color: #1a73e8;">
+                        <code><?php echo esc_html( home_url( '/radio-sitemap.xml' ) ); ?></code>
+                    </a>
+                </div>
+                <p style="margin: 0;">
+                    <a href="<?php echo esc_url( home_url( '/radio-sitemap.xml' ) ); ?>" target="_blank" class="button button-secondary">
+                        <?php esc_html_e( 'Open XML Sitemap in Browser', 'savika-news-radio' ); ?> &rarr;
+                    </a>
+                    <a href="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'flush_sitemap' ), admin_url( 'edit.php' ) ), 'snrd_sitemap_flush' ) ); ?>" class="button button-secondary" style="margin-left: 8px;">
+                        <?php esc_html_e( 'Refresh Sitemap Cache', 'savika-news-radio' ); ?>
+                    </a>
+                </p>
+            </div>
+
             <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #c90000; padding: 20px; margin: 20px 0; border-radius: 6px; max-width: 850px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                 <h2 style="margin-top: 0; color: #1a202c;"><?php esc_html_e( 'Page Verification & Generator', 'savika-news-radio' ); ?></h2>
                 <p style="font-size: 14px;"><?php esc_html_e( 'Click the button below anytime to verify or auto-generate the public Radio Directory and Application pages with the proper shortcodes.', 'savika-news-radio' ); ?></p>
