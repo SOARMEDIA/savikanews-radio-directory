@@ -1,0 +1,502 @@
+[
+  {
+    "slug": "floodlightradio",
+    "title": "Floodlight Radio",
+    "streamUrl": "https://stream.zeno.fm/yecemx18mzzuv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/floodlightradio.jpg",
+    "frequency": "Online HD",
+    "location": "Kumasi - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "peace1043fm",
+    "title": "Peace 104.3 FM",
+    "streamUrl": "https://peacefm-atunwadigital.streamguys1.com/peacefm",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png",
+    "frequency": "104.3 FM",
+    "location": "Mile 7, Achimota, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "adom1063fm",
+    "title": "Adom 106.3 FM",
+    "streamUrl": "https://mmg.streamguys1.com/AdomFM-mp3?key=301106ce24e727606f775aa7822c06bd4ba73c6c7fd3e205424148a74680f69435772b039db4aefe3fd9ac72007f7436",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Adom-FM-MG-Modern-ghana-1737648574004.png",
+    "frequency": "106.3 FM",
+    "location": "Tema / Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "joy997fm",
+    "title": "Joy 99.7 FM",
+    "streamUrl": "https://mmg.streamguys1.com/JoyFM-mp3/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Joyfm-MG-Modern-Ghana-1737648868423.png",
+    "frequency": "99.7 FM",
+    "location": "Kokomlemle, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "okay1017fm",
+    "title": "Okay 101.7 FM",
+    "streamUrl": "https://okayfm-atunwadigital.streamguys1.com/okayfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Okayfm-MG-Modern-Ghana-1737649628701.png",
+    "frequency": "101.7 FM",
+    "location": "Abeka Junction, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "oman1071fm",
+    "title": "Oman 107.1 FM",
+    "streamUrl": "https://omanfm-atunwadigital.streamguys1.com/omanfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Omanfm-MG-Modern-Ghana-1737649667575.png",
+    "frequency": "107.1 FM",
+    "location": "Madina, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "kessben933fm",
+    "title": "Kessben 93.3 FM",
+    "streamUrl": "https://kessben933fmkumasi-atunwadigital.streamguys1.com/kessben933fmkumasi/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Kessbenfm-Kumasi-MG-Modern-Ghana-1737650230509.png",
+    "frequency": "93.3 FM",
+    "location": "Asafo, Kumasi - Ghana",
+    "genre": "Sports",
+    "scope": "ghana"
+  },
+  {
+    "slug": "angel961fm",
+    "title": "Angel 96.1 FM",
+    "streamUrl": "https://angelfm-atunwadigital.streamguys1.com/angelfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Angelfmkumasi-MG-Modern-Ghana-1736267459402.png",
+    "frequency": "96.1 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "angelfmaccra",
+    "title": "Angel 102.9 FM Accra",
+    "streamUrl": "https://angelfmaccra-atunwadigital.streamguys1.com/angelfmaccra/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Angelfm-Accra-MG-Modern-Ghana-1736267389981.png",
+    "frequency": "102.9 FM",
+    "location": "Lapaz, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "fox979fm",
+    "title": "Fox 97.9 FM",
+    "streamUrl": "https://foxfm-atunwadigital.streamguys1.com/foxfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Foxfm-MG-Modern-Ghana-1737648733238.png",
+    "frequency": "97.9 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "hellofm1013",
+    "title": "Hello 101.5 FM",
+    "streamUrl": "https://hello-atunwadigital.streamguys1.com/hello/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Hellofm-MG-Modern-Ghana-1737648818752.png",
+    "frequency": "101.5 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "nhyira1045fm",
+    "title": "Nhyira 104.5 FM",
+    "streamUrl": "https://mmg.streamguys1.com/NhyiraFM-mp3?key=301106ce24e727606f775aa7822c06bd4ba73c6c7fd3e205424148a74680f69435772b039db4aefe3fd9ac72007f7436",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Nhyirafm-MG-Modern-Ghana-1737649597503.png",
+    "frequency": "104.5 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "neat1009fm",
+    "title": "Neat 100.9 FM",
+    "streamUrl": "https://neatfm-atunwadigital.streamguys1.com/neatfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Neatfm-MG-Modern-Ghana-1737649516929.png",
+    "frequency": "100.9 FM",
+    "location": "Abeka, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "asempa947fm",
+    "title": "Asempa 94.7 FM",
+    "streamUrl": "https://mmg.streamguys1.com/AsempaFM-mp3?key=301106ce24e727606f775aa7822c06bd4ba73c6c7fd3e205424148a74680f69435772b039db4aefe3fd9ac72007f7436",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Asempafm-MG-Modern-Ghana-1737648636258.png",
+    "frequency": "94.7 FM",
+    "location": "Kokomlemle, Accra - Ghana",
+    "genre": "Sports",
+    "scope": "ghana"
+  },
+  {
+    "slug": "oyerepafm",
+    "title": "Oyerepa 100.7 FM",
+    "streamUrl": "https://oyerepa-atunwadigital.streamguys1.com/oyerepa/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Oyerepafm-MG-Modern-Ghana-1737650269165.png",
+    "frequency": "100.7 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Community",
+    "scope": "ghana"
+  },
+  {
+    "slug": "wontumiradio",
+    "title": "Wontumi 101.3 FM",
+    "streamUrl": "https://wontumifm-atunwadigital.streamguys1.com/wontumifm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Wontumifm-Kumasi-MG-Modern-Ghana-1737650151452.jfif",
+    "frequency": "101.3 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "kasapa1023fm",
+    "title": "Kasapa 102.5 FM",
+    "streamUrl": "https://kasapafm.atunwadigital.streamguys1.com/kasapafm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Kasapafm-MG-Modern-Ghana-1740399836011.png",
+    "frequency": "102.5 FM",
+    "location": "Adabraka, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "purefm957",
+    "title": "Pure 95.7 FM",
+    "streamUrl": "https://purefm-atunwadigital.streamguys1.com/purefm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Purefm-MG-Modern-Ghana-1737649740603.png",
+    "frequency": "95.7 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "hitz1039fm",
+    "title": "Hitz 103.9 FM",
+    "streamUrl": "https://mmg.streamguys1.com/HitzFM-mp3?key=301106ce24e727606f775aa7822c06bd4ba73c6c7fd3e205424148a74680f69435772b039db4aefe3fd9ac72007f7436",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Hitzfm-MG-Modern-Ghana-1737648844594.png",
+    "frequency": "103.9 FM",
+    "location": "Kokomlemle, Accra - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "ashhfm",
+    "title": "Ashh 101.1 FM",
+    "streamUrl": "https://ashhfm-atunwadigital.streamguys1.com/ashhfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Ashhfm-MG-Modern-Ghana-1737648679988.png",
+    "frequency": "101.1 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "starr1035fm",
+    "title": "Starr 103.5 FM",
+    "streamUrl": "https://starrfm-atunwadigital.streamguys1.com/starrfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Starrfm-MG-Modern-Ghana-1740399810602.png",
+    "frequency": "103.5 FM",
+    "location": "Airport Residential, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "silver983fm",
+    "title": "Silver 98.3 FM",
+    "streamUrl": "https://silverfm-atunwadigital.streamguys1.com/silverfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Silverfm-MG-Modern-Ghana-1737649852169.png",
+    "frequency": "98.3 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Sports",
+    "scope": "ghana"
+  },
+  {
+    "slug": "luv995fm",
+    "title": "Luv 99.5 FM",
+    "streamUrl": "https://mmg.streamguys1.com/LuvFM-mp3?key=301106ce24e727606f775aa7822c06bd4ba73c6c7fd3e205424148a74680f69435772b039db4aefe3fd9ac72007f7436",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Luvfm-MG-Modern-Ghana-1737648896973.png",
+    "frequency": "99.5 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "radiogold905",
+    "title": "Radio Gold 90.5 FM",
+    "streamUrl": "https://radiogold-atunwadigital.streamguys1.com/radiogold/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Radio-Gold-MG-Modern-Ghana-1737649775115.png",
+    "frequency": "90.5 FM",
+    "location": "Latebiokorshie, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "hotfm939",
+    "title": "Hot 93.9 FM",
+    "streamUrl": "https://hot939fm-atunwadigital.streamguys1.com/hot939fm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Hot939fm-MG-Modern-Ghana-1740678273691.jpg",
+    "frequency": "93.9 FM",
+    "location": "Adabraka, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "class913fm",
+    "title": "Class 91.3 FM",
+    "streamUrl": "https://classfm-atunwadigital.streamguys1.com/classfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Classfm-MG-Modern-Ghana-1760446577659.png",
+    "frequency": "91.3 FM",
+    "location": "Labone, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "connectfm971",
+    "title": "Connect 97.1 FM",
+    "streamUrl": "https://connectfm-atunwadigital.streamguys1.com/connectfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Connect-MG-Modern-Ghana-1736339435539.png",
+    "frequency": "97.1 FM",
+    "location": "Takoradi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "darling909fm",
+    "title": "Darling 90.9 FM",
+    "streamUrl": "https://darlingfm-atunwadigital.streamguys1.com/darlingfm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/darlingfm-MG-Modern-Ghana-1737648706764.png",
+    "frequency": "90.9 FM",
+    "location": "Cape Coast - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "happy989fm",
+    "title": "Happy 98.9 FM",
+    "streamUrl": "https://happyfm989accra-atunwadigital.streamguys1.com/happyfm989accra/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/HappyFM989-Accra-MG-Modern-Ghana-1737648792827.png",
+    "frequency": "98.9 FM",
+    "location": "Asylum Down, Accra - Ghana",
+    "genre": "Sports",
+    "scope": "ghana"
+  },
+  {
+    "slug": "onuafm",
+    "title": "Onua 95.1 FM",
+    "streamUrl": "https://onuafm-atunwadigital.streamguys1.com/onuafm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Onuafm-MG-Modern-Ghana-1736339400589.png",
+    "frequency": "95.1 FM",
+    "location": "Adabraka, Accra - Ghana",
+    "genre": "Community",
+    "scope": "ghana"
+  },
+  {
+    "slug": "y1025fm",
+    "title": "Y 102.5 FM",
+    "streamUrl": "https://yfm1025kumasi-atunwadigital.streamguys1.com/yfm1025kumasi/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Yfm1025kumasi-MG-Modern-Ghana-1737650019153.png",
+    "frequency": "102.5 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "akomafm",
+    "title": "Akoma 87.9 FM",
+    "streamUrl": "https://akomafm-atunwadigital.streamguys1.com/akomafm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Akomafm-MG-Modern-Ghana-1736339546109.png",
+    "frequency": "87.9 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "agoo969fm",
+    "title": "Agoo 96.9 FM",
+    "streamUrl": "https://agoofm-atunwadigital.streamguys1.com/agoofm/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Agoofm-MG-Modern-Ghana-1740399633245.png",
+    "frequency": "96.9 FM",
+    "location": "Nkawkaw - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "kapitalradio",
+    "title": "Kapital 97.1 FM",
+    "streamUrl": "https://kapitalradiokumasi-atunwadigital.streamguys1.com/kapitalradiokumasi/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Kapitalfm-MG-Modern-Ghana-1740401874174.jpeg",
+    "frequency": "97.1 FM",
+    "location": "Kumasi - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "kessben929fm",
+    "title": "Kessben 92.9 FM",
+    "streamUrl": "https://kessbenfmaccra-atunwadigital.streamguys1.com/kessbenfmaccra/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Kessbenfm-Accra-MG-Modern-Ghana-1737650197147.png",
+    "frequency": "92.9 FM",
+    "location": "Accra - Ghana",
+    "genre": "Sports",
+    "scope": "ghana"
+  },
+  {
+    "slug": "y1079fm",
+    "title": "Y 107.9 FM Accra",
+    "streamUrl": "https://yfm1079accra-atunwadigital.streamguys1.com/yfm1079accra/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Yfm1079accra-MG-Modernghana-1737649981448.png",
+    "frequency": "107.9 FM",
+    "location": "Accra Mall, Accra - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "y979fm",
+    "title": "Y 97.9 FM Takoradi",
+    "streamUrl": "https://yfm979takoradi-atunwadigital.streamguys1.com/yfm979takoradi/playlist.m3u8",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/Yfm979takoradi-MG-Modern-Ghana-1737650050483.png",
+    "frequency": "97.9 FM",
+    "location": "Takoradi - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "citifm973fm",
+    "title": "Citi FM 97.3 FM",
+    "streamUrl": "https://citifm.atunwadigital.streamguys1.com/citifm",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/CitiFM-MG-Modern-Ghana-1736268249658.png",
+    "frequency": "97.3 FM",
+    "location": "Adabraka, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "03fm",
+    "title": "3 FM 92.7",
+    "streamUrl": "https://3fm-atunwadigital.streamguys1.com/3fm",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/3FM-MG-Modern-Ghana-1736268249658.png",
+    "frequency": "92.7 FM",
+    "location": "Kanda, Accra - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "fox1031fm",
+    "title": "Fox 103.1 FM Takoradi",
+    "streamUrl": "https://foxfmtakoradi-atunwadigital.streamguys1.com/foxfmtakoradi",
+    "logoUrl": "https://storage.googleapis.com/player-logos/logos/FoxFM-Takoradi-MG-Modern-Ghana.png",
+    "frequency": "103.1 FM",
+    "location": "Takoradi, Western Region - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "kingdomfm1061fm",
+    "title": "Kingdom FM 106.1 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/kingdomfm.jpg",
+    "frequency": "106.1 FM",
+    "location": "Mankessim, Central Region - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "asaaseradio995fm",
+    "title": "Asaase Radio 99.5 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/asaaseradio.jpg",
+    "frequency": "99.5 FM",
+    "location": "Cantonments, Accra - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "sompa989fm",
+    "title": "Sompa 98.9 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/sompafm.jpg",
+    "frequency": "98.9 FM",
+    "location": "Suame, Kumasi - Ghana",
+    "genre": "News",
+    "scope": "ghana"
+  },
+  {
+    "slug": "sompa907fmaccra",
+    "title": "Sompa 90.7 FM Accra",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/sompafm.jpg",
+    "frequency": "90.7 FM",
+    "location": "Lapaz, Accra - Ghana",
+    "genre": "Talk",
+    "scope": "ghana"
+  },
+  {
+    "slug": "radiounivers1057fm",
+    "title": "Radio Univers 105.7 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/univers.jpg",
+    "frequency": "105.7 FM",
+    "location": "University of Ghana, Legon, Accra - Ghana",
+    "genre": "Campus",
+    "scope": "ghana"
+  },
+  {
+    "slug": "focus943fm",
+    "title": "Focus 94.3 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/focusfm.jpg",
+    "frequency": "94.3 FM",
+    "location": "KNUST Campus, Kumasi - Ghana",
+    "genre": "Youth",
+    "scope": "ghana"
+  },
+  {
+    "slug": "sweetmelodies943fm",
+    "title": "Sweet Melodies 94.3 FM",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/sweetmelodies.jpg",
+    "frequency": "94.3 FM",
+    "location": "Airport Residential, Accra - Ghana",
+    "genre": "Music",
+    "scope": "ghana"
+  },
+  {
+    "slug": "fawohodieradio",
+    "title": "Fawohodie Radio",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/fawohodieradio.jpg",
+    "frequency": "Online HD",
+    "location": "North America - Diaspora",
+    "genre": "Talk",
+    "scope": "diaspora"
+  },
+  {
+    "slug": "amansanfmuk",
+    "title": "Amansan FM UK",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/amansanfmuk.jpg",
+    "frequency": "London UK",
+    "location": "London - UK",
+    "genre": "Community",
+    "scope": "diaspora"
+  },
+  {
+    "slug": "rainbowradiouk",
+    "title": "Rainbow Radio UK",
+    "streamUrl": "https://stream.zeno.fm/f3wvbbqmdg8uv",
+    "logoUrl": "https://cdn.modernghana.com/radio_logo/rainbowradiouk.jpg",
+    "frequency": "DAB London",
+    "location": "London - UK",
+    "genre": "News",
+    "scope": "diaspora"
+  }
+]

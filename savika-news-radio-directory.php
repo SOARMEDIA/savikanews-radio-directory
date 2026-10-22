@@ -307,221 +307,133 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Seed initial sample Ghanaian radio stations so the directory is not empty
+     * Seed sample Ghanaian radio stations from verified Modern Ghana database
+     *
+     * @param bool $force_sync Whether to force-update existing stations and seed all 50.
+     * @return int Number of stations processed.
      */
-    public static function seed_sample_stations() {
+    public static function seed_sample_stations( $force_sync = false ) {
         $existing = get_posts( array(
             'post_type'      => SNRD_POST_TYPE,
             'posts_per_page' => 1,
             'post_status'    => 'any',
         ) );
 
-        if ( ! empty( $existing ) ) {
-            return;
+        if ( ! empty( $existing ) && ! $force_sync ) {
+            return 0;
         }
 
-        $starter_stations = array(
-            array(
-                'title'       => 'Floodlight Radio',
-                'frequency'   => 'Online HD',
-                'location'    => 'Kumasi - Ghana',
-                'phone'       => '0248850040',
-                'genre'       => 'Talk',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/yecemx18mzzuv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Floodlight Radio broadcasts live from Kumasi, delivering insightful talk shows, sports updates, and contemporary Ghanaian music.',
-            ),
-            array(
-                'title'       => 'Peace 104.3 Fm',
-                'frequency'   => '104.3 FM',
-                'location'    => 'Mile 7, Achimota, Accra - Ghana',
-                'phone'       => '0302782414',
-                'genre'       => 'News',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://peacefm-atunwadigital.streamguys1.com/peacefm',
-                'logo_url'    => 'https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png',
-                'zeno_url'    => 'https://radio.modernghana.com/station/peace1043fm',
-                'description' => 'Peace FM 104.3 is Ghana flagship private commercial broadcaster based in Mile 7, Achimota, Accra, known for flagship show Kokrokoo.',
-            ),
-            array(
-                'title'       => 'Adom FM 106.3 FM',
-                'frequency'   => '106.3 FM',
-                'location'    => 'Tema / Accra - Ghana',
-                'phone'       => '0302211600',
-                'genre'       => 'Talk',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Adom FM delivers trusted Akan news, entertainment, community programming, and morning devotional shows across Ghana.',
-            ),
-            array(
-                'title'       => 'Joy 99.7 FM',
-                'frequency'   => '99.7 FM',
-                'location'    => 'Accra - Ghana',
-                'phone'       => '0302211600',
-                'genre'       => 'News',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Joy FM is Ghana premier English-speaking radio broadcaster delivering breaking news, comprehensive analysis, and current affairs.',
-            ),
-            array(
-                'title'       => 'Citi FM 97.3 FM',
-                'frequency'   => '97.3 FM',
-                'location'    => 'Adabraka, Accra - Ghana',
-                'phone'       => '0302226013',
-                'genre'       => 'News',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Citi FM is an authoritative English radio network in Accra, recognized for the Citi Breakfast Show and Eyewitness News.',
-            ),
-            array(
-                'title'       => 'Kessben 93.3 FM',
-                'frequency'   => '93.3 FM',
-                'location'    => 'Kumasi - Ghana',
-                'phone'       => '0322044455',
-                'genre'       => 'Sports',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Kessben FM 93.3 is a powerhouse broadcast station in Kumasi, Ashanti Region, famed for authoritative sports news and politics.',
-            ),
-            array(
-                'title'       => 'Okay FM 101.7 FM',
-                'frequency'   => '101.7 FM',
-                'location'    => 'Accra - Ghana',
-                'phone'       => '0302782414',
-                'genre'       => 'Talk',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Okay FM provides urban contemporary Akan talk, entertainment news, drive-time music, and community service programs.',
-            ),
-            array(
-                'title'       => 'Oman FM 107.1 FM',
-                'frequency'   => '107.1 FM',
-                'location'    => 'Madina, Accra - Ghana',
-                'phone'       => '0302500000',
-                'genre'       => 'Talk',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Oman FM 107.1 is a prominent political talk and news station operating from Madina, Greater Accra.',
-            ),
-            array(
-                'title'       => 'Kingdom FM 106.1 FM',
-                'frequency'   => '106.1 FM',
-                'location'    => 'Mankessim - Ghana',
-                'phone'       => '0240000000',
-                'genre'       => 'News',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Kingdom FM 106.1 is an authoritative commercial radio station broadcasting from Mankessim, Central Region.',
-            ),
-            array(
-                'title'       => 'Nhyira FM 104.5 FM',
-                'frequency'   => '104.5 FM',
-                'location'    => 'Kumasi - Ghana',
-                'phone'       => '0322030000',
-                'genre'       => 'Community',
-                'scope'       => 'ghana',
-                'featured'    => '1',
-                'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Nhyira FM 104.5 is a prominent radio station in Kumasi, delivering high-impact social and investigative programming.',
-            ),
-            array(
-                'title'       => 'Fawohodie Radio',
-                'frequency'   => 'Diaspora Online',
-                'location'    => 'United States - Diaspora',
-                'phone'       => '+18005550199',
-                'genre'       => 'Talk',
-                'scope'       => 'diaspora',
-                'featured'    => '1',
-                'top'         => '0',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Fawohodie Radio connects Ghanaians living in North America with news, discussions, and highlife music from home.',
-            ),
-            array(
-                'title'       => 'Amansan FM UK',
-                'frequency'   => 'London UK',
-                'location'    => 'London - UK',
-                'phone'       => '+442079460991',
-                'genre'       => 'Community',
-                'scope'       => 'diaspora',
-                'featured'    => '1',
-                'top'         => '0',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Amansan FM UK is an established diaspora broadcaster serving the Ghanaian community in London and Europe.',
-            ),
-            array(
-                'title'       => 'Rainbow Radio UK',
-                'frequency'   => 'DAB London',
-                'location'    => 'London - UK',
-                'phone'       => '+44208000000',
-                'genre'       => 'News',
-                'scope'       => 'diaspora',
-                'featured'    => '1',
-                'top'         => '0',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Rainbow Radio UK broadcasts on DAB and online, bridging the gap between Ghana and the diaspora worldwide.',
-            )
-        );
+        $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_50.json';
+        $starter_stations = array();
 
+        if ( file_exists( $json_file ) ) {
+            $raw_json = file_get_contents( $json_file );
+            $decoded  = json_decode( $raw_json, true );
+            if ( is_array( $decoded ) && ! empty( $decoded ) ) {
+                $starter_stations = $decoded;
+            }
+        }
+
+        if ( empty( $starter_stations ) ) {
+            $starter_stations = array(
+                array(
+                    'title'       => 'Floodlight Radio',
+                    'frequency'   => 'Online HD',
+                    'location'    => 'Kumasi - Ghana',
+                    'phone'       => '0248850040',
+                    'genre'       => 'Talk',
+                    'scope'       => 'ghana',
+                    'streamUrl'   => 'https://stream.zeno.fm/yecemx18mzzuv',
+                    'logoUrl'     => 'https://cdn.modernghana.com/radio_logo/floodlightradio.jpg',
+                ),
+                array(
+                    'title'       => 'Peace 104.3 Fm',
+                    'frequency'   => '104.3 FM',
+                    'location'    => 'Mile 7, Achimota, Accra - Ghana',
+                    'phone'       => '0302782414',
+                    'genre'       => 'News',
+                    'scope'       => 'ghana',
+                    'streamUrl'   => 'https://peacefm-atunwadigital.streamguys1.com/peacefm',
+                    'logoUrl'     => 'https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png',
+                )
+            );
+        }
+
+        $count = 0;
         foreach ( $starter_stations as $st ) {
-            $post_id = wp_insert_post( array(
-                'post_title'   => $st['title'],
-                'post_content' => $st['description'],
-                'post_status'  => 'publish',
-                'post_type'    => SNRD_POST_TYPE,
+            $title      = ! empty( $st['title'] ) ? sanitize_text_field( $st['title'] ) : 'Radio Station';
+            $stream_url = ! empty( $st['streamUrl'] ) ? esc_url_raw( $st['streamUrl'] ) : ( ! empty( $st['stream_url'] ) ? esc_url_raw( $st['stream_url'] ) : '' );
+            $logo_url   = ! empty( $st['logoUrl'] ) ? esc_url_raw( $st['logoUrl'] ) : ( ! empty( $st['logo_url'] ) ? esc_url_raw( $st['logo_url'] ) : '' );
+            $frequency  = ! empty( $st['frequency'] ) ? sanitize_text_field( $st['frequency'] ) : 'Online HD';
+            $location   = ! empty( $st['location'] ) ? sanitize_text_field( $st['location'] ) : 'Ghana';
+            $phone      = ! empty( $st['phone'] ) ? sanitize_text_field( $st['phone'] ) : '+233 30 200 0000';
+            $genre      = ! empty( $st['genre'] ) ? sanitize_text_field( $st['genre'] ) : 'News';
+            $scope      = ! empty( $st['scope'] ) ? sanitize_text_field( $st['scope'] ) : 'ghana';
+            $slug       = ! empty( $st['slug'] ) ? sanitize_title( $st['slug'] ) : sanitize_title( $title );
+            $desc       = ! empty( $st['description'] ) ? sanitize_text_field( $st['description'] ) : sprintf( '%s broadcasts live from %s with top news, music, sports, and discussions.', $title, $location );
+
+            // Check if station already exists by slug or exact title
+            $find_post = get_posts( array(
+                'post_type'      => SNRD_POST_TYPE,
+                'name'           => $slug,
+                'post_status'    => 'any',
+                'posts_per_page' => 1,
             ) );
 
-            if ( $post_id && ! is_wp_error( $post_id ) ) {
-                update_post_meta( $post_id, 'snrd_location', $st['location'] );
-                update_post_meta( $post_id, 'snrd_frequency', $st['frequency'] );
-                update_post_meta( $post_id, 'snrd_contact_phone', $st['phone'] );
-                update_post_meta( $post_id, 'snrd_station_scope', $st['scope'] );
-                update_post_meta( $post_id, 'snrd_is_featured', $st['featured'] );
-                update_post_meta( $post_id, 'snrd_is_top', $st['top'] );
-                update_post_meta( $post_id, 'snrd_stream_url', $st['stream_url'] );
-                if ( ! empty( $st['logo_url'] ) ) {
-                    update_post_meta( $post_id, 'snrd_logo_url', $st['logo_url'] );
-                }
-                update_post_meta( $post_id, 'snrd_zeno_url', $st['zeno_url'] );
-                update_post_meta( $post_id, 'snrd_website_url', home_url( '/' ) );
-                update_post_meta( $post_id, 'snrd_contact_email', get_option( 'admin_email' ) );
+            if ( empty( $find_post ) ) {
+                $find_post = get_posts( array(
+                    'post_type'      => SNRD_POST_TYPE,
+                    'title'          => $title,
+                    'post_status'    => 'any',
+                    'posts_per_page' => 1,
+                ) );
+            }
 
-                $term = get_term_by( 'name', $st['genre'], SNRD_TAXONOMY_GENRE );
-                if ( $term ) {
-                    wp_set_object_terms( $post_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
+            if ( ! empty( $find_post ) ) {
+                $post_id = $find_post[0]->ID;
+                if ( ! empty( $stream_url ) ) {
+                    update_post_meta( $post_id, 'snrd_stream_url', $stream_url );
+                }
+                if ( ! empty( $logo_url ) ) {
+                    update_post_meta( $post_id, 'snrd_logo_url', $logo_url );
+                }
+                update_post_meta( $post_id, 'snrd_frequency', $frequency );
+                update_post_meta( $post_id, 'snrd_location', $location );
+                update_post_meta( $post_id, 'snrd_station_scope', $scope );
+                update_post_meta( $post_id, 'snrd_is_featured', '1' );
+                update_post_meta( $post_id, 'snrd_is_top', '1' );
+                $count++;
+            } else {
+                $post_id = wp_insert_post( array(
+                    'post_title'   => $title,
+                    'post_name'    => $slug,
+                    'post_content' => $desc,
+                    'post_status'  => 'publish',
+                    'post_type'    => SNRD_POST_TYPE,
+                ) );
+
+                if ( $post_id && ! is_wp_error( $post_id ) ) {
+                    update_post_meta( $post_id, 'snrd_stream_url', $stream_url );
+                    update_post_meta( $post_id, 'snrd_logo_url', $logo_url );
+                    update_post_meta( $post_id, 'snrd_frequency', $frequency );
+                    update_post_meta( $post_id, 'snrd_location', $location );
+                    update_post_meta( $post_id, 'snrd_contact_phone', $phone );
+                    update_post_meta( $post_id, 'snrd_station_scope', $scope );
+                    update_post_meta( $post_id, 'snrd_is_featured', '1' );
+                    update_post_meta( $post_id, 'snrd_is_top', '1' );
+                    update_post_meta( $post_id, 'snrd_website_url', home_url( '/' ) );
+                    update_post_meta( $post_id, 'snrd_contact_email', get_option( 'admin_email' ) );
+
+                    $term = get_term_by( 'name', $genre, SNRD_TAXONOMY_GENRE );
+                    if ( $term ) {
+                        wp_set_object_terms( $post_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
+                    }
+                    $count++;
                 }
             }
         }
+
+        return $count;
     }
 
     /**
