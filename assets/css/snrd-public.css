@@ -24,17 +24,16 @@
     box-sizing: border-box;
 }
 
-/* Two-Column Master Layout */
+/* Master Directory Layout */
 .mg-layout-row {
-    display: flex;
-    gap: 18px;
-    align-items: flex-start;
+    width: 100%;
 }
 
-@media (max-width: 860px) {
-    .mg-layout-row {
-        flex-direction: column;
-    }
+.content-middle.content-full-width {
+    width: 100%;
+    max-width: 100%;
+    flex-grow: 1;
+    min-width: 0;
 }
 
 /* ========================================================= */
@@ -1528,6 +1527,99 @@
     font-weight: bold;
     text-decoration: none !important;
     text-transform: uppercase;
+}
+
+/* ========================================================= */
+/* 9B. BOTTOM SHOWCASE: FEATURED & TOP STATIONS              */
+/* ========================================================= */
+.mg-bottom-featured-section {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid #e2e8f0;
+}
+
+.mg-bottom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 860px) {
+    .mg-bottom-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+.mg-bottom-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+
+.mg-bottom-card-title {
+    margin: 0 0 12px 0;
+    padding-bottom: 6px;
+    font-size: 13px;
+    font-weight: 800;
+    color: #b30000;
+    text-transform: uppercase;
+    border-bottom: 2px solid #b30000;
+    letter-spacing: 0.5px;
+}
+
+.mg-bottom-station-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mg-bottom-station-list li {
+    margin: 0;
+    padding: 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.mg-bottom-station-list li:last-child {
+    border-bottom: none;
+}
+
+.mg-bottom-station-list li a {
+    display: block;
+    padding: 6px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #1e293b;
+    text-decoration: none;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.15s, color 0.15s;
+}
+
+.mg-bottom-station-list li a:hover,
+.mg-bottom-station-list li a.is-playing {
+    background: #006400;
+    color: #ffffff;
+    border-radius: 3px;
+    padding-left: 8px;
+}
+
+.mg-bottom-cta-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff5f5;
+    border-color: #fed7d7;
+}
+
+.mg-bottom-cta-text {
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
 }
 
 /* ========================================================= */
