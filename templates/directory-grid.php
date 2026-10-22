@@ -85,9 +85,10 @@ if ( $all_stations_query->have_posts() ) {
     wp_reset_postdata();
 }
 
-// Specifically prioritize Floodlight Radio as the default playing station
+// Specifically prioritize the flagship Floodlight Radio as the default playing station
 foreach ( $stations_data as $idx => $st ) {
-    if ( false !== stripos( $st['title'], 'Floodlight' ) ) {
+    $t_clean = strtolower( trim( $st['title'] ) );
+    if ( 'floodlight radio' === $t_clean || 'floodlight' === $t_clean ) {
         $first_station = $st;
         unset( $stations_data[$idx] );
         array_unshift( $stations_data, $st );
