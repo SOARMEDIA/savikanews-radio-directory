@@ -93,8 +93,16 @@ class SNRD_Admin {
         $stream_url   = get_post_meta( $post->ID, 'snrd_stream_url', true );
         $location     = get_post_meta( $post->ID, 'snrd_location', true );
         $frequency    = get_post_meta( $post->ID, 'snrd_frequency', true );
+        $phone        = get_post_meta( $post->ID, 'snrd_contact_phone', true );
+        $scope        = get_post_meta( $post->ID, 'snrd_station_scope', true );
+        $is_featured  = get_post_meta( $post->ID, 'snrd_is_featured', true );
+        $is_top       = get_post_meta( $post->ID, 'snrd_is_top', true );
         $zeno_url     = get_post_meta( $post->ID, 'snrd_zeno_url', true );
         $website_url  = get_post_meta( $post->ID, 'snrd_website_url', true );
+
+        if ( empty( $scope ) ) {
+            $scope = 'ghana';
+        }
         ?>
         <div class="snrd-admin-card-wrap">
 
@@ -103,12 +111,12 @@ class SNRD_Admin {
                 <div class="snrd-admin-field-col full-width">
                     <label for="snrd_stream_url" class="snrd-admin-label">
                         <span class="dashicons dashicons-format-audio" style="color: #c90000; font-size: 20px;"></span>
-                        <strong><?php esc_html_e( 'Public Audio Stream URL (Zeno.fm / Icecast / Shoutcast)', 'savika-news-radio' ); ?></strong>
+                        <strong><?php esc_html_e( 'Public Audio Stream URL (MP3 / AAC / HLS .m3u8 / Zeno / StreamGuys / Shoutcast)', 'savika-news-radio' ); ?></strong>
                         <span class="required">*</span>
                     </label>
-                    <input type="url" name="snrd_stream_url" id="snrd_stream_url" class="snrd-admin-input large" value="<?php echo esc_url( $stream_url ); ?>" placeholder="https://stream.zeno.fm/xxxxxxxxxx or https://...:8000/stream" />
+                    <input type="url" name="snrd_stream_url" id="snrd_stream_url" class="snrd-admin-input large" value="<?php echo esc_url( $stream_url ); ?>" placeholder="https://stream.zeno.fm/xxxxxxxxxx or https://...:8000/stream or https://.../playlist.m3u8" />
                     <p class="description">
-                        <?php esc_html_e( 'The direct listener link. Must start with http:// or https:// (HTTPS is recommended for web compatibility).', 'savika-news-radio' ); ?>
+                        <?php esc_html_e( 'The direct listener audio stream link. Fully supports direct MP3/AAC streams and HLS (.m3u8) streams.', 'savika-news-radio' ); ?>
                     </p>
 
                     <!-- Built-in Instant Audio Test Player -->
@@ -139,7 +147,7 @@ class SNRD_Admin {
                         <span class="dashicons dashicons-dashboard"></span>
                         <strong><?php esc_html_e( 'Dial / Frequency / Slogan', 'savika-news-radio' ); ?></strong>
                     </label>
-                    <input type="text" name="snrd_frequency" id="snrd_frequency" class="snrd-admin-input" value="<?php echo esc_attr( $frequency ); ?>" placeholder="e.g. 106.1 FM or Online 24/7" />
+                    <input type="text" name="snrd_frequency" id="snrd_frequency" class="snrd-admin-input" value="<?php echo esc_attr( $frequency ); ?>" placeholder="e.g. 104.3 FM or Online HD" />
                     <p class="description"><?php esc_html_e( 'Shown prominently on cards and the station hero.', 'savika-news-radio' ); ?></p>
                 </div>
 
@@ -149,8 +157,30 @@ class SNRD_Admin {
                         <strong><?php esc_html_e( 'Location / Region', 'savika-news-radio' ); ?></strong>
                         <span class="required">*</span>
                     </label>
-                    <input type="text" name="snrd_location" id="snrd_location" class="snrd-admin-input" value="<?php echo esc_attr( $location ); ?>" placeholder="e.g. Mankessim, Central Region, Ghana" />
+                    <input type="text" name="snrd_location" id="snrd_location" class="snrd-admin-input" value="<?php echo esc_attr( $location ); ?>" placeholder="e.g. Mile 7, Achimota, Accra - Ghana" />
                     <p class="description"><?php esc_html_e( 'City, region or broadcast territory.', 'savika-news-radio' ); ?></p>
+                </div>
+            </div>
+
+            <!-- Contact Phone & Scope Row -->
+            <div class="snrd-admin-field-row two-cols">
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_contact_phone" class="snrd-admin-label">
+                        <span class="dashicons dashicons-phone"></span>
+                        <strong><?php esc_html_e( 'Studio / Contact Phone', 'savika-news-radio' ); ?></strong>
+                    </label>
+                    <input type="text" name="snrd_contact_phone" id="snrd_contact_phone" class="snrd-admin-input" value="<?php echo esc_attr( $phone ); ?>" placeholder="e.g. 0302782414 or +233..." />
+                </div>
+
+                <div class="snrd-admin-field-col">
+                    <label for="snrd_station_scope" class="snrd-admin-label">
+                        <span class="dashicons dashicons-admin-site-alt3"></span>
+                        <strong><?php esc_html_e( 'Broadcast Scope', 'savika-news-radio' ); ?></strong>
+                    </label>
+                    <select name="snrd_station_scope" id="snrd_station_scope" class="snrd-admin-input">
+                        <option value="ghana" <?php selected( $scope, 'ghana' ); ?>><?php esc_html_e( 'Inside Ghana Broadcaster', 'savika-news-radio' ); ?></option>
+                        <option value="diaspora" <?php selected( $scope, 'diaspora' ); ?>><?php esc_html_e( 'Diaspora Broadcaster (UK, USA, Europe, Worldwide)', 'savika-news-radio' ); ?></option>
+                    </select>
                 </div>
             </div>
 
@@ -159,9 +189,9 @@ class SNRD_Admin {
                 <div class="snrd-admin-field-col">
                     <label for="snrd_zeno_url" class="snrd-admin-label">
                         <span class="dashicons dashicons-external"></span>
-                        <strong><?php esc_html_e( 'Zeno.fm Profile Link (Optional)', 'savika-news-radio' ); ?></strong>
+                        <strong><?php esc_html_e( 'External / Source Profile Link (Optional)', 'savika-news-radio' ); ?></strong>
                     </label>
-                    <input type="url" name="snrd_zeno_url" id="snrd_zeno_url" class="snrd-admin-input" value="<?php echo esc_url( $zeno_url ); ?>" placeholder="https://zeno.fm/radio/station-slug/" />
+                    <input type="url" name="snrd_zeno_url" id="snrd_zeno_url" class="snrd-admin-input" value="<?php echo esc_url( $zeno_url ); ?>" placeholder="https://zeno.fm/... or https://radio.modernghana.com/station/..." />
                     <p class="description"><?php esc_html_e( 'Used as a reliable fallback link for listeners.', 'savika-news-radio' ); ?></p>
                 </div>
 
@@ -170,7 +200,23 @@ class SNRD_Admin {
                         <span class="dashicons dashicons-admin-site"></span>
                         <strong><?php esc_html_e( 'Official Website (Optional)', 'savika-news-radio' ); ?></strong>
                     </label>
-                    <input type="url" name="snrd_website_url" id="snrd_website_url" class="snrd-admin-input" value="<?php echo esc_url( $website_url ); ?>" placeholder="https://stationwebsite.com" />
+                    <input type="url" name="snrd_website_url" id="snrd_website_url" class="snrd-admin-input" value="<?php echo esc_url( $website_url ); ?>" placeholder="https://peacefmonline.com" />
+                </div>
+            </div>
+
+            <!-- Featured & Top Badges Row -->
+            <div class="snrd-admin-field-row two-cols" style="background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                <div class="snrd-admin-field-col">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600;">
+                        <input type="checkbox" name="snrd_is_featured" value="1" <?php checked( $is_featured, '1' ); ?> />
+                        <?php esc_html_e( 'Featured Station (Highlighted in Quick Access and Directory)', 'savika-news-radio' ); ?>
+                    </label>
+                </div>
+                <div class="snrd-admin-field-col">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600;">
+                        <input type="checkbox" name="snrd_is_top" value="1" <?php checked( $is_top, '1' ); ?> />
+                        <?php esc_html_e( 'Top Station (Priority Sorting)', 'savika-news-radio' ); ?>
+                    </label>
                 </div>
             </div>
 
@@ -184,20 +230,22 @@ class SNRD_Admin {
     public static function render_logo_meta_box( $post ) {
         $thumbnail_id = get_post_thumbnail_id( $post->ID );
         $image_url    = $thumbnail_id ? wp_get_attachment_image_url( $thumbnail_id, 'medium' ) : '';
+        $custom_logo  = get_post_meta( $post->ID, 'snrd_logo_url', true );
+        $display_url  = $image_url ? $image_url : $custom_logo;
         ?>
         <div class="snrd-logo-uploader-widget" id="snrd-logo-uploader-widget">
             <input type="hidden" name="_thumbnail_id" id="_thumbnail_id" value="<?php echo esc_attr( $thumbnail_id ? $thumbnail_id : '-1' ); ?>" />
 
-            <div class="snrd-logo-preview-box" id="snrd-logo-preview" style="<?php echo $image_url ? 'display:block;' : 'display:none;'; ?>">
-                <img src="<?php echo esc_url( $image_url ); ?>" id="snrd-logo-img" alt="Logo preview" style="max-width: 100%; border-radius: 8px; border: 1px solid #dcdcde; display: block; margin: 0 auto 10px;" />
+            <div class="snrd-logo-preview-box" id="snrd-logo-preview" style="<?php echo $display_url ? 'display:block;' : 'display:none;'; ?>">
+                <img src="<?php echo esc_url( $display_url ); ?>" id="snrd-logo-img" alt="Logo preview" style="max-width: 100%; border-radius: 8px; border: 1px solid #dcdcde; display: block; margin: 0 auto 10px;" />
             </div>
 
-            <div class="snrd-logo-empty-box" id="snrd-logo-empty" style="<?php echo $image_url ? 'display:none;' : 'display:block;'; ?> text-align: center; padding: 25px 10px; background: #f0f0f1; border: 2px dashed #c3c4c7; border-radius: 6px; margin-bottom: 10px;">
+            <div class="snrd-logo-empty-box" id="snrd-logo-empty" style="<?php echo $display_url ? 'display:none;' : 'display:block;'; ?> text-align: center; padding: 25px 10px; background: #f0f0f1; border: 2px dashed #c3c4c7; border-radius: 6px; margin-bottom: 10px;">
                 <span class="dashicons dashicons-format-image" style="font-size: 40px; width: 40px; height: 40px; color: #8c8f94;"></span>
                 <p style="margin: 8px 0 0; font-size: 13px; color: #646970;"><?php esc_html_e( 'No logo selected', 'savika-news-radio' ); ?></p>
             </div>
 
-            <div class="snrd-logo-buttons" style="display: flex; gap: 8px;">
+            <div class="snrd-logo-buttons" style="display: flex; gap: 8px; margin-bottom: 12px;">
                 <button type="button" class="button button-primary" id="snrd-select-logo-btn" style="flex: 1;">
                     <span class="dashicons dashicons-upload" style="margin-top: 3px;"></span>
                     <?php esc_html_e( 'Upload / Select Logo', 'savika-news-radio' ); ?>
@@ -206,9 +254,16 @@ class SNRD_Admin {
                     <?php esc_html_e( 'Remove', 'savika-news-radio' ); ?>
                 </button>
             </div>
-            <p class="description" style="margin-top: 8px; font-size: 12px;">
-                <?php esc_html_e( 'Square artwork (e.g. 500x500 PNG or JPG) displays best on cards and player screens.', 'savika-news-radio' ); ?>
-            </p>
+
+            <div class="snrd-logo-url-fallback" style="border-top: 1px solid #eee; padding-top: 10px;">
+                <label for="snrd_logo_url" style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">
+                    <?php esc_html_e( 'Or Direct Logo Image URL:', 'savika-news-radio' ); ?>
+                </label>
+                <input type="url" name="snrd_logo_url" id="snrd_logo_url" class="widefat" value="<?php echo esc_url( $custom_logo ); ?>" placeholder="https://.../logo.png" style="font-size: 12px;" />
+                <p class="description" style="margin-top: 4px; font-size: 11px;">
+                    <?php esc_html_e( 'Paste direct link to station logo (PNG/JPG). Used automatically if no media library image is uploaded.', 'savika-news-radio' ); ?>
+                </p>
+            </div>
         </div>
         <?php
     }
@@ -271,6 +326,25 @@ class SNRD_Admin {
             update_post_meta( $post_id, 'snrd_location', sanitize_text_field( trim( $_POST['snrd_location'] ) ) );
         }
 
+        if ( isset( $_POST['snrd_contact_phone'] ) ) {
+            update_post_meta( $post_id, 'snrd_contact_phone', sanitize_text_field( trim( $_POST['snrd_contact_phone'] ) ) );
+        }
+
+        if ( isset( $_POST['snrd_station_scope'] ) ) {
+            $scope = in_array( $_POST['snrd_station_scope'], array( 'ghana', 'diaspora' ), true ) ? $_POST['snrd_station_scope'] : 'ghana';
+            update_post_meta( $post_id, 'snrd_station_scope', $scope );
+        }
+
+        $is_featured = isset( $_POST['snrd_is_featured'] ) ? '1' : '0';
+        update_post_meta( $post_id, 'snrd_is_featured', $is_featured );
+
+        $is_top = isset( $_POST['snrd_is_top'] ) ? '1' : '0';
+        update_post_meta( $post_id, 'snrd_is_top', $is_top );
+
+        if ( isset( $_POST['snrd_logo_url'] ) ) {
+            update_post_meta( $post_id, 'snrd_logo_url', esc_url_raw( trim( $_POST['snrd_logo_url'] ) ) );
+        }
+
         if ( isset( $_POST['snrd_zeno_url'] ) ) {
             update_post_meta( $post_id, 'snrd_zeno_url', esc_url_raw( trim( $_POST['snrd_zeno_url'] ) ) );
         }
@@ -312,6 +386,15 @@ class SNRD_Admin {
             case 'snrd_logo':
                 if ( has_post_thumbnail( $post_id ) ) {
                     echo get_the_post_thumbnail( $post_id, array( 48, 48 ), array( 'style' => 'border-radius: 6px; object-fit: cover;' ) );
+                } else {
+                    $custom_logo = get_post_meta( $post_id, 'snrd_logo_url', true );
+                    if ( ! empty( $custom_logo ) ) {
+                        echo '<img src="' . esc_url( $custom_logo ) . '" style="width:48px;height:48px;border-radius:6px;object-fit:cover;" alt="Logo" />';
+                    } else {
+                        echo '<span style="display:inline-block;width:40px;height:40px;background:#e2e8f0;border-radius:6px;text-align:center;line-height:40px;color:#718096;"><span class="dashicons dashicons-format-audio" style="line-height:40px;"></span></span>';
+                    }
+                }
+                break;
                 } else {
                     echo '<span style="display:inline-block;width:40px;height:40px;background:#e2e8f0;border-radius:6px;text-align:center;line-height:40px;color:#718096;"><span class="dashicons dashicons-format-audio" style="line-height:40px;"></span></span>';
                 }

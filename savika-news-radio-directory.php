@@ -103,9 +103,17 @@ final class Savika_News_Radio_Directory {
         );
 
         wp_register_script(
+            'snrd-hls-js',
+            'https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js',
+            array(),
+            '1.5.8',
+            true
+        );
+
+        wp_register_script(
             'snrd-public-js',
             SNRD_PLUGIN_URL . 'assets/js/snrd-public.js',
-            array( 'jquery' ),
+            array( 'jquery', 'snrd-hls-js' ),
             SNRD_VERSION,
             true
         );
@@ -123,10 +131,10 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Automatically ensure /radio/ and /radio/apply/ pages exist and Floodlight Radio is seeded
+     * Automatically ensure /radio/ and /radio/apply/ pages exist and Core Stations (Floodlight & Peace FM) are seeded
      */
     public function check_and_create_pages() {
-        self::ensure_floodlight_radio_exists();
+        self::ensure_core_stations_exist();
 
         if ( ! get_option( 'snrd_pages_auto_created' ) ) {
             self::auto_create_radio_pages();
@@ -135,22 +143,31 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Ensure Floodlight Radio exists with the exact live stream URL from Modern Ghana
+     * Ensure Core Stations (Floodlight Radio & Peace 104.3 Fm) exist with verified live stream URLs from Modern Ghana
      */
-    public static function ensure_floodlight_radio_exists() {
+    public static function ensure_core_stations_exist() {
+        // 1. Floodlight Radio (from Modern Ghana)
         $fl_stream = 'https://stream.zeno.fm/yecemx18mzzuv';
         $fl_title  = 'Floodlight Radio';
         
-        $existing = get_posts( array(
+        $fl_existing = get_posts( array(
             'post_type'      => SNRD_POST_TYPE,
             'title'          => $fl_title,
             'post_status'    => 'any',
             'posts_per_page' => 1,
         ) );
 
-        if ( ! empty( $existing ) ) {
-            $post_id = $existing[0]->ID;
-            // Ensure live stream URL matches Modern Ghana
+        if ( empty( $fl_existing ) ) {
+            $fl_existing = get_posts( array(
+                'post_type'      => SNRD_POST_TYPE,
+                's'              => 'Floodlight',
+                'post_status'    => 'any',
+                'posts_per_page' => 1,
+            ) );
+        }
+
+        if ( ! empty( $fl_existing ) ) {
+            $post_id = $fl_existing[0]->ID;
             update_post_meta( $post_id, 'snrd_stream_url', $fl_stream );
             update_post_meta( $post_id, 'snrd_location', 'Kumasi - Ghana' );
             update_post_meta( $post_id, 'snrd_contact_phone', '0248850040' );
@@ -181,6 +198,56 @@ final class Savika_News_Radio_Directory {
                 $term = get_term_by( 'name', 'Talk', SNRD_TAXONOMY_GENRE );
                 if ( $term ) {
                     wp_set_object_terms( $post_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
+                }
+            }
+        }
+
+        // 2. Peace 104.3 Fm (Modern Ghana stream and artwork)
+        $peace_stream = 'https://peacefm-atunwadigital.streamguys1.com/peacefm';
+        $peace_logo   = 'https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png';
+        $peace_title  = 'Peace 104.3 Fm';
+
+        $peace_existing = get_posts( array(
+            'post_type'      => SNRD_POST_TYPE,
+            's'              => 'Peace',
+            'post_status'    => 'any',
+            'posts_per_page' => 1,
+        ) );
+
+        if ( ! empty( $peace_existing ) ) {
+            $p_id = $peace_existing[0]->ID;
+            update_post_meta( $p_id, 'snrd_stream_url', $peace_stream );
+            update_post_meta( $p_id, 'snrd_logo_url', $peace_logo );
+            update_post_meta( $p_id, 'snrd_location', 'Mile 7, Achimota, Accra - Ghana' );
+            update_post_meta( $p_id, 'snrd_contact_phone', '0302782414' );
+            update_post_meta( $p_id, 'snrd_website_url', 'https://www.peacefmonline.com' );
+            update_post_meta( $p_id, 'snrd_frequency', '104.3 FM' );
+            update_post_meta( $p_id, 'snrd_station_scope', 'ghana' );
+            update_post_meta( $p_id, 'snrd_is_featured', '1' );
+            update_post_meta( $p_id, 'snrd_is_top', '1' );
+        } else {
+            $p_id = wp_insert_post( array(
+                'post_title'   => $peace_title,
+                'post_content' => 'Peace FM 104.3 is Ghana flagship private commercial broadcaster based in Mile 7, Achimota, Accra, renowned for the Kokrokoo morning show, breaking national news, and trusted discussions.',
+                'post_status'  => 'publish',
+                'post_type'    => SNRD_POST_TYPE,
+            ) );
+
+            if ( $p_id && ! is_wp_error( $p_id ) ) {
+                update_post_meta( $p_id, 'snrd_stream_url', $peace_stream );
+                update_post_meta( $p_id, 'snrd_logo_url', $peace_logo );
+                update_post_meta( $p_id, 'snrd_location', 'Mile 7, Achimota, Accra - Ghana' );
+                update_post_meta( $p_id, 'snrd_contact_phone', '0302782414' );
+                update_post_meta( $p_id, 'snrd_website_url', 'https://www.peacefmonline.com' );
+                update_post_meta( $p_id, 'snrd_zeno_url', 'https://radio.modernghana.com/station/peace1043fm' );
+                update_post_meta( $p_id, 'snrd_frequency', '104.3 FM' );
+                update_post_meta( $p_id, 'snrd_station_scope', 'ghana' );
+                update_post_meta( $p_id, 'snrd_is_featured', '1' );
+                update_post_meta( $p_id, 'snrd_is_top', '1' );
+
+                $term = get_term_by( 'name', 'News', SNRD_TAXONOMY_GENRE );
+                if ( $term ) {
+                    wp_set_object_terms( $p_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
                 }
             }
         }
@@ -268,17 +335,18 @@ final class Savika_News_Radio_Directory {
                 'description' => 'Floodlight Radio broadcasts live from Kumasi, delivering insightful talk shows, sports updates, and contemporary Ghanaian music.',
             ),
             array(
-                'title'       => 'Peace FM 104.3 FM',
+                'title'       => 'Peace 104.3 Fm',
                 'frequency'   => '104.3 FM',
-                'location'    => 'Accra - Ghana',
+                'location'    => 'Mile 7, Achimota, Accra - Ghana',
                 'phone'       => '0302782414',
                 'genre'       => 'News',
                 'scope'       => 'ghana',
                 'featured'    => '1',
                 'top'         => '1',
-                'stream_url'  => 'https://stream.zeno.fm/f3wvbbqmdg8uv',
-                'zeno_url'    => 'https://zeno.fm',
-                'description' => 'Peace FM 104.3 is Ghana leading private commercial broadcaster based in Mile 7, Achimota, Accra, known for flagship show Kokrokoo.',
+                'stream_url'  => 'https://peacefm-atunwadigital.streamguys1.com/peacefm',
+                'logo_url'    => 'https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png',
+                'zeno_url'    => 'https://radio.modernghana.com/station/peace1043fm',
+                'description' => 'Peace FM 104.3 is Ghana flagship private commercial broadcaster based in Mile 7, Achimota, Accra, known for flagship show Kokrokoo.',
             ),
             array(
                 'title'       => 'Adom FM 106.3 FM',
@@ -441,6 +509,9 @@ final class Savika_News_Radio_Directory {
                 update_post_meta( $post_id, 'snrd_is_featured', $st['featured'] );
                 update_post_meta( $post_id, 'snrd_is_top', $st['top'] );
                 update_post_meta( $post_id, 'snrd_stream_url', $st['stream_url'] );
+                if ( ! empty( $st['logo_url'] ) ) {
+                    update_post_meta( $post_id, 'snrd_logo_url', $st['logo_url'] );
+                }
                 update_post_meta( $post_id, 'snrd_zeno_url', $st['zeno_url'] );
                 update_post_meta( $post_id, 'snrd_website_url', home_url( '/' ) );
                 update_post_meta( $post_id, 'snrd_contact_email', get_option( 'admin_email' ) );
@@ -461,6 +532,9 @@ final class Savika_News_Radio_Directory {
         SNRD_Post_Type::register_post_type();
         SNRD_Post_Type::register_taxonomy();
         SNRD_Post_Type::insert_default_genres();
+
+        // Ensure core stations (Floodlight Radio & Peace FM) exist
+        self::ensure_core_stations_exist();
 
         // Auto create pages and seed initial stations
         self::auto_create_radio_pages();

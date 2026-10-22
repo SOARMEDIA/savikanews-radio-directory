@@ -68,8 +68,12 @@ $scope_label = ( 'diaspora' === $scope ) ? 'Diaspora Broadcaster' : 'Ghana Broad
                 <!-- Circular Avatar Overlapping Cover -->
                 <div class="snrd-avatar-container">
                     <div class="snrd-avatar-frame">
-                        <?php if ( has_post_thumbnail() ) : ?>
+                        <?php 
+                        $custom_logo = get_post_meta( $post_id, 'snrd_logo_url', true );
+                        if ( has_post_thumbnail() ) : ?>
                             <?php the_post_thumbnail( 'medium', array( 'class' => 'snrd-avatar-img', 'alt' => esc_attr( get_the_title() ) ) ); ?>
+                        <?php elseif ( ! empty( $custom_logo ) ) : ?>
+                            <img src="<?php echo esc_url( $custom_logo ); ?>" class="snrd-avatar-img" alt="<?php echo esc_attr( get_the_title() ); ?>" />
                         <?php else : ?>
                             <div class="snrd-avatar-default">
                                 <svg width="42" height="42" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>

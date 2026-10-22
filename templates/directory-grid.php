@@ -37,6 +37,9 @@ if ( $all_stations_query->have_posts() ) {
         $is_top     = get_post_meta( $pid, 'snrd_is_top', true );
         $desc       = get_the_excerpt();
         $thumb_url  = get_the_post_thumbnail_url( $pid, 'medium' );
+        if ( empty( $thumb_url ) ) {
+            $thumb_url = get_post_meta( $pid, 'snrd_logo_url', true );
+        }
         $genres     = get_the_terms( $pid, SNRD_TAXONOMY_GENRE );
         $genre_name = ( ! empty( $genres ) && ! is_wp_error( $genres ) ) ? $genres[0]->name : 'General';
 

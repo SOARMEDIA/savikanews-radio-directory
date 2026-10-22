@@ -20,6 +20,77 @@
         var $startBtn       = $('#mg-start-btn');
         var $pauseBtn       = $('#mg-pause-btn');
 
+        var masterHlsInstance = null;
+
+        /**
+         * Helper to start playback on an audio element (with native and HLS.js support)
+         */
+        function playStream(targetDOM, streamUrl, $label, $playB, $pauseB) {
+            if (!targetDOM || !streamUrl) {
+                if ($label && $label.length) $label.text('Stream Offline');
+                if ($playB) $playB.show();
+                if ($pauseB) $pauseB.hide();
+                return;
+            }
+
+            if ($label && $label.length) $label.text('Connecting...');
+
+            // If HLS stream (.m3u8) and HLS.js is supported
+            if (streamUrl.indexOf('.m3u8') !== -1 && window.Hls && window.Hls.isSupported()) {
+                if (masterHlsInstance) {
+                    masterHlsInstance.destroy();
+                }
+                masterHlsInstance = new window.Hls({
+                    enableWorker: true,
+                    lowLatencyMode: true
+                });
+                masterHlsInstance.loadSource(streamUrl);
+                masterHlsInstance.attachMedia(targetDOM);
+                masterHlsInstance.on(window.Hls.Events.MANIFEST_PARSED, function() {
+                    var promise = targetDOM.play();
+                    if (promise !== undefined) {
+                        promise.then(function() {
+                            if ($label && $label.length) $label.text('Live Broadcast');
+                            if ($playB) $playB.hide();
+                            if ($pauseB) $pauseB.show();
+                        }).catch(function() {
+                            if ($label && $label.length) $label.text('Live Broadcast (Tap to play)');
+                            if ($playB) $playB.show();
+                            if ($pauseB) $pauseB.hide();
+                        });
+                    }
+                });
+                masterHlsInstance.on(window.Hls.Events.ERROR, function(event, data) {
+                    if (data.fatal) {
+                        if ($label && $label.length) $label.text('Stream Connection Error');
+                        if ($playB) $playB.show();
+                        if ($pauseB) $pauseB.hide();
+                    }
+                });
+            } else {
+                if (masterHlsInstance) {
+                    masterHlsInstance.destroy();
+                    masterHlsInstance = null;
+                }
+                targetDOM.pause();
+                targetDOM.src = streamUrl;
+                targetDOM.load();
+
+                var playPromise = targetDOM.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        if ($label && $label.length) $label.text('Live Broadcast');
+                        if ($playB) $playB.hide();
+                        if ($pauseB) $pauseB.show();
+                    }).catch(function() {
+                        if ($label && $label.length) $label.text('Live Broadcast (Tap to play)');
+                        if ($playB) $playB.show();
+                        if ($pauseB) $pauseB.hide();
+                    });
+                }
+            }
+        }
+
         /**
          * 1. Station Selection & Live Audio Stream Trigger
          */
@@ -56,29 +127,7 @@
             }
 
             // Stream Audio in Master Console
-            if (audioDOM && stream) {
-                $statusLabel.text('Connecting...');
-                audioDOM.pause();
-                audioDOM.src = stream;
-                audioDOM.load();
-
-                var playPromise = audioDOM.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(function() {
-                        $statusLabel.text('Live Broadcast');
-                        $startBtn.hide();
-                        $pauseBtn.show();
-                    }).catch(function(err) {
-                        $statusLabel.text('Live Broadcast (Tap to play)');
-                        $startBtn.show();
-                        $pauseBtn.hide();
-                    });
-                }
-            } else if ($statusLabel.length) {
-                $statusLabel.text('Stream Offline');
-                $startBtn.show();
-                $pauseBtn.hide();
-            }
+            playStream(audioDOM, stream, $statusLabel, $startBtn, $pauseBtn);
         });
 
         // Audio element native event listeners for Master Player
@@ -105,6 +154,13 @@
         // Single station page audio listener
         if (singleAudioDOM) {
             var $singleStatus = $('#snrd-single-status');
+            var singleSrc = singleAudioDOM.currentSrc || singleAudioDOM.src || $(singleAudioDOM).find('source').attr('src');
+            if (singleSrc && singleSrc.indexOf('.m3u8') !== -1 && window.Hls && window.Hls.isSupported()) {
+                var singleHls = new window.Hls({ enableWorker: true, lowLatencyMode: true });
+                singleHls.loadSource(singleSrc);
+                singleHls.attachMedia(singleAudioDOM);
+            }
+
             singleAudioDOM.addEventListener('playing', function() {
                 if ($singleStatus.length) {
                     $singleStatus.text('Broadcasting Live Now');
