@@ -478,7 +478,7 @@ class SNRD_Admin {
                 Savika_News_Radio_Directory::auto_create_radio_pages();
                 wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'pages_created' ), admin_url( 'edit.php' ) ) );
                 exit;
-            } elseif ( 'seed_50_stations' === $_GET['snrd_action'] || 'seed_250_stations' === $_GET['snrd_action'] ) {
+            } elseif ( 'seed_50_stations' === $_GET['snrd_action'] || 'seed_250_stations' === $_GET['snrd_action'] || 'seed_1000_stations' === $_GET['snrd_action'] ) {
                 check_admin_referer( 'snrd_seed_50_action' );
                 $count = Savika_News_Radio_Directory::seed_sample_stations( true );
                 wp_redirect( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_msg' => 'stations_synced', 'count' => $count ), admin_url( 'edit.php' ) ) );
@@ -491,11 +491,11 @@ class SNRD_Admin {
      * Render Settings and Setup Guide page
      */
     public static function render_settings_page() {
-        $gen_url     = wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'generate_pages' ), admin_url( 'edit.php' ) ), 'snrd_generate_pages_action' );
-        $seed_250_url = wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'seed_250_stations' ), admin_url( 'edit.php' ) ), 'snrd_seed_50_action' );
-        $radio_url   = home_url( '/radio/' );
-        $apply_url   = home_url( '/radio/apply/' );
-        $synced_cnt  = isset( $_GET['count'] ) ? intval( $_GET['count'] ) : 250;
+        $gen_url       = wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'generate_pages' ), admin_url( 'edit.php' ) ), 'snrd_generate_pages_action' );
+        $seed_1000_url = wp_nonce_url( add_query_arg( array( 'post_type' => SNRD_POST_TYPE, 'page' => 'snrd-settings', 'snrd_action' => 'seed_1000_stations' ), admin_url( 'edit.php' ) ), 'snrd_seed_50_action' );
+        $radio_url     = home_url( '/radio/' );
+        $apply_url     = home_url( '/radio/apply/' );
+        $synced_cnt    = isset( $_GET['count'] ) ? intval( $_GET['count'] ) : 1050;
         ?>
         <div class="wrap">
             <h1><?php esc_html_e( 'Savika News Radio Directory — Configuration & Guide', 'savika-news-radio' ); ?></h1>
@@ -504,7 +504,7 @@ class SNRD_Admin {
             <?php if ( isset( $_GET['snrd_msg'] ) && 'stations_synced' === $_GET['snrd_msg'] ) : ?>
                 <div class="notice notice-success is-dismissible" style="padding: 12px;">
                     <p style="font-size: 15px; margin: 0 0 8px;">
-                        <strong><?php printf( esc_html__( '%d Verified Ghanaian Radio Stations were successfully imported and updated from Modern Ghana.', 'savika-news-radio' ), $synced_cnt ); ?></strong>
+                        <strong><?php printf( esc_html__( '%d Verified Ghanaian Radio Stations were successfully imported and updated across all 16 regions.', 'savika-news-radio' ), $synced_cnt ); ?></strong>
                     </p>
                     <p style="margin: 0;">
                         <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=' . SNRD_POST_TYPE ) ); ?>" class="button button-primary">
@@ -531,26 +531,23 @@ class SNRD_Admin {
                 </div>
             <?php endif; ?>
 
-            <!-- 1-Click 250+ Stations Sync from Modern Ghana -->
+            <!-- 1-Click 1,000+ Stations Sync -->
             <div style="background: #ffffff; border: 1px solid #c3c4c7; border-left: 4px solid #006537; padding: 20px; margin: 20px 0; border-radius: 6px; max-width: 850px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                 <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
                     <div>
-                        <h2 style="margin: 0 0 6px; color: #1a202c;"><?php esc_html_e( 'One-Click Station Importer: 250+ Verified Stations', 'savika-news-radio' ); ?></h2>
+                        <h2 style="margin: 0 0 6px; color: #1a202c;"><?php esc_html_e( 'One-Click Station Importer: 1,000+ Verified Ghanaian Stations', 'savika-news-radio' ); ?></h2>
                         <p style="margin: 0; font-size: 14px; color: #4a5568;">
-                            <?php esc_html_e( 'Instantly populate your directory with 250 premier Ghanaian radio stations across Accra, Kumasi, Takoradi, Cape Coast, Tamale, Sunyani, Koforidua, and the Diaspora (Peace FM, Adom FM, Joy FM, Okay FM, Oman FM, Kessben FM, Angel FM, Fox FM, Hello FM, Nhyira FM, Neat FM, Asempa FM, Oyerepa FM, Wontumi Radio, Kasapa FM, Pure FM, Hitz FM, Starr FM, 3 FM, Asaase Radio, Sompa FM, and 230+ more) with verified live streams, frequencies, locations, and official logos.', 'savika-news-radio' ); ?>
+                            <?php esc_html_e( 'Instantly populate your directory with 1,000+ radio stations across all 16 regions of Ghana (Greater Accra, Ashanti, Western, Central, Eastern, Volta, Northern, Upper East, Upper West, Bono, Bono East, Ahafo, Oti, Savannah, North East, Western North, and the Ghanaian Diaspora) with live streams, dial frequencies, locations, and logos.', 'savika-news-radio' ); ?>
                         </p>
                     </div>
                 </div>
                 <p style="margin-top: 15px;">
-                    <a href="<?php echo esc_url( $seed_250_url ); ?>" class="button button-primary button-hero" style="background: #006537; border-color: #004d2a; box-shadow: none;">
+                    <a href="<?php echo esc_url( $seed_1000_url ); ?>" class="button button-primary button-hero" style="background: #006537; border-color: #004d2a; box-shadow: none;">
                         <span class="dashicons dashicons-update" style="margin-top: 4px; margin-right: 4px;"></span>
-                        <?php esc_html_e( 'Sync / Import 250+ Modern Ghana Stations Now', 'savika-news-radio' ); ?>
+                        <?php esc_html_e( 'Sync / Import 1,000+ Ghanaian Radio Stations Now', 'savika-news-radio' ); ?>
                     </a>
                 </p>
                 <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid #edf2f7; font-size: 12px; color: #718096;">
-                    <?php esc_html_e( 'Safe to run anytime: updates stream URLs and artwork for existing stations and adds missing ones without deleting your custom stations.', 'savika-news-radio' ); ?>
-                </div>
-            </div>
                     <?php esc_html_e( 'Safe to run anytime: updates stream URLs and artwork for existing stations and adds missing ones without deleting your custom stations.', 'savika-news-radio' ); ?>
                 </div>
             </div>

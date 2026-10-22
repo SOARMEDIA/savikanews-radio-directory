@@ -411,10 +411,13 @@ $quick_pills_row2 = array(
                             <div class="snrd-card-avatar-wrap">
                                 <div class="snrd-card-avatar">
                                     <?php if ( ! empty( $st['thumb'] ) ) : ?>
-                                        <img src="<?php echo esc_url( $st['thumb'] ); ?>" alt="<?php echo esc_attr( $st['title'] ); ?>" />
+                                        <img src="<?php echo esc_url( $st['thumb'] ); ?>" alt="<?php echo esc_attr( $st['title'] ); ?>" loading="lazy" decoding="async" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+                                        <div class="snrd-card-avatar-placeholder" style="display:none;">
+                                            <span style="font-size: 11px; font-weight: 700; color: #fff;"><?php echo esc_html( substr( $st['frequency'], 0, 5 ) ); ?></span>
+                                        </div>
                                     <?php else : ?>
                                         <div class="snrd-card-avatar-placeholder">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                            <span style="font-size: 11px; font-weight: 700; color: #fff;"><?php echo esc_html( substr( $st['frequency'], 0, 5 ) ); ?></span>
                                         </div>
                                     <?php endif; ?>
                                 </div>

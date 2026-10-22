@@ -307,12 +307,14 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Seed sample Ghanaian radio stations from verified Modern Ghana database
+     * Seed sample Ghanaian radio stations from verified Modern Ghana database (1000+ stations)
      *
-     * @param bool $force_sync Whether to force-update existing stations and seed all 50.
+     * @param bool $force_sync Whether to force-update existing stations and seed all stations.
      * @return int Number of stations processed.
      */
     public static function seed_sample_stations( $force_sync = false ) {
+        global $wpdb;
+
         $existing = get_posts( array(
             'post_type'      => SNRD_POST_TYPE,
             'posts_per_page' => 1,
@@ -323,7 +325,16 @@ final class Savika_News_Radio_Directory {
             return 0;
         }
 
-        $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_250.json';
+        // Increase limits for processing 1000+ stations
+        @set_time_limit( 600 );
+        @ini_set( 'memory_limit', '512M' );
+        wp_defer_term_counting( true );
+        wp_defer_comment_counting( true );
+
+        $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_1000.json';
+        if ( ! file_exists( $json_file ) ) {
+            $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_250.json';
+        }
         if ( ! file_exists( $json_file ) ) {
             $json_file = SNRD_PLUGIN_DIR . 'includes/data/stations_seed_50.json';
         }
@@ -362,6 +373,17 @@ final class Savika_News_Radio_Directory {
             );
         }
 
+        // Single optimized query to pre-index all existing stations by slug and lower-case title
+        $existing_rows = $wpdb->get_results( $wpdb->prepare( "SELECT ID, post_name, post_title FROM {$wpdb->posts} WHERE post_type = %s", SNRD_POST_TYPE ) );
+        $existing_by_slug  = array();
+        $existing_by_title = array();
+        if ( ! empty( $existing_rows ) ) {
+            foreach ( $existing_rows as $row ) {
+                $existing_by_slug[ $row->post_name ] = intval( $row->ID );
+                $existing_by_title[ strtolower( trim( $row->post_title ) ) ] = intval( $row->ID );
+            }
+        }
+
         $count = 0;
         foreach ( $starter_stations as $st ) {
             $title      = ! empty( $st['title'] ) ? sanitize_text_field( $st['title'] ) : 'Radio Station';
@@ -375,25 +397,17 @@ final class Savika_News_Radio_Directory {
             $slug       = ! empty( $st['slug'] ) ? sanitize_title( $st['slug'] ) : sanitize_title( $title );
             $desc       = ! empty( $st['description'] ) ? sanitize_text_field( $st['description'] ) : sprintf( '%s broadcasts live from %s with top news, music, sports, and discussions.', $title, $location );
 
-            // Check if station already exists by slug or exact title
-            $find_post = get_posts( array(
-                'post_type'      => SNRD_POST_TYPE,
-                'name'           => $slug,
-                'post_status'    => 'any',
-                'posts_per_page' => 1,
-            ) );
+            // Check if station already exists via our fast pre-indexed map
+            $title_key = strtolower( trim( $title ) );
+            $post_id   = 0;
 
-            if ( empty( $find_post ) ) {
-                $find_post = get_posts( array(
-                    'post_type'      => SNRD_POST_TYPE,
-                    'title'          => $title,
-                    'post_status'    => 'any',
-                    'posts_per_page' => 1,
-                ) );
+            if ( isset( $existing_by_slug[ $slug ] ) ) {
+                $post_id = $existing_by_slug[ $slug ];
+            } elseif ( isset( $existing_by_title[ $title_key ] ) ) {
+                $post_id = $existing_by_title[ $title_key ];
             }
 
-            if ( ! empty( $find_post ) ) {
-                $post_id = $find_post[0]->ID;
+            if ( $post_id > 0 ) {
                 if ( ! empty( $stream_url ) ) {
                     update_post_meta( $post_id, 'snrd_stream_url', $stream_url );
                 }
@@ -416,6 +430,9 @@ final class Savika_News_Radio_Directory {
                 ) );
 
                 if ( $post_id && ! is_wp_error( $post_id ) ) {
+                    $existing_by_slug[ $slug ]         = $post_id;
+                    $existing_by_title[ $title_key ]   = $post_id;
+
                     update_post_meta( $post_id, 'snrd_stream_url', $stream_url );
                     update_post_meta( $post_id, 'snrd_logo_url', $logo_url );
                     update_post_meta( $post_id, 'snrd_frequency', $frequency );
@@ -427,14 +444,14 @@ final class Savika_News_Radio_Directory {
                     update_post_meta( $post_id, 'snrd_website_url', home_url( '/' ) );
                     update_post_meta( $post_id, 'snrd_contact_email', get_option( 'admin_email' ) );
 
-                    $term = get_term_by( 'name', $genre, SNRD_TAXONOMY_GENRE );
-                    if ( $term ) {
-                        wp_set_object_terms( $post_id, array( $term->term_id ), SNRD_TAXONOMY_GENRE );
-                    }
+                    wp_set_object_terms( $post_id, array( $genre ), SNRD_TAXONOMY_GENRE );
                     $count++;
                 }
             }
         }
+
+        wp_defer_term_counting( false );
+        wp_defer_comment_counting( false );
 
         return $count;
     }

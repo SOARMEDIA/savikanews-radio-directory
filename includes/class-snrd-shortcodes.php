@@ -27,7 +27,7 @@ class SNRD_Shortcodes {
         wp_enqueue_script( 'snrd-public-js' );
 
         $atts = shortcode_atts( array(
-            'per_page' => 300,
+            'per_page' => -1,
             'genre'    => '',
         ), $atts, 'savika_radio_directory' );
 
