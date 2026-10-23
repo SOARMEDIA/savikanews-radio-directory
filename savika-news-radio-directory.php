@@ -84,9 +84,9 @@ final class Savika_News_Radio_Directory {
      * Hook into WordPress
      */
     private function init_hooks() {
-        // Activation / Deactivation hooks
-        register_activation_hook( SNRD_PLUGIN_FILE, array( $this, 'activate' ) );
-        register_deactivation_hook( SNRD_PLUGIN_FILE, array( $this, 'deactivate' ) );
+        // Activation / Deactivation hooks bound to __FILE__
+        register_activation_hook( __FILE__, array( $this, 'activate' ) );
+        register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
         // Ensure pages exist on admin init if missing
         add_action( 'admin_init', array( $this, 'check_and_create_pages' ) );
@@ -94,8 +94,8 @@ final class Savika_News_Radio_Directory {
         // Enqueue frontend scripts & styles
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_frontend_assets' ) );
 
-        // Initialize sub-components
-        add_action( 'plugins_loaded', array( $this, 'init_components' ) );
+        // Initialize sub-components directly so hooks are always registered immediately
+        $this->init_components();
     }
 
     /**
@@ -528,19 +528,22 @@ final class Savika_News_Radio_Directory {
      * Activation logic
      */
     public function activate() {
-        require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-post-type.php';
-        SNRD_Post_Type::register_post_type();
-        SNRD_Post_Type::register_taxonomy();
-        SNRD_Post_Type::insert_default_genres();
+        try {
+            require_once SNRD_PLUGIN_DIR . 'includes/class-snrd-post-type.php';
+            SNRD_Post_Type::register_post_type();
+            SNRD_Post_Type::register_taxonomy();
+            SNRD_Post_Type::insert_default_genres();
 
-        // Ensure core stations (Floodlight Radio & Peace FM) exist
-        self::ensure_core_stations_exist();
+            // Ensure core stations and pages exist
+            self::ensure_core_stations_exist();
+            self::auto_create_radio_pages();
+            update_option( 'snrd_pages_auto_created', '1' );
 
-        // Auto create pages and seed initial stations
-        self::auto_create_radio_pages();
-        update_option( 'snrd_pages_auto_created', '1' );
-
-        flush_rewrite_rules();
+            flush_rewrite_rules();
+        } catch ( \Throwable $e ) {
+            // Prevent fatal errors from halting WordPress
+            error_log( 'SNRD Activation error: ' . $e->getMessage() );
+        }
     }
 
     /**

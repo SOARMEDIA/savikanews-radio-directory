@@ -179,6 +179,126 @@
     "logo": "https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png",
     "description": "DL TV broadcasts live family, inspirational, and spiritual programming from Accra and the Mallam broadcast enclave.",
     "featured": false
+  },
+  {
+    "id": "geye-tv",
+    "name": "G-Eye TV",
+    "dial": "CH 16",
+    "network": "G-Eye Media Group",
+    "category": "Entertainment",
+    "type": "hls",
+    "streamUrl": "https://online.geyetv.com/hls/stream.m3u8",
+    "logo": "https://i.imgur.com/8t967Hq.png",
+    "description": "G-Eye TV is a 24/7 Ghanaian youth entertainment, music, urban lifestyle, and cultural television channel broadcasting in HD.",
+    "featured": false
+  },
+  {
+    "id": "mogpa-tv-plus",
+    "name": "MOGPA TV Plus",
+    "dial": "CH 17",
+    "network": "Moments of Glory Prayer Army",
+    "category": "Faith",
+    "type": "hls",
+    "streamUrl": "https://srt.mogpa.org:30443/mogpatvplus/website_tv/playlist.m3u8",
+    "logo": "https://i.imgur.com/0YLSM3R.png",
+    "description": "MOGPA TV Plus delivers continuous 24/7 Christian revival, powerful apostolic prayers, and spiritual ministry to the Ghanaian diaspora and nationwide.",
+    "featured": false
+  },
+  {
+    "id": "hope4life-tv",
+    "name": "Hope4Life TV",
+    "dial": "CH 18",
+    "network": "Hope4Life Network",
+    "category": "Faith",
+    "type": "hls",
+    "streamUrl": "http://144.217.14.88/hls/hope4life.m3u8",
+    "logo": "https://i.imgur.com/p24tAjs.jpg",
+    "description": "Hope4Life TV provides wholesome gospel music, inspiring family messages, youth leadership programs, and Christian teachings.",
+    "featured": false
+  },
+  {
+    "id": "adinkra-tv",
+    "name": "Adinkra TV",
+    "dial": "CH 19",
+    "network": "Adinkra Media NY / Ghana",
+    "category": "Entertainment",
+    "type": "hls",
+    "streamUrl": "https://59d39900ebfb8.streamlock.net/adinkratvny/adinkratvny/playlist.m3u8",
+    "logo": "https://i.imgur.com/uwuSXJ8.png",
+    "description": "Adinkra TV connects Ghanaians across the globe with cultural programming, traditional highlights, African music, and diaspora events.",
+    "featured": false
+  },
+  {
+    "id": "ap-tv",
+    "name": "AP TV",
+    "dial": "CH 20",
+    "network": "AP Media Network",
+    "category": "Entertainment",
+    "type": "hls",
+    "streamUrl": "https://59nyqg8elwap-hls-live.5centscdn.com/APTV/85c20905211659d143febd7c32592ee0.sdp/playlist.m3u8",
+    "logo": "https://i.imgur.com/Oky18bX.png",
+    "description": "AP TV broadcasts contemporary Ghanaian entertainment, celebrity interviews, cinema, Afrobeats music, and lifestyle specials.",
+    "featured": false
+  },
+  {
+    "id": "resurrection-tv",
+    "name": "Resurrection TV",
+    "dial": "CH 21",
+    "network": "Resurrection Power Media",
+    "category": "Faith",
+    "type": "hls",
+    "streamUrl": "https://1681360479.rsc.cdn77.org/1681360479/index.m3u8",
+    "logo": "https://i.imgur.com/IncyJW8.png",
+    "description": "Resurrection TV delivers Christ-centered messages, gospel worship, inspirational documentaries, and church services 24/7.",
+    "featured": false
+  },
+  {
+    "id": "dw-english",
+    "name": "DW English Live",
+    "dial": "CH 22",
+    "network": "Deutsche Welle",
+    "category": "News",
+    "type": "hls",
+    "streamUrl": "https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Deutsche_Welle_logo.svg/320px-Deutsche_Welle_logo.svg.png",
+    "description": "Deutsche Welle (DW) English offers world-class international news, in-depth reports on African development, economy, and European affairs.",
+    "featured": false
+  },
+  {
+    "id": "africanews",
+    "name": "Africanews English",
+    "dial": "CH 23",
+    "network": "Africanews / Euronews",
+    "category": "News",
+    "type": "hls",
+    "streamUrl": "https://mumbai-edge.smartplaytv.in/AfricaNews/index.m3u8",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Africanews_logo.svg/320px-Africanews_logo.svg.png",
+    "description": "Africanews is the only bilingual pan-African news channel delivering 24/7 coverage of politics, culture, sports, and business across Africa.",
+    "featured": false
+  },
+  {
+    "id": "atinka-tv",
+    "name": "Atinka TV",
+    "dial": "CH 24",
+    "network": "Atinka Media Village",
+    "category": "Entertainment",
+    "type": "embed",
+    "streamUrl": "https://www.youtube-nocookie.com/embed/live_stream?channel=UC5JbJd1zHq4iB3Y_0yCj5uQ&autoplay=1&enablejsapi=1",
+    "logo": "https://cdn.webrad.io/images/logos/radio-com-gh/atinka-fm.png",
+    "description": "Atinka TV is Ghana leading Akan entertainment and reality station, home to Di Asa, Kronkron, vibrant talk shows, and morning news.",
+    "featured": false
+  },
+  {
+    "id": "ghone-tv",
+    "name": "GhOne TV",
+    "dial": "CH 25",
+    "network": "EIB Network",
+    "category": "Entertainment",
+    "type": "embed",
+    "streamUrl": "https://www.youtube-nocookie.com/embed/live_stream?channel=UC2bL_Ea_6-HlZf1Z9W5a2wA&autoplay=1&enablejsapi=1",
+    "logo": "https://storage.googleapis.com/player-logos/logos/Peacefm-MG-Modern-Ghana-1736268249658.png",
+    "description": "GhOne TV delivers premium Ghanaian entertainment, current affairs, State of Affairs, lifestyle, music, and national headlines.",
+    "featured": false
   }
 ]
 
