@@ -338,6 +338,119 @@
     color: #94a3b8;
 }
 
+/* Instant TV Search Bar */
+.snrd-tv-search-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0 14px 0;
+    flex-wrap: wrap;
+}
+
+.snrd-tv-search-box {
+    position: relative;
+    flex: 1;
+    min-width: 260px;
+}
+
+.snrd-tv-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+}
+
+.snrd-tv-search-input {
+    width: 100%;
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 9px 36px 9px 36px;
+    color: #ffffff;
+    font-size: 13px;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+.snrd-tv-search-input:focus {
+    outline: none;
+    border-color: #b30000;
+    box-shadow: 0 0 0 2px rgba(179, 0, 0, 0.25);
+}
+
+.snrd-tv-search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.snrd-tv-search-clear:hover {
+    color: #ffffff;
+}
+
+.snrd-tv-counter-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    background: #0f172a;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: 1px solid #334155;
+}
+
+.snrd-tv-counter-badge strong {
+    color: #22c55e;
+}
+
+/* Load More Button for 530+ Channels */
+.snrd-tv-load-more-wrap {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.snrd-btn-load-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #ffffff;
+    padding: 11px 24px;
+    font-size: 13px;
+    font-weight: 800;
+    border-radius: 6px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.15s;
+}
+
+.snrd-btn-load-more:hover {
+    background: #b30000;
+    border-color: #b30000;
+}
+
+.snrd-btn-load-badge {
+    background: #0f172a;
+    color: #22c55e;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
 .snrd-tv-category-chips {
     display: flex;
     gap: 6px;

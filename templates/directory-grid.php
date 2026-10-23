@@ -147,7 +147,7 @@ $quick_pills_row2 = array(
             </a>
             <a href="<?php echo esc_url( home_url( '/tv/' ) ); ?>" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #2d3748; color: #cbd5e1 !important; font-size: 12px; font-weight: 700; text-decoration: none !important; border-radius: 4px; text-transform: uppercase; transition: all 0.15s;">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
-                Live TV (2cTV Edition)
+                Live TV (530+ Channels)
             </a>
         </div>
         <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #22c55e; text-transform: uppercase; letter-spacing: 0.5px;">

@@ -155,28 +155,108 @@
             tuneChannel(chData);
         });
 
+        // Progressive Filtering & Search Controller for 530+ Channels
+        var currentCategory = 'all';
+        var currentSearch = '';
+        var visibleLimit = 48;
+        var pageSize = 48;
+
+        function applyFilters() {
+            var matchingCards = [];
+            var sQuery = currentSearch.toLowerCase().trim();
+
+            $channelCards.each(function() {
+                var $c = $(this);
+                var cat = ($c.attr('data-category') || '').toLowerCase();
+                var name = ($c.attr('data-name') || '').toLowerCase();
+                var dial = ($c.attr('data-dial') || '').toLowerCase();
+                var net = ($c.attr('data-network') || '').toLowerCase();
+
+                var matchCat = (currentCategory === 'all') || (cat.indexOf(currentCategory.toLowerCase()) !== -1);
+                var matchSearch = !sQuery || (name.indexOf(sQuery) !== -1 || dial.indexOf(sQuery) !== -1 || net.indexOf(sQuery) !== -1 || cat.indexOf(sQuery) !== -1);
+
+                if (matchCat && matchSearch) {
+                    matchingCards.push($c);
+                } else {
+                    $c.hide();
+                }
+            });
+
+            var isFiltered = (currentCategory !== 'all' || sQuery.length > 0);
+            var totalMatches = matchingCards.length;
+
+            if (isFiltered) {
+                for (var i = 0; i < totalMatches; i++) {
+                    matchingCards[i].show();
+                }
+                $('#snrd-tv-load-more-wrap').hide();
+                $('#snrd-visible-count').text(totalMatches);
+            } else {
+                for (var j = 0; j < totalMatches; j++) {
+                    if (j < visibleLimit) {
+                        matchingCards[j].show();
+                    } else {
+                        matchingCards[j].hide();
+                    }
+                }
+                var shown = Math.min(visibleLimit, totalMatches);
+                var remaining = totalMatches - shown;
+                $('#snrd-visible-count').text(shown);
+
+                if (remaining > 0) {
+                    $('#snrd-load-remaining').text('(' + remaining + ' Remaining)');
+                    $('#snrd-tv-load-more-wrap').show();
+                } else {
+                    $('#snrd-tv-load-more-wrap').hide();
+                }
+            }
+        }
+
         // Category Filter Chips
         $categoryChips.on('click', function(e) {
             e.preventDefault();
             var $chip = $(this);
-            var filter = $chip.attr('data-filter');
+            currentCategory = $chip.attr('data-filter');
 
             $categoryChips.removeClass('active');
             $chip.addClass('active');
 
-            if (filter === 'all') {
-                $channelCards.show();
-            } else {
-                $channelCards.each(function() {
-                    var cardCat = $(this).attr('data-category');
-                    if (cardCat && cardCat.toLowerCase().indexOf(filter.toLowerCase()) !== -1) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
-            }
+            applyFilters();
         });
+
+        // Search Input with Debounce
+        var searchTimer = null;
+        $('#snrd-tv-search-input').on('input', function() {
+            var val = $(this).val();
+            if (val.length > 0) {
+                $('#snrd-tv-search-clear').show();
+            } else {
+                $('#snrd-tv-search-clear').hide();
+            }
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(function() {
+                currentSearch = val;
+                applyFilters();
+            }, 180);
+        });
+
+        // Clear Search
+        $('#snrd-tv-search-clear').on('click', function() {
+            $('#snrd-tv-search-input').val('').focus();
+            $(this).hide();
+            currentSearch = '';
+            applyFilters();
+        });
+
+        // Load More Channels
+        $('#snrd-tv-load-more-btn').on('click', function(e) {
+            e.preventDefault();
+            visibleLimit += pageSize;
+            applyFilters();
+        });
+
+        // Initialize progressive cards
+        applyFilters();
 
         // Theatre Mode Toggle
         $('#snrd-tv-theatre-toggle').on('click', function(e) {
