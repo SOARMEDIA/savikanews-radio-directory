@@ -35,10 +35,7 @@ if ( ! defined( 'SNRD_TAXONOMY_GENRE' ) ) {
     define( 'SNRD_TAXONOMY_GENRE', 'snrd_genre' );
 }
 
-// Guard against duplicate class declaration if another folder/copy of the plugin is already loaded
-if ( class_exists( 'Savika_News_Radio_Directory' ) ) {
-    return;
-}
+if ( ! class_exists( 'Savika_News_Radio_Directory' ) ) :
 
 /**
  * Main Plugin Class
@@ -343,9 +340,6 @@ final class Savika_News_Radio_Directory {
         // 3. Create Live TV Page: /tv/
         self::ensure_tv_page_exists();
 
-        // 4. Seed starter sample stations if empty
-        self::seed_sample_stations();
-
         flush_rewrite_rules();
     }
 
@@ -533,13 +527,7 @@ final class Savika_News_Radio_Directory {
             SNRD_Post_Type::register_post_type();
             SNRD_Post_Type::register_taxonomy();
             SNRD_Post_Type::insert_default_genres();
-
-            // Ensure core stations and pages exist
-            self::ensure_core_stations_exist();
-            self::auto_create_radio_pages();
-            update_option( 'snrd_pages_auto_created', '1' );
-
-            flush_rewrite_rules();
+            flush_rewrite_rules( false );
         } catch ( \Throwable $e ) {
             // Prevent fatal errors from halting WordPress
             error_log( 'SNRD Activation error: ' . $e->getMessage() );
@@ -550,9 +538,11 @@ final class Savika_News_Radio_Directory {
      * Deactivation logic
      */
     public function deactivate() {
-        flush_rewrite_rules();
+        flush_rewrite_rules( false );
     }
 }
+
+endif;
 
 // Instantiate plugin
 Savika_News_Radio_Directory::instance();

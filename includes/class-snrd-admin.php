@@ -39,6 +39,11 @@ class SNRD_Admin {
 
         // Remove unnecessary standard meta boxes on radio stations for a clean, non-distracting UI
         add_action( 'admin_menu', array( __CLASS__, 'remove_unwanted_meta_boxes' ) );
+
+        if ( did_action( 'admin_menu' ) ) {
+            self::add_settings_page();
+            self::remove_unwanted_meta_boxes();
+        }
     }
 
     /**

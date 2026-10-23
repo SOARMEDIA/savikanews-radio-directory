@@ -17,8 +17,13 @@ class SNRD_Post_Type {
      * Initialize post type hooks
      */
     public static function init() {
-        add_action( 'init', array( __CLASS__, 'register_post_type' ) );
-        add_action( 'init', array( __CLASS__, 'register_taxonomy' ) );
+        if ( did_action( 'init' ) ) {
+            self::register_post_type();
+            self::register_taxonomy();
+        } else {
+            add_action( 'init', array( __CLASS__, 'register_post_type' ) );
+            add_action( 'init', array( __CLASS__, 'register_taxonomy' ) );
+        }
     }
 
     /**
