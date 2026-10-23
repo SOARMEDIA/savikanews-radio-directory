@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_Templates' ) ) :
+
 class SNRD_Templates {
 
     /**
@@ -63,3 +65,5 @@ class SNRD_Templates {
         }
     }
 }
+
+endif;

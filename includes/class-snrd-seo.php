@@ -11,6 +11,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_SEO' ) ) :
+
 class SNRD_SEO {
 
     /**
@@ -315,4 +317,6 @@ class SNRD_SEO {
         exit;
     }
 }
+
+endif;
 

@@ -16,12 +16,29 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-define( 'SNRD_VERSION', '1.0.3' );
-define( 'SNRD_PLUGIN_FILE', __FILE__ );
-define( 'SNRD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'SNRD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'SNRD_POST_TYPE', 'snrd_station' );
-define( 'SNRD_TAXONOMY_GENRE', 'snrd_genre' );
+if ( ! defined( 'SNRD_VERSION' ) ) {
+    define( 'SNRD_VERSION', '1.0.3' );
+}
+if ( ! defined( 'SNRD_PLUGIN_FILE' ) ) {
+    define( 'SNRD_PLUGIN_FILE', __FILE__ );
+}
+if ( ! defined( 'SNRD_PLUGIN_DIR' ) ) {
+    define( 'SNRD_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+}
+if ( ! defined( 'SNRD_PLUGIN_URL' ) ) {
+    define( 'SNRD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+}
+if ( ! defined( 'SNRD_POST_TYPE' ) ) {
+    define( 'SNRD_POST_TYPE', 'snrd_station' );
+}
+if ( ! defined( 'SNRD_TAXONOMY_GENRE' ) ) {
+    define( 'SNRD_TAXONOMY_GENRE', 'snrd_genre' );
+}
+
+// Guard against duplicate class declaration if another folder/copy of the plugin is already loaded
+if ( class_exists( 'Savika_News_Radio_Directory' ) ) {
+    return;
+}
 
 /**
  * Main Plugin Class
@@ -337,7 +354,7 @@ final class Savika_News_Radio_Directory {
      */
     public static function ensure_tv_page_exists() {
         $tv_page = get_page_by_path( 'tv' );
-        if ( ! $tv_page ) {
+        if ( empty( $tv_page ) ) {
             wp_insert_post( array(
                 'post_title'     => 'Live TV',
                 'post_name'      => 'tv',
@@ -346,7 +363,7 @@ final class Savika_News_Radio_Directory {
                 'post_type'      => 'page',
                 'comment_status' => 'closed',
             ) );
-        } else {
+        } elseif ( is_object( $tv_page ) && isset( $tv_page->post_content ) ) {
             if ( false === strpos( $tv_page->post_content, '[savika_live_tv]' ) && false === strpos( $tv_page->post_content, '[savika_tv_directory]' ) ) {
                 wp_update_post( array(
                     'ID'           => $tv_page->ID,

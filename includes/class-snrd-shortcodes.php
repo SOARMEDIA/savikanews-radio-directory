@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_Shortcodes' ) ) :
+
 class SNRD_Shortcodes {
 
     /**
@@ -94,3 +96,5 @@ class SNRD_Shortcodes {
         return ob_get_clean();
     }
 }
+
+endif;

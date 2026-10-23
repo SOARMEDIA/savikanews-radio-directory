@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_Admin' ) ) :
+
 class SNRD_Admin {
 
     /**
@@ -632,3 +634,5 @@ class SNRD_Admin {
         <?php
     }
 }
+
+endif;

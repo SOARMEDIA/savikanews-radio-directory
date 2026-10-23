@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_Application_Form' ) ) :
+
 class SNRD_Application_Form {
 
     private static $errors = array();
@@ -218,3 +220,5 @@ class SNRD_Application_Form {
         return self::$success;
     }
 }
+
+endif;

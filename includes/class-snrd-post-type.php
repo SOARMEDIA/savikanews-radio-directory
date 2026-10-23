@@ -9,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+if ( ! class_exists( 'SNRD_Post_Type' ) ) :
+
 class SNRD_Post_Type {
 
     /**
@@ -116,3 +118,5 @@ class SNRD_Post_Type {
         }
     }
 }
+
+endif;
