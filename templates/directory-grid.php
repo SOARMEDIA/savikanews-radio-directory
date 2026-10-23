@@ -138,6 +138,24 @@ $quick_pills_row2 = array(
 
 <div class="mg-radio-container" id="mg-radio-app">
     
+    <!-- Top Media Switcher: Radio vs Live TV -->
+    <div class="mg-media-switcher-bar" style="display: flex; justify-content: space-between; align-items: center; background: #1a202c; border-radius: 6px; padding: 8px 12px; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; border: 1px solid #2d3748;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <a href="<?php echo esc_url( home_url( '/radio/' ) ); ?>" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #b30000; color: #ffffff !important; font-size: 12px; font-weight: 700; text-decoration: none !important; border-radius: 4px; text-transform: uppercase;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                Radio Directory (1,050+ Stations)
+            </a>
+            <a href="<?php echo esc_url( home_url( '/tv/' ) ); ?>" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #2d3748; color: #cbd5e1 !important; font-size: 12px; font-weight: 700; text-decoration: none !important; border-radius: 4px; text-transform: uppercase; transition: all 0.15s;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
+                Live TV (2cTV Edition)
+            </a>
+        </div>
+        <div style="display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: #22c55e; text-transform: uppercase; letter-spacing: 0.5px;">
+            <span style="display: inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
+            Streaming Free 24/7
+        </div>
+    </div>
+    
     <div class="mg-layout-row">
 
         <!-- ============================================== -->

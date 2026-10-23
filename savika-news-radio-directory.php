@@ -104,6 +104,13 @@ final class Savika_News_Radio_Directory {
             SNRD_VERSION
         );
 
+        wp_register_style(
+            'snrd-tv-css',
+            SNRD_PLUGIN_URL . 'assets/css/snrd-tv.css',
+            array(),
+            SNRD_VERSION
+        );
+
         wp_register_script(
             'snrd-hls-js',
             'https://cdn.jsdelivr.net/npm/hls.js@1.5.8/dist/hls.min.js',
@@ -115,6 +122,14 @@ final class Savika_News_Radio_Directory {
         wp_register_script(
             'snrd-public-js',
             SNRD_PLUGIN_URL . 'assets/js/snrd-public.js',
+            array( 'jquery', 'snrd-hls-js' ),
+            SNRD_VERSION,
+            true
+        );
+
+        wp_register_script(
+            'snrd-tv-js',
+            SNRD_PLUGIN_URL . 'assets/js/snrd-tv.js',
             array( 'jquery', 'snrd-hls-js' ),
             SNRD_VERSION,
             true
@@ -133,7 +148,7 @@ final class Savika_News_Radio_Directory {
     }
 
     /**
-     * Automatically ensure /radio/ and /radio/apply/ pages exist and Core Stations (Floodlight & Peace FM) are seeded
+     * Automatically ensure /radio/, /radio/apply/, and /tv/ pages exist and Core Stations (Floodlight & Peace FM) are seeded
      */
     public function check_and_create_pages() {
         self::ensure_core_stations_exist();
@@ -141,6 +156,12 @@ final class Savika_News_Radio_Directory {
         if ( ! get_option( 'snrd_pages_auto_created' ) ) {
             self::auto_create_radio_pages();
             update_option( 'snrd_pages_auto_created', '1' );
+        }
+
+        // Auto ensure Live TV page (/tv/) is created
+        if ( ! get_option( 'snrd_tv_page_auto_created' ) ) {
+            self::ensure_tv_page_exists();
+            update_option( 'snrd_tv_page_auto_created', '1' );
         }
     }
 
@@ -302,10 +323,38 @@ final class Savika_News_Radio_Directory {
             }
         }
 
-        // 3. Seed starter sample stations if empty
+        // 3. Create Live TV Page: /tv/
+        self::ensure_tv_page_exists();
+
+        // 4. Seed starter sample stations if empty
         self::seed_sample_stations();
 
         flush_rewrite_rules();
+    }
+
+    /**
+     * Auto Create Live TV Page: /tv/ with [savika_live_tv]
+     */
+    public static function ensure_tv_page_exists() {
+        $tv_page = get_page_by_path( 'tv' );
+        if ( ! $tv_page ) {
+            wp_insert_post( array(
+                'post_title'     => 'Live TV',
+                'post_name'      => 'tv',
+                'post_content'   => '[savika_live_tv]',
+                'post_status'    => 'publish',
+                'post_type'      => 'page',
+                'comment_status' => 'closed',
+            ) );
+        } else {
+            if ( false === strpos( $tv_page->post_content, '[savika_live_tv]' ) && false === strpos( $tv_page->post_content, '[savika_tv_directory]' ) ) {
+                wp_update_post( array(
+                    'ID'           => $tv_page->ID,
+                    'post_content' => '[savika_live_tv]',
+                    'post_status'  => 'publish',
+                ) );
+            }
+        }
     }
 
     /**

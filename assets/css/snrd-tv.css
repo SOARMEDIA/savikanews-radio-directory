@@ -1,0 +1,635 @@
+/**
+ * Savika Live TV Portal — 2cTV Edition Stylesheet
+ * High-definition Dark Studio Theatre, 1-Click Channel Matrix & Mobile Optimizations
+ *
+ * @package Savika_News_Radio_Directory
+ */
+
+.snrd-tv-wrapper {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 14px 50px;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    color: #e2e8f0;
+    box-sizing: border-box;
+    background: #0f172a;
+    border-radius: 8px;
+    line-height: 1.4;
+}
+
+.snrd-tv-wrapper *,
+.snrd-tv-wrapper *::before,
+.snrd-tv-wrapper *::after {
+    box-sizing: border-box;
+}
+
+/* ========================================================= */
+/* 0. TOP MEDIA NAVIGATION BAR (RADIO vs LIVE TV)            */
+/* ========================================================= */
+.snrd-media-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: #1e293b;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+    border: 1px solid #334155;
+}
+
+.snrd-nav-pills {
+    display: flex;
+    gap: 8px;
+}
+
+.snrd-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #0f172a;
+    color: #94a3b8 !important;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none !important;
+    border-radius: 4px;
+    border: 1px solid #334155;
+    transition: all 0.15s;
+    text-transform: uppercase;
+}
+
+.snrd-nav-pill:hover {
+    color: #ffffff !important;
+    border-color: #475569;
+}
+
+.snrd-nav-pill.active {
+    background: #b30000;
+    color: #ffffff !important;
+    border-color: #b30000;
+}
+
+.snrd-live-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #22c55e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.snrd-tv-beacon {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: snrd-tv-pulse 1.3s infinite ease-in-out;
+}
+
+@keyframes snrd-tv-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(1.35); }
+}
+
+/* ========================================================= */
+/* 1. CINEMA THEATRE DECK (MAIN PLAYER)                      */
+/* ========================================================= */
+.snrd-theatre-deck {
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transition: all 0.25s ease;
+}
+
+.snrd-theatre-deck.theatre-mode {
+    max-width: 100vw;
+    border-radius: 0;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    border-left: none;
+    border-right: none;
+}
+
+.snrd-theatre-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.snrd-theatre-channel-info {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.snrd-theatre-logo-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+}
+
+.snrd-theatre-logo-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 3px;
+}
+
+.snrd-theatre-channel-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.snrd-tv-dial-badge {
+    background: #334155;
+    color: #fcd206;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.snrd-theatre-channel-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.snrd-tv-live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #b30000;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    padding: 2px 7px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+}
+
+.snrd-tv-dot {
+    width: 6px;
+    height: 6px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: snrd-tv-pulse 1s infinite ease-in-out;
+}
+
+.snrd-theatre-meta-sub {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 3px;
+}
+
+.snrd-dot-sep {
+    margin: 0 6px;
+    color: #475569;
+}
+
+.snrd-theatre-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.snrd-tv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.15s, color 0.15s;
+}
+
+.snrd-tv-btn:hover {
+    background: #334155;
+    color: #ffffff;
+}
+
+/* Video Viewport (16:9 Aspect Ratio) */
+.snrd-video-viewport {
+    position: relative;
+    width: 100%;
+    background: #000000;
+    aspect-ratio: 16 / 9;
+    max-height: 600px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.snrd-theatre-deck.theatre-mode .snrd-video-viewport {
+    max-height: 780px;
+}
+
+.snrd-tv-display {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    object-fit: contain;
+    background: #000000;
+}
+
+.snrd-tv-loader-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 10;
+}
+
+.snrd-tv-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #b30000;
+    border-radius: 50%;
+    animation: snrd-tv-spin 0.8s linear infinite;
+}
+
+@keyframes snrd-tv-spin {
+    to { transform: rotate(360deg); }
+}
+
+.snrd-theatre-footer {
+    padding: 10px 18px 12px;
+    background: #0f172a;
+    border-top: 1px solid #1e293b;
+}
+
+.snrd-theatre-desc {
+    margin: 0;
+    font-size: 12px;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* ========================================================= */
+/* 2. CHANNEL MATRIX (2cTV APP SWITCHER GRID)               */
+/* ========================================================= */
+.snrd-channels-section {
+    margin-top: 25px;
+}
+
+.snrd-section-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #b30000;
+}
+
+.snrd-channels-heading {
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 900;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.snrd-channels-subtext {
+    margin: 0;
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.snrd-tv-category-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.snrd-tv-chip {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+}
+
+.snrd-tv-chip:hover {
+    background: #334155;
+    color: #ffffff;
+}
+
+.snrd-tv-chip.active {
+    background: #006537;
+    color: #ffffff;
+    border-color: #006537;
+}
+
+/* Grid Matrix (Cards) */
+.snrd-channel-matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.snrd-channel-card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+}
+
+.snrd-channel-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    border-color: #475569;
+}
+
+.snrd-channel-card.is-active,
+.snrd-channel-card.is-playing {
+    border: 2px solid #006537;
+    background: #132337;
+    box-shadow: 0 0 16px rgba(0, 101, 55, 0.4);
+}
+
+.snrd-channel-card-top {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.snrd-card-dial {
+    background: #0f172a;
+    color: #fcd206;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 3px;
+    border: 1px solid #334155;
+}
+
+.snrd-card-playing-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 800;
+    color: #94a3b8;
+    letter-spacing: 0.5px;
+}
+
+.snrd-channel-card.is-playing .snrd-card-playing-indicator {
+    color: #22c55e;
+}
+
+.snrd-card-dot {
+    width: 6px;
+    height: 6px;
+    background: #ef4444;
+    border-radius: 50%;
+}
+
+.snrd-channel-card.is-playing .snrd-card-dot {
+    background: #22c55e;
+    animation: snrd-tv-pulse 1.2s infinite ease-in-out;
+}
+
+.snrd-channel-card-logo-wrap {
+    margin-bottom: 10px;
+}
+
+.snrd-channel-card-logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid #334155;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.snrd-channel-card.is-playing .snrd-channel-card-logo {
+    border-color: #006537;
+}
+
+.snrd-channel-card-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 4px;
+}
+
+.snrd-channel-logo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: #b30000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    color: #ffffff;
+}
+
+.snrd-channel-card-body {
+    flex-grow: 1;
+    margin-bottom: 12px;
+}
+
+.snrd-channel-card-title {
+    margin: 0 0 2px 0;
+    font-size: 14px;
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.snrd-channel-card-network {
+    margin: 0 0 6px 0;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.snrd-channel-category-tag {
+    background: #0f172a;
+    color: #cbd5e1;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    border: 1px solid #334155;
+}
+
+.snrd-channel-card-action {
+    width: 100%;
+}
+
+.snrd-btn-tune {
+    width: 100%;
+    background: #b30000;
+    color: #ffffff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 800;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.15s;
+}
+
+.snrd-channel-card.is-playing .snrd-btn-tune {
+    background: #006537;
+}
+
+.snrd-btn-tune:hover {
+    background: #800000;
+}
+
+.snrd-channel-card.is-playing .snrd-btn-tune:hover {
+    background: #004d2a;
+}
+
+.snrd-tune-icon {
+    font-size: 10px;
+}
+
+/* ========================================================= */
+/* 3. MOBILE & TABLET RESPONSIVENESS (2cTV MOBILE APP STYLE) */
+/* ========================================================= */
+@media (max-width: 640px) {
+    .snrd-tv-wrapper {
+        padding: 8px 8px 40px;
+        border-radius: 0;
+    }
+
+    .snrd-media-nav-bar {
+        padding: 6px 8px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .snrd-nav-pills {
+        flex-direction: column;
+    }
+
+    .snrd-nav-pill {
+        justify-content: center;
+    }
+
+    .snrd-theatre-header {
+        padding: 10px 12px;
+    }
+
+    .snrd-theatre-logo-wrap {
+        width: 38px;
+        height: 38px;
+    }
+
+    .snrd-theatre-channel-title {
+        font-size: 15px;
+    }
+
+    .snrd-theatre-meta-sub {
+        font-size: 10px;
+    }
+
+    .snrd-theatre-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .snrd-tv-btn {
+        flex: 1;
+        justify-content: center;
+        padding: 6px 8px;
+    }
+
+    /* 2-Column Grid on Mobile Phones (2cTV App Style) */
+    .snrd-channel-matrix {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .snrd-channel-card {
+        padding: 10px 8px;
+    }
+
+    .snrd-channel-card-logo {
+        width: 52px;
+        height: 52px;
+    }
+
+    .snrd-channel-card-title {
+        font-size: 12px;
+    }
+
+    .snrd-channel-card-network {
+        font-size: 10px;
+    }
+
+    .snrd-btn-tune {
+        padding: 6px 6px;
+        font-size: 10px;
+    }
+}

@@ -17,6 +17,8 @@ class SNRD_Shortcodes {
     public static function init() {
         add_shortcode( 'savika_radio_directory', array( __CLASS__, 'render_directory' ) );
         add_shortcode( 'savika_radio_apply', array( __CLASS__, 'render_application_form' ) );
+        add_shortcode( 'savika_live_tv', array( __CLASS__, 'render_live_tv' ) );
+        add_shortcode( 'savika_tv_directory', array( __CLASS__, 'render_live_tv' ) );
     }
 
     /**
@@ -76,6 +78,19 @@ class SNRD_Shortcodes {
 
         ob_start();
         include SNRD_PLUGIN_DIR . 'templates/application-form.php';
+        return ob_get_clean();
+    }
+
+    /**
+     * Render Live TV Portal Shortcode: [savika_live_tv] or [savika_tv_directory]
+     */
+    public static function render_live_tv( $atts ) {
+        wp_enqueue_style( 'snrd-tv-css' );
+        wp_enqueue_script( 'snrd-hls-js' );
+        wp_enqueue_script( 'snrd-tv-js' );
+
+        ob_start();
+        include SNRD_PLUGIN_DIR . 'templates/live-tv.php';
         return ob_get_clean();
     }
 }

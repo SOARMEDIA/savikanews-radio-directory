@@ -284,6 +284,14 @@ class SNRD_SEO {
         echo "    <priority>1.0</priority>\n";
         echo "  </url>\n";
 
+        // Live TV Portal page
+        $tv_url = home_url( '/tv/' );
+        echo "  <url>\n";
+        echo "    <loc>" . esc_url( $tv_url ) . "</loc>\n";
+        echo "    <changefreq>daily</changefreq>\n";
+        echo "    <priority>0.9</priority>\n";
+        echo "  </url>\n";
+
         foreach ( $stations as $st ) {
             $loc = get_permalink( $st->ID );
             $lastmod = ! empty( $st->post_modified_gmt ) ? date( 'c', strtotime( $st->post_modified_gmt ) ) : date( 'c' );
@@ -307,3 +315,4 @@ class SNRD_SEO {
         exit;
     }
 }
+
