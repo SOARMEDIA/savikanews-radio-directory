@@ -42,11 +42,15 @@ class SNRD_SEO {
             $post_id   = get_the_ID();
             $st_title  = get_the_title( $post_id );
             $freq      = get_post_meta( $post_id, 'snrd_frequency', true );
-            $location  = get_post_meta( $post_id, 'snrd_location', true );
-            
             $dial_str = ! empty( $freq ) ? "({$freq})" : '';
             $title_parts['title'] = "{$st_title} {$dial_str} Live Online Broadcast";
             $title_parts['site']  = 'Listen on Savika Radio Ghana';
+        } elseif ( is_page( 'tv' ) ) {
+            $title_parts['title'] = 'Watch Live TV — 530+ HD Free-to-Air Channels Online';
+            $title_parts['site']  = 'Savika News Ghana';
+        } elseif ( is_page( 'radio' ) || is_post_type_archive( SNRD_POST_TYPE ) ) {
+            $title_parts['title'] = 'Ghana Radio Stations Live — 1,000+ Online FM Broadcasts';
+            $title_parts['site']  = 'Savika News Ghana';
         }
         return $title_parts;
     }
@@ -61,6 +65,10 @@ class SNRD_SEO {
             $freq      = get_post_meta( $post_id, 'snrd_frequency', true );
             $dial_str  = ! empty( $freq ) ? " ({$freq})" : '';
             return "{$st_title}{$dial_str} Live Online Broadcast | Listen on Savika Radio Ghana";
+        } elseif ( is_page( 'tv' ) ) {
+            return 'Watch Live TV — 530+ HD Free-to-Air Channels Online | Savika News Ghana';
+        } elseif ( is_page( 'radio' ) || is_post_type_archive( SNRD_POST_TYPE ) ) {
+            return 'Ghana Radio Stations Live — 1,000+ Online FM Broadcasts | Savika News Ghana';
         }
         return $title;
     }
@@ -73,6 +81,8 @@ class SNRD_SEO {
             self::output_single_station_seo();
         } elseif ( is_page( 'radio' ) || is_post_type_archive( SNRD_POST_TYPE ) ) {
             self::output_directory_seo();
+        } elseif ( is_page( 'tv' ) ) {
+            self::output_tv_seo();
         }
     }
 
@@ -223,6 +233,49 @@ class SNRD_SEO {
                 "name": "Savika News",
                 "url": "https://savikanews.com/"
             }
+        }
+        </script>
+        <?php
+    }
+
+    /**
+     * Live TV Portal Meta & Schema.org JSON-LD
+     */
+    private static function output_tv_seo() {
+        $canonical = home_url( '/tv/' );
+        $title     = 'Watch Live TV Online — 530+ HD Free-to-Air Channels | Savika News Ghana';
+        $desc      = 'Watch 530+ live television channels online free. Stream UTV Ghana, Joy News, TV3, GTV Sports+, Citi TV, DL TV, Angel TV, Pent TV, and African live broadcast networks on Savika News Live TV.';
+        ?>
+        <meta name="description" content="<?php echo esc_attr( $desc ); ?>" />
+        <meta name="keywords" content="Ghana live TV, watch UTV Ghana online, Joy News live stream, TV3 Ghana live, Citi TV live stream, GTV sports live, DL TV Mallam junction, African live TV channels, Savika Live TV, watch television free online" />
+        <link rel="canonical" href="<?php echo esc_url( $canonical ); ?>" />
+
+        <meta property="og:type" content="video.other" />
+        <meta property="og:site_name" content="Savika News" />
+        <meta property="og:title" content="<?php echo esc_attr( $title ); ?>" />
+        <meta property="og:description" content="<?php echo esc_attr( $desc ); ?>" />
+        <meta property="og:url" content="<?php echo esc_url( $canonical ); ?>" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>" />
+        <meta name="twitter:description" content="<?php echo esc_attr( $desc ); ?>" />
+
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BroadcastService",
+            "name": "Savika Live TV Portal",
+            "broadcastDisplayName": "Savika Live TV",
+            "broadcastServiceTier": "Free",
+            "broadcaster": {
+                "@type": "NewsMediaOrganization",
+                "name": "Savika News",
+                "url": "https://savikanews.com/"
+            },
+            "areaServed": "GH",
+            "inLanguage": ["en", "ak"],
+            "description": <?php echo wp_json_encode( $desc ); ?>,
+            "url": <?php echo wp_json_encode( $canonical ); ?>
         }
         </script>
         <?php
