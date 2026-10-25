@@ -38,11 +38,10 @@ class SNRD_Admin {
         add_action( 'admin_init', array( __CLASS__, 'handle_page_generation_action' ) );
 
         // Remove unnecessary standard meta boxes on radio stations for a clean, non-distracting UI
-        add_action( 'admin_menu', array( __CLASS__, 'remove_unwanted_meta_boxes' ) );
+        add_action( 'add_meta_boxes', array( __CLASS__, 'remove_unwanted_meta_boxes' ), 99 );
 
-        if ( did_action( 'admin_menu' ) ) {
+        if ( did_action( 'admin_menu' ) && function_exists( 'add_submenu_page' ) ) {
             self::add_settings_page();
-            self::remove_unwanted_meta_boxes();
         }
     }
 
@@ -50,6 +49,9 @@ class SNRD_Admin {
      * Remove clutter from the station editor
      */
     public static function remove_unwanted_meta_boxes() {
+        if ( ! function_exists( 'remove_meta_box' ) ) {
+            return;
+        }
         remove_meta_box( 'postcustom', SNRD_POST_TYPE, 'normal' );
         remove_meta_box( 'commentstatusdiv', SNRD_POST_TYPE, 'normal' );
         remove_meta_box( 'commentsdiv', SNRD_POST_TYPE, 'normal' );

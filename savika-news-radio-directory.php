@@ -3,7 +3,7 @@
  * Plugin Name: Savika News Radio Directory
  * Plugin URI: https://savikanews.com/
  * Description: Dedicated online radio directory plugin for Savika News. Manages live radio station listings, public directory, broadcaster applications, stream testing, and HTML5 audio playback.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Savika News
  * Author URI: https://savikanews.com/
  * Text Domain: savika-news-radio
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'SNRD_VERSION' ) ) {
-    define( 'SNRD_VERSION', '1.0.3' );
+    define( 'SNRD_VERSION', '1.0.4' );
 }
 if ( ! defined( 'SNRD_PLUGIN_FILE' ) ) {
     define( 'SNRD_PLUGIN_FILE', __FILE__ );
