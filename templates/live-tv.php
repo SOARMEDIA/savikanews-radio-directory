@@ -33,6 +33,7 @@ $first_channel = ! empty( $channels ) ? $channels[0] : array(
     'description' => 'United Television (UTV) is Ghana\'s premier Akan entertainment, movie, drama, and news station broadcasting 24/7 from Ship House, Accra.'
 );
 
+$channels_total = count( $channels );
 $radio_url = home_url( '/radio/' );
 $tv_url    = home_url( '/tv/' );
 ?>
@@ -48,12 +49,12 @@ $tv_url    = home_url( '/tv/' );
             </a>
             <a href="<?php echo esc_url( $tv_url ); ?>" class="snrd-nav-pill active">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"/></svg>
-                Live TV (530+ Channels)
+                Live TV (<?php echo esc_html( $channels_total ); ?> Channels)
             </a>
         </div>
         <div class="snrd-live-status-pill">
             <span class="snrd-tv-beacon"></span>
-            <span>Broadcasting 530+ Channels Free-to-Air</span>
+            <span>Broadcasting <?php echo esc_html( $channels_total ); ?> Verified Channels Free-to-Air</span>
         </div>
     </div>
 
@@ -131,6 +132,14 @@ $tv_url    = home_url( '/tv/' );
                 <span>Tuning Channel Signal...</span>
             </div>
 
+            <!-- TV Stream Error / Signal Offline Notice Overlay -->
+            <div class="snrd-tv-error-overlay" id="snrd-tv-error" style="display:none;">
+                <div class="snrd-tv-error-badge">Signal Notice</div>
+                <h3 class="snrd-tv-error-title">Transmission Temporarily Offline</h3>
+                <p class="snrd-tv-error-desc">This broadcast stream is temporarily offline or unreachable at origin. Please select another channel from the guide below.</p>
+                <button type="button" class="snrd-tv-error-retry-btn" id="snrd-tv-retry-btn">Retry Channel</button>
+            </div>
+
         </div>
 
         <!-- Video Bottom Info Bar -->
@@ -149,7 +158,7 @@ $tv_url    = home_url( '/tv/' );
         
         <div class="snrd-section-header-bar">
             <div>
-                <h2 class="snrd-channels-heading">Channel Guide (530+ Channels – 1-Click Switcher)</h2>
+                <h2 class="snrd-channels-heading">Channel Guide (<?php echo esc_html( $channels_total ); ?> Channels – 1-Click Switcher)</h2>
                 <p class="snrd-channels-subtext">Click any television channel below to tune in instantly without reloading.</p>
             </div>
 
@@ -157,17 +166,17 @@ $tv_url    = home_url( '/tv/' );
             <div class="snrd-tv-search-container">
                 <div class="snrd-tv-search-box">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="snrd-tv-search-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" id="snrd-tv-search-input" class="snrd-tv-search-input" placeholder="Search 530+ TV stations by name, dial, network, or category..." autocomplete="off" />
+                    <input type="text" id="snrd-tv-search-input" class="snrd-tv-search-input" placeholder="Search <?php echo esc_attr( $channels_total ); ?> TV stations by name, dial, network, or category..." autocomplete="off" />
                     <button type="button" id="snrd-tv-search-clear" class="snrd-tv-search-clear" style="display:none;" title="Clear search">&times;</button>
                 </div>
                 <div class="snrd-tv-counter-badge" id="snrd-tv-counter">
-                    Showing <strong id="snrd-visible-count">48</strong> of <?php echo count( $channels ); ?> Channels
+                    Showing <strong id="snrd-visible-count">48</strong> of <?php echo esc_html( $channels_total ); ?> Channels
                 </div>
             </div>
 
             <!-- Category Filter Chips -->
             <div class="snrd-tv-category-chips">
-                <button type="button" class="snrd-tv-chip active" data-filter="all">All Channels (<?php echo count( $channels ); ?>)</button>
+                <button type="button" class="snrd-tv-chip active" data-filter="all">All Channels (<?php echo esc_html( $channels_total ); ?>)</button>
                 <button type="button" class="snrd-tv-chip" data-filter="News">News</button>
                 <button type="button" class="snrd-tv-chip" data-filter="Entertainment">Entertainment</button>
                 <button type="button" class="snrd-tv-chip" data-filter="Sports">Sports</button>

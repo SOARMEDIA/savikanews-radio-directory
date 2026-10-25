@@ -13,6 +13,8 @@
         var videoDOM      = document.getElementById('snrd-tv-video-element');
         var iframeDOM     = document.getElementById('snrd-tv-iframe-element');
         var $loader       = $('#snrd-tv-loader');
+        var $errorOverlay = $('#snrd-tv-error');
+        var $retryBtn     = $('#snrd-tv-retry-btn');
         var $theatreScreen = $('#snrd-theatre-screen');
         var $viewport     = $('#snrd-video-viewport');
         var $channelCards = $('.snrd-channel-card');
@@ -26,6 +28,7 @@
         var $activeDesc   = $('#snrd-active-tv-desc');
 
         var hlsInstance   = null;
+        var activeChannelData = null;
 
         /**
          * Tune to a specific channel
@@ -33,6 +36,8 @@
         function tuneChannel(chData) {
             if (!chData || !chData.stream) return;
 
+            activeChannelData = chData;
+            $errorOverlay.hide();
             $loader.show();
 
             // 1. Update Header Information
@@ -71,11 +76,13 @@
                         hlsInstance.attachMedia(videoDOM);
                         hlsInstance.on(window.Hls.Events.MANIFEST_PARSED, function() {
                             $loader.hide();
+                            $errorOverlay.hide();
                             videoDOM.play().catch(function() {});
                         });
                         hlsInstance.on(window.Hls.Events.ERROR, function(event, data) {
                             if (data.fatal) {
                                 $loader.hide();
+                                $errorOverlay.fadeIn(200);
                             }
                         });
                     } else if (videoDOM.canPlayType('application/vnd.apple.mpegurl')) {
@@ -83,7 +90,12 @@
                         videoDOM.src = chData.stream;
                         videoDOM.addEventListener('loadedmetadata', function() {
                             $loader.hide();
+                            $errorOverlay.hide();
                             videoDOM.play().catch(function() {});
+                        }, { once: true });
+                        videoDOM.addEventListener('error', function() {
+                            $loader.hide();
+                            $errorOverlay.fadeIn(200);
                         }, { once: true });
                     } else {
                         videoDOM.src = chData.stream;
@@ -112,6 +124,7 @@
                     iframeDOM.src = embedUrl;
                     setTimeout(function() {
                         $loader.hide();
+                        $errorOverlay.hide();
                     }, 800);
                 }
             }
@@ -154,6 +167,17 @@
 
             tuneChannel(chData);
         });
+
+        // Retry Button Click Handler
+        if ($retryBtn.length) {
+            $retryBtn.on('click', function(e) {
+                e.preventDefault();
+                $errorOverlay.hide();
+                if (activeChannelData) {
+                    tuneChannel(activeChannelData);
+                }
+            });
+        }
 
         // Progressive Filtering & Search Controller for 530+ Channels
         var currentCategory = 'all';
